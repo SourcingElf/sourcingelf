@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
@@ -202,6 +202,23 @@ document.addEventListener('DOMContentLoaded', async function() {
   var SE = window.SourcingElf;
   SE.RouteGuard.requireBuyer();
 
+  // Fix Bug 6b: inject CSS for equal card widths immediately
+  (function() {
+    var s = document.createElement('style');
+    s.textContent = '.metrics-row{display:grid!important;grid-template-columns:1fr 1fr!important;align-items:stretch!important;}.metrics-row>*{min-width:0!important;box-sizing:border-box!important;}';
+    document.head.appendChild(s);
+    function hideEmpty() {
+      var row = document.querySelector('.metrics-row');
+      if (!row) return;
+      Array.from(row.children).forEach(function(el) {
+        if (!el.textContent.trim() && el.children.length === 0) el.style.display = 'none';
+      });
+    }
+    hideEmpty();
+    setTimeout(hideEmpty, 500);
+    setTimeout(hideEmpty, 1200);
+  })();
+
   await new Promise(function(r) { setTimeout(r, 500); });
 
   try {
@@ -213,31 +230,16 @@ document.addEventListener('DOMContentLoaded', async function() {
     var leads = results[1];
     var activeLeads = leads.filter(function(l) { return l.status === 'active'; });
 
-    console.log('Buyer dashboard — Connections:', connections.length, 'Active leads:', activeLeads.length);
+    console.log('Buyer dashboard -- Connections:', connections.length, 'Active leads:', activeLeads.length);
 
-    // 修复卡片对齐：删除空 <a>，强制等高
-    var row = document.querySelector('.metrics-row');
-    if (row) {
-      Array.from(row.children).forEach(function(el) {
-        if (el.tagName === 'A' && !el.textContent.trim() && el.children.length === 0) el.remove();
-      });
-      row.style.alignItems = 'stretch';
-    }
-    document.querySelectorAll('.metrics-row .metric-card').forEach(function(el) {
-      el.style.height = '100%';
-      el.style.boxSizing = 'border-box';
-    });
-
-    // 填充 metric 数字
+    // Fill metric numbers
     var metricEls = document.querySelectorAll('.metric-number');
     if (metricEls.length >= 1) metricEls[0].textContent = activeLeads.length;
     if (metricEls.length >= 2) metricEls[1].textContent = connections.length;
 
-    // .metric-number.navy（连接数）
     var navyEls = document.querySelectorAll('.metric-number.navy');
     if (navyEls.length >= 1) navyEls[0].textContent = connections.length;
 
-    // nav badge
     var navBadge = document.querySelector('.nav-badge');
     if (navBadge) navBadge.textContent = activeLeads.length;
 

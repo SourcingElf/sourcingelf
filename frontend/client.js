@@ -534,9 +534,13 @@ window.SourcingElf = {
     navLinks[navLinks.length - 1].after(msgLink);
     return true;
   }
+  var delays = [300, 800, 1500];
+  function scheduleAll() {
+    delays.forEach(function(ms) { setTimeout(tryInject, ms); });
+  }
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function() { setTimeout(tryInject, 300); });
+    document.addEventListener('DOMContentLoaded', scheduleAll);
   } else {
-    setTimeout(tryInject, 300);
+    scheduleAll();
   }
 })();
