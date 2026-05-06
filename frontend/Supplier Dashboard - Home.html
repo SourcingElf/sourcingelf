@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
@@ -218,103 +218,10 @@ document.addEventListener('DOMContentLoaded', async function() {
   const SE = window.SourcingElf;
   SE.RouteGuard.requireSupplier();
 
-  await new Promise(r => setTimeout(r, 500));
+  // ── Apply modal — defined synchronously so the real handler overrides
+  //    the bundled stub before any user interaction is possible ──────────
+  var leads = null;
 
-  try {
-    // 用户信息
-    const user = SE.AuthAPI.getCurrentUser();
-
-    // Credits
-    const credits = await SE.CreditsAPI.getMyCredits();
-    const creditEls = document.querySelectorAll('.metric-number.navy');
-    if (creditEls[1]) creditEls[1].textContent = credits.balance;
-
-    // Buying Leads
-    const connections = await SE.MessagesAPI.getMyConnections();
-    if (creditEls[0]) creditEls[0].textContent = connections.length;
-
-    // Buyer Requests count
-    const buyerRequests = await SE.SupplierAPI.getMyBuyerRequests('pending');
-    const requestEls = document.querySelectorAll('.metric-number.red');
-    if (requestEls[0]) requestEls[0].textContent = buyerRequests.length;
-    const navBadges = document.querySelectorAll('.nav-badge');
-    if (navBadges[0]) navBadges[0].textContent = buyerRequests.length;
-
-    const leads = await SE.LeadsAPI.browseLeads();
-    console.log('Dashboard loaded — Credits:', credits.balance, 'Leads:', leads.length);
-
-    // 渲染 Buying Leads（带分页）
-    const leadsContainer = document.getElementById('leadsContainer');
-    const PER_PAGE = 5;
-    let currentPage = 1;
-    const totalPages = leads && leads.length > 0 ? Math.ceil(leads.length / PER_PAGE) : 1;
-
-    function buildLeadCard(lead) {
-      const items = lead.items || [];
-      const firstItem = items[0] || {};
-      const products = items.map(function(i) { return i.product_name; }).join(', ');
-      const moq = firstItem.quantity ? firstItem.quantity + ' ' + (firstItem.unit || 'pcs') + '/style' : '';
-      const priceRange = firstItem.price_range || '';
-      const expiry = lead.expires_at ? new Date(lead.expires_at) : null;
-      const now = new Date();
-      const daysLeft = expiry ? Math.ceil((expiry - now) / (1000 * 60 * 60 * 24)) : null;
-      const expiryStr = expiry ? expiry.toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'}) : '';
-      const expirySoon = daysLeft !== null && daysLeft <= 7;
-      const isNew = lead.created_at && (now - new Date(lead.created_at)) < 86400000;
-      const newBadge = isNew ? '<span class="lead-badge red">NEW</span>' : '';
-      const expiryClass = expirySoon ? 'lead-expiry amber' : 'lead-expiry normal';
-      const expiryLabel = expirySoon ? 'Valid until ' + expiryStr + ' · Expiring soon' : 'Valid until ' + expiryStr;
-      return '<div class="lead-card">' +
-        '<div class="lead-card-body">' +
-          '<div class="lead-info">' +
-            '<div class="lead-pills">' + newBadge + '</div>' +
-            '<div class="lead-company">' + (lead.title || '') + '</div>' +
-            '<div class="lead-products">' + products + '</div>' +
-            '<div class="lead-details">' +
-              (moq ? '<span><strong>MOQ:</strong> ' + moq + '</span>' : '') +
-              (priceRange ? '<span><strong>Price Range:</strong> ' + priceRange + '</span>' : '') +
-            '</div>' +
-            '<div class="' + expiryClass + '">&#128197; ' + expiryLabel + '</div>' +
-          '</div>' +
-        '</div>' +
-        '<div class="lead-card-footer">' +
-          '<a href="#" class="apply-link" data-lead-id="' + lead.id + '" onclick="applyToLead(this.dataset.leadId);return false;">Apply to this lead &#8594;</a>' +
-        '</div>' +
-      '</div>';
-    }
-
-    function renderLeadsPage() {
-      if (!leadsContainer) return;
-      if (!leads || leads.length === 0) {
-        leadsContainer.innerHTML = '<div style="text-align:center;padding:60px 20px;color:var(--gray-400);font-size:14px;">No buying leads available at the moment.</div>';
-      } else {
-        const start = (currentPage - 1) * PER_PAGE;
-        leadsContainer.innerHTML = leads.slice(start, start + PER_PAGE).map(buildLeadCard).join('');
-      }
-      const indicator = document.getElementById('pageIndicator');
-      if (indicator) indicator.textContent = 'Page ' + currentPage + ' of ' + totalPages;
-      const prevBtn = document.getElementById('prevBtn');
-      const nextBtn = document.getElementById('nextBtn');
-      if (prevBtn) prevBtn.disabled = currentPage === 1;
-      if (nextBtn) nextBtn.disabled = currentPage === totalPages;
-    }
-
-    window.changePage = function(dir) {
-      currentPage = Math.max(1, Math.min(totalPages, currentPage + dir));
-      renderLeadsPage();
-      const leadsSection = document.querySelector('.section-header');
-      if (leadsSection) {
-        const y = leadsSection.getBoundingClientRect().top + window.scrollY - 80;
-        window.scrollTo({ top: y, behavior: 'smooth' });
-      }
-    };
-
-    renderLeadsPage();
-
-
-
-  // Apply to lead
-  // ── Apply Modal ────────────────────────────────────────────
   function showApplyModal(leadId, leadTitle) {
     var overlay = document.createElement('div');
     overlay.id = 'seApplyOverlay';
@@ -392,6 +299,100 @@ document.addEventListener('DOMContentLoaded', async function() {
     var title = lead ? (lead.title || '') : '';
     showApplyModal(leadId, title);
   };
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  await new Promise(r => setTimeout(r, 500));
+
+  try {
+    // 用户信息
+    const user = SE.AuthAPI.getCurrentUser();
+
+    // Credits
+    const credits = await SE.CreditsAPI.getMyCredits();
+    const creditEls = document.querySelectorAll('.metric-number.navy');
+    if (creditEls[1]) creditEls[1].textContent = credits.balance;
+
+    // Buying Leads
+    const connections = await SE.MessagesAPI.getMyConnections();
+    if (creditEls[0]) creditEls[0].textContent = connections.length;
+
+    // Buyer Requests count
+    const buyerRequests = await SE.SupplierAPI.getMyBuyerRequests('pending');
+    const requestEls = document.querySelectorAll('.metric-number.red');
+    if (requestEls[0]) requestEls[0].textContent = buyerRequests.length;
+    const navBadges = document.querySelectorAll('.nav-badge');
+    if (navBadges[0]) navBadges[0].textContent = buyerRequests.length;
+
+    leads = await SE.LeadsAPI.browseLeads();
+    console.log('Dashboard loaded — Credits:', credits.balance, 'Leads:', leads.length);
+
+    // 渲染 Buying Leads（带分页）
+    const leadsContainer = document.getElementById('leadsContainer');
+    const PER_PAGE = 5;
+    let currentPage = 1;
+    const totalPages = leads && leads.length > 0 ? Math.ceil(leads.length / PER_PAGE) : 1;
+
+    function buildLeadCard(lead) {
+      const items = lead.items || [];
+      const firstItem = items[0] || {};
+      const products = items.map(function(i) { return i.product_name; }).join(', ');
+      const moq = firstItem.quantity ? firstItem.quantity + ' ' + (firstItem.unit || 'pcs') + '/style' : '';
+      const priceRange = firstItem.price_range || '';
+      const expiry = lead.expires_at ? new Date(lead.expires_at) : null;
+      const now = new Date();
+      const daysLeft = expiry ? Math.ceil((expiry - now) / (1000 * 60 * 60 * 24)) : null;
+      const expiryStr = expiry ? expiry.toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'}) : '';
+      const expirySoon = daysLeft !== null && daysLeft <= 7;
+      const isNew = lead.created_at && (now - new Date(lead.created_at)) < 86400000;
+      const newBadge = isNew ? '<span class="lead-badge red">NEW</span>' : '';
+      const expiryClass = expirySoon ? 'lead-expiry amber' : 'lead-expiry normal';
+      const expiryLabel = expirySoon ? 'Valid until ' + expiryStr + ' · Expiring soon' : 'Valid until ' + expiryStr;
+      return '<div class="lead-card">' +
+        '<div class="lead-card-body">' +
+          '<div class="lead-info">' +
+            '<div class="lead-pills">' + newBadge + '</div>' +
+            '<div class="lead-company">' + (lead.title || '') + '</div>' +
+            '<div class="lead-products">' + products + '</div>' +
+            '<div class="lead-details">' +
+              (moq ? '<span><strong>MOQ:</strong> ' + moq + '</span>' : '') +
+              (priceRange ? '<span><strong>Price Range:</strong> ' + priceRange + '</span>' : '') +
+            '</div>' +
+            '<div class="' + expiryClass + '">&#128197; ' + expiryLabel + '</div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="lead-card-footer">' +
+          '<a href="#" class="apply-link" data-lead-id="' + lead.id + '" onclick="applyToLead(this.dataset.leadId);return false;">Apply to this lead &#8594;</a>' +
+        '</div>' +
+      '</div>';
+    }
+
+    function renderLeadsPage() {
+      if (!leadsContainer) return;
+      if (!leads || leads.length === 0) {
+        leadsContainer.innerHTML = '<div style="text-align:center;padding:60px 20px;color:var(--gray-400);font-size:14px;">No buying leads available at the moment.</div>';
+      } else {
+        const start = (currentPage - 1) * PER_PAGE;
+        leadsContainer.innerHTML = leads.slice(start, start + PER_PAGE).map(buildLeadCard).join('');
+      }
+      const indicator = document.getElementById('pageIndicator');
+      if (indicator) indicator.textContent = 'Page ' + currentPage + ' of ' + totalPages;
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      if (prevBtn) prevBtn.disabled = currentPage === 1;
+      if (nextBtn) nextBtn.disabled = currentPage === totalPages;
+    }
+
+    window.changePage = function(dir) {
+      currentPage = Math.max(1, Math.min(totalPages, currentPage + dir));
+      renderLeadsPage();
+      const leadsSection = document.querySelector('.section-header');
+      if (leadsSection) {
+        const y = leadsSection.getBoundingClientRect().top + window.scrollY - 80;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
+    };
+
+    renderLeadsPage();
 
   } catch(e) {
     console.error('Dashboard load error:', e);
