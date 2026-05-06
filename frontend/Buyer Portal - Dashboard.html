@@ -205,7 +205,7 @@ document.addEventListener('DOMContentLoaded', async function() {
   // Fix Bug 6b: inject CSS for equal card widths immediately
   (function() {
     var s = document.createElement('style');
-    s.textContent = '.metrics-row{display:grid!important;grid-template-columns:1fr 1fr!important;align-items:stretch!important;}.metrics-row>*{min-width:0!important;box-sizing:border-box!important;}';
+    s.textContent = '.metrics-row{display:grid!important;grid-template-columns:1fr 1fr!important;align-items:stretch!important;}.metrics-row>*{min-width:0!important;box-sizing:border-box!important;}.metrics-row>a.metric-card-link{display:block!important;height:100%!important;}.metrics-row>a.metric-card-link>.metric-card{height:100%!important;box-sizing:border-box!important;}';
     document.head.appendChild(s);
     function hideEmpty() {
       var row = document.querySelector('.metrics-row');
