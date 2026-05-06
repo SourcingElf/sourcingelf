@@ -202,21 +202,27 @@ document.addEventListener('DOMContentLoaded', async function() {
   var SE = window.SourcingElf;
   SE.RouteGuard.requireBuyer();
 
-  // Fix Bug 6b: inject CSS for equal card widths immediately
+  // Fix Bug 6b: equal card widths + heights
   (function() {
     var s = document.createElement('style');
-    s.textContent = '.metrics-row{display:grid!important;grid-template-columns:1fr 1fr!important;align-items:stretch!important;}.metrics-row>*{min-width:0!important;box-sizing:border-box!important;}.metrics-row>a.metric-card-link{display:block!important;height:100%!important;}.metrics-row>a.metric-card-link>.metric-card{height:100%!important;box-sizing:border-box!important;}';
+    s.textContent =
+      '.metrics-row{display:grid!important;grid-template-columns:1fr 1fr!important;align-items:stretch!important;}' +
+      '.metrics-row>*{min-width:0!important;box-sizing:border-box!important;}' +
+      '.metrics-row>a.metric-card-link{display:block!important;height:100%!important;}' +
+      '.metrics-row>a.metric-card-link>.metric-card{height:100%!important;box-sizing:border-box!important;}' +
+      '.se-phantom{display:none!important;}';
     document.head.appendChild(s);
-    function hideEmpty() {
+    function fixRow() {
       var row = document.querySelector('.metrics-row');
       if (!row) return;
       Array.from(row.children).forEach(function(el) {
-        if (!el.textContent.trim() && el.children.length === 0) el.style.display = 'none';
+        if (el.tagName === 'A' && !el.querySelector('.metric-card')) {
+          el.classList.add('se-phantom');
+        }
       });
     }
-    hideEmpty();
-    setTimeout(hideEmpty, 500);
-    setTimeout(hideEmpty, 1200);
+    [0, 300, 800, 1500].forEach(function(ms) { setTimeout(fixRow, ms); });
+    new MutationObserver(fixRow).observe(document.body || document.documentElement, { childList: true, subtree: true });
   })();
 
   await new Promise(function(r) { setTimeout(r, 500); });
