@@ -218,10 +218,9 @@ document.addEventListener('DOMContentLoaded', async function() {
   const SE = window.SourcingElf;
   SE.RouteGuard.requireSupplier();
 
-  // ── Apply modal — defined synchronously so the real handler overrides
-  //    the bundled stub before any user interaction is possible ──────────
   var leads = null;
 
+  // Modal functions — defined synchronously; bundle renderer does NOT overwrite these
   function showApplyModal(leadId, leadTitle) {
     var overlay = document.createElement('div');
     overlay.id = 'seApplyOverlay';
@@ -294,29 +293,18 @@ document.addEventListener('DOMContentLoaded', async function() {
     }, 1000);
   }
 
-  window.applyToLead = function(leadId) {
-    var lead = leads ? leads.find(function(l) { return l.id === leadId; }) : null;
-    var title = lead ? (lead.title || '') : '';
-    showApplyModal(leadId, title);
-  };
-  // ─────────────────────────────────────────────────────────────────────────────
-
   await new Promise(r => setTimeout(r, 500));
 
   try {
-    // 用户信息
     const user = SE.AuthAPI.getCurrentUser();
 
-    // Credits
     const credits = await SE.CreditsAPI.getMyCredits();
     const creditEls = document.querySelectorAll('.metric-number.navy');
     if (creditEls[1]) creditEls[1].textContent = credits.balance;
 
-    // Buying Leads
     const connections = await SE.MessagesAPI.getMyConnections();
     if (creditEls[0]) creditEls[0].textContent = connections.length;
 
-    // Buyer Requests count
     const buyerRequests = await SE.SupplierAPI.getMyBuyerRequests('pending');
     const requestEls = document.querySelectorAll('.metric-number.red');
     if (requestEls[0]) requestEls[0].textContent = buyerRequests.length;
@@ -326,7 +314,6 @@ document.addEventListener('DOMContentLoaded', async function() {
     leads = await SE.LeadsAPI.browseLeads();
     console.log('Dashboard loaded — Credits:', credits.balance, 'Leads:', leads.length);
 
-    // 渲染 Buying Leads（带分页）
     const leadsContainer = document.getElementById('leadsContainer');
     const PER_PAGE = 5;
     let currentPage = 1;
@@ -393,6 +380,15 @@ document.addEventListener('DOMContentLoaded', async function() {
     };
 
     renderLeadsPage();
+
+    // Set AFTER renderLeadsPage() — by this point the bundle renderer has already
+    // run its DOMContentLoaded callback and overwritten window.applyToLead with the
+    // bundled stub. Re-setting here ensures the real handler wins.
+    window.applyToLead = function(leadId) {
+      var lead = leads ? leads.find(function(l) { return l.id === leadId; }) : null;
+      var title = lead ? (lead.title || '') : '';
+      showApplyModal(leadId, title);
+    };
 
   } catch(e) {
     console.error('Dashboard load error:', e);
