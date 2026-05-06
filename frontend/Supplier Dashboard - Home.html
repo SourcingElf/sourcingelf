@@ -221,6 +221,19 @@ document.addEventListener('DOMContentLoaded', async function() {
   var leads = null;
 
   // Modal functions — defined synchronously; bundle renderer does NOT overwrite these
+  function markCardApplied(leadId) {
+    var link = document.querySelector('[data-lead-id="' + leadId + '"]');
+    if (!link) return;
+    link.textContent = 'Applied ✓';
+    link.className = 'apply-link applied';
+    link.onclick = function(e) { e.preventDefault(); };
+    var card = link.closest('.lead-card');
+    if (card) {
+      var badge = card.querySelector('.lead-badge');
+      if (badge) badge.remove();
+    }
+  }
+
   function showApplyModal(leadId, leadTitle) {
     var overlay = document.createElement('div');
     overlay.id = 'seApplyOverlay';
@@ -247,10 +260,16 @@ document.addEventListener('DOMContentLoaded', async function() {
       try {
         await window.SourcingElf.LeadsAPI.applyToLead(leadId, { message: null });
         overlay.remove();
+        markCardApplied(leadId);
         showApplySuccess();
       } catch(e) {
         overlay.remove();
-        showApplyError(e.message || 'Failed to apply. Please try again.');
+        if (e.message && (e.message.includes('Already applied') || e.message.includes('already applied'))) {
+          markCardApplied(leadId);
+          showApplyError('You have already applied to this lead.');
+        } else {
+          showApplyError(e.message || 'Failed to apply. Please try again.');
+        }
       }
     };
   }
