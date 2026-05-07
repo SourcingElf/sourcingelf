@@ -74,6 +74,9 @@ class BuyingLeadResponse(BaseModel):
     updated_at: datetime
     expired_at: Optional[datetime] = None
     items: Optional[List[LeadItemResponse]] = None
+    buyer_company: Optional[str] = None
+    buyer_country: Optional[str] = None
+    buyer_positioning: Optional[List[str]] = None
 
     model_config = {"from_attributes": True}
 
