@@ -89,13 +89,21 @@ onclick="alert(&quot;Apply feature coming soon&quot;)"
 - **Apply 后卡片状态更新** — 申请成功/400 重复申请均调用 `markCardApplied`，按钮变灰色 "Applied ✓"，NEW 标签消失 ✅
 - **Buying Leads 卡片 UI 统一** — `buildLeadCard` 改为与 bundled template 一致的富结构：`detail-item`、日历 SVG、`view-details-btn`、`lead-id` footer、`pill pill-red`，`appliedLeadIds` Set 保持翻页后申请状态 ✅
 - **inject_all.py 停用** — 所有修改直接在 `sourcingelf/frontend/*.html` 进行；`Copy-Item *.html` 已同步所有页面到部署目录 ✅
+- **Buying Leads 闪变修复** — `Object.defineProperty` 拦截 `#leadsFeed` 的 `innerHTML` setter；IIFE 在 `<script>` 顶部同步执行，bundle 的假数据写入被静默丢弃；`_ourRenderLeads` 用 `__allowOurRender` flag 单独开门写入真实 API 数据，零闪变 ✅
+- **Apply 链接修复** — 4 个静态卡片 + `buildLeadCard` 动态模板的 `<a href="/leads/X/apply">` 全部改为 `onclick="applyLead(X)"`，不再跳页 ✅
+- **Apply 弹窗错误处理** — 移除 `alert()`，改为 modal 内联红色错误区域；按 API 返回分三类提示：402 credit 不足（含"Top up now →"跳转链接）、400 重复申请、其他显示原始 `e.message` ✅
+- **Apply 500/4xx 错误根因定位** — 静态卡片 ID 为整数（1~5），API 要求 UUID；`ourRenderLeads()` 从 `/api/v1/leads/browse` 拿到真实 UUID 后 Apply 才走完整链路；credits 余额不足时后端返回 402 "Insufficient credits — please top up"，前端已正确捕获并展示 ✅
+
+### ⚠️ 部署状态（2026-05-07 收工时）
+最新三次 push（c101ddb）已推送到 GitHub，**Railway 尚未成功部署**（Railway 服务器问题，deploy 卡住）。
+明天开始工作时，第一件事：Railway 控制台 → 手动 Redeploy，确认部署成功后再测试。
 
 ### ⚠️ 已知问题（待处理）
 - **Dashboard 分页**："Page 1 of 3" 是假数据
 - **IM Chat** 需完整重写
 
 ### ⏳ 下一步（按优先级）
-1. IM Chat 页面重写
+1. **IM Chat 页面重写**（明天主任务）
 2. Dashboard 分页修复（真实分页逻辑）
 
 ---
@@ -148,5 +156,8 @@ Supabase 用 ES256，PyJWT verify_signature=False，不要改 database.py。
 |------|------|
 | frontend/Buyer Portal - Dashboard.html | Bug 6b：删幽灵 `<a>`，加 inline style 等高等宽；Bug 6c：Messages 导航入口 |
 | frontend/Supplier Dashboard - Home.html | Apply to Lead 全链路：弹窗+API+卡片状态；buildLeadCard 富结构；bundle renderer 竞争修复 |
+| frontend/Supplier Dashboard - Home.html | Buying Leads 闪变修复：`Object.defineProperty` guard + `__allowOurRender` flag（commit 150fef0） |
+| frontend/Supplier Dashboard - Home.html | Apply 链接去除 href 跳转，改 onclick 弹窗（commit 01cf486） |
+| frontend/Supplier Dashboard - Home.html | Apply 错误处理：内联 modal 错误区域替换 alert()，分类提示 402/400/其他（commit c101ddb） |
 | frontend/*.html | Copy-Item 从 sourcingelf-frontend 同步所有页面 |
 | requirements.txt | 加 email-validator（修复 Railway 启动崩溃） |
