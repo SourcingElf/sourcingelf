@@ -343,36 +343,55 @@ document.addEventListener('DOMContentLoaded', async function() {
     const totalPages = leads && leads.length > 0 ? Math.ceil(leads.length / PER_PAGE) : 1;
 
     function buildLeadCard(lead) {
-      const items = lead.items || [];
-      const firstItem = items[0] || {};
-      const products = items.map(function(i) { return i.product_name; }).join(', ');
-      const moq = firstItem.quantity ? firstItem.quantity + ' ' + (firstItem.unit || 'pcs') + '/style' : '';
-      const priceRange = firstItem.price_range || '';
-      const expiry = lead.expires_at ? new Date(lead.expires_at) : null;
-      const now = new Date();
-      const daysLeft = expiry ? Math.ceil((expiry - now) / (1000 * 60 * 60 * 24)) : null;
-      const expiryStr = expiry ? expiry.toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'}) : '';
-      const expirySoon = daysLeft !== null && daysLeft <= 7;
-      const isNew = lead.created_at && (now - new Date(lead.created_at)) < 86400000;
-      const newBadge = isNew ? '<span class="lead-badge red">NEW</span>' : '';
-      const expiryClass = expirySoon ? 'lead-expiry amber' : 'lead-expiry normal';
-      const expiryLabel = expirySoon ? 'Valid until ' + expiryStr + ' · Expiring soon' : 'Valid until ' + expiryStr;
+      var items = lead.items || [];
+      var firstItem = items[0] || {};
+      var products = items.map(function(i) { return i.product_name; }).join(', ');
+      var moq = firstItem.quantity ? firstItem.quantity + ' ' + (firstItem.unit || 'pcs') + '/style' : '';
+      var priceRange = firstItem.price_range || '';
+      var expiry = lead.expires_at ? new Date(lead.expires_at) : null;
+      var nowTime = new Date();
+      var daysLeft = expiry ? Math.ceil((expiry - nowTime) / (1000 * 60 * 60 * 24)) : null;
+      var expiryStr = expiry ? expiry.toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'}) : '';
+      var expirySoon = daysLeft !== null && daysLeft <= 7;
+      var isNew = lead.created_at && (nowTime - new Date(lead.created_at)) < 86400000;
+      var isApplied = appliedLeadIds.has(lead.id);
+      var country = lead.buyer_country || '';
+      var positioning = (lead.buyer_positioning && lead.buyer_positioning.length) ? lead.buyer_positioning[0] : '';
+      function maskCompany(name) {
+        if (!name) return '';
+        var words = name.split(' ');
+        if (!words[0] || !words[0].length) return name;
+        return words[0][0] + '**' + (words.length > 1 ? ' ' + words.slice(1).join(' ') : '');
+      }
+      var maskedCompany = maskCompany(lead.buyer_company) || lead.title || '';
+      var pillsHtml = (country ? '<span class="pill pill-blue">' + country + '</span>' : '') +
+        (positioning ? '<span class="pill pill-navy">' + positioning + '</span>' : '') +
+        (isNew && !isApplied ? '<span class="pill pill-red">NEW</span>' : '');
+      var expiryClass = expirySoon ? 'lead-expiry urgent' : 'lead-expiry normal';
+      var expiryLabel = 'Valid until ' + expiryStr + (expirySoon ? ' · Expiring soon' : '');
+      var svgCal = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin-right:3px"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>';
+      var viewDetailsOnclick = "(function(btn){var card=btn.closest('.lead-card');var notes=card&&card.querySelector('.lead-notes');if(notes){notes.style.display=notes.style.display==='none'?'block':'none';btn.textContent=notes.style.display==='none'?'View Details':'Hide Details';}})(this)";
+      var applyFooter = isApplied
+        ? '<span class="apply-link applied">Applied ✓</span>'
+        : '<a href="#" class="apply-link" data-lead-id="' + lead.id + '" onclick="applyToLead(this.dataset.leadId);return false;">Apply to this lead →</a>';
       return '<div class="lead-card">' +
         '<div class="lead-card-body">' +
           '<div class="lead-info">' +
-            '<div class="lead-pills">' + newBadge + '</div>' +
-            '<div class="lead-company">' + (lead.title || '') + '</div>' +
+            '<div class="lead-pills">' + pillsHtml + '</div>' +
+            '<div class="lead-company">' + maskedCompany + '</div>' +
             '<div class="lead-products">' + products + '</div>' +
             '<div class="lead-details">' +
-              (moq ? '<span><strong>MOQ:</strong> ' + moq + '</span>' : '') +
-              (priceRange ? '<span><strong>Price Range:</strong> ' + priceRange + '</span>' : '') +
+              (moq ? '<div class="detail-item"><strong>MOQ:</strong> ' + moq + '</div>' : '') +
+              (priceRange ? '<div class="detail-item"><strong>Price Range:</strong> ' + priceRange + '</div>' : '') +
             '</div>' +
-            '<div class="' + expiryClass + '">&#128197; ' + expiryLabel + '</div>' +
+            '<div class="' + expiryClass + '">' + svgCal + expiryLabel + '</div>' +
+          '</div>' +
+          '<div style="display:flex;flex-direction:column;align-items:flex-end;gap:12px;flex-shrink:0;">' +
+            '<button class="view-details-btn" onclick="' + viewDetailsOnclick + '">View Details</button>' +
           '</div>' +
         '</div>' +
-        '<div class="lead-card-footer">' +
-          '<a href="#" class="apply-link" data-lead-id="' + lead.id + '" onclick="applyToLead(this.dataset.leadId);return false;">Apply to this lead &#8594;</a>' +
-        '</div>' +
+        (lead.notes ? '<div class="lead-notes" style="display:none;padding:10px 16px;font-size:13px;color:#555;border-top:1px solid #eee">' + lead.notes + '</div>' : '') +
+        '<div class="lead-card-footer">' + applyFooter + '<span class="lead-id">' + lead.id + '</span></div>' +
       '</div>';
     }
 
