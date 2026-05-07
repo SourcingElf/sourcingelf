@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
@@ -218,27 +218,103 @@ document.addEventListener('DOMContentLoaded', async function() {
   const SE = window.SourcingElf;
   SE.RouteGuard.requireSupplier();
 
-  var leads = null;
-  var appliedLeadIds = new Set();
+  await new Promise(r => setTimeout(r, 500));
 
-  // ── Modal helpers (synchronous — not overwritten by bundle renderer) ─────────
-  function markCardApplied(leadId) {
-    appliedLeadIds.add(leadId);
-    var link = document.querySelector('[data-lead-id="' + leadId + '"]');
-    if (!link) return;
-    link.outerHTML = '<span class="apply-link applied">Applied ✓</span>';
-    var card = document.querySelector('[data-lead-id]') && document.querySelector('.lead-card');
-    // remove NEW pill from the card that contained the link
-    var cards = document.querySelectorAll('.lead-card');
-    cards.forEach(function(c) {
-      var footer = c.querySelector('.lead-card-footer');
-      if (footer && footer.querySelector('.applied')) {
-        var pill = c.querySelector('.pill-red');
-        if (pill) pill.remove();
+  try {
+    // 用户信息
+    const user = SE.AuthAPI.getCurrentUser();
+
+    // Credits
+    const credits = await SE.CreditsAPI.getMyCredits();
+    const creditEls = document.querySelectorAll('.metric-number.navy');
+    if (creditEls[1]) creditEls[1].textContent = credits.balance;
+
+    // Buying Leads
+    const connections = await SE.MessagesAPI.getMyConnections();
+    if (creditEls[0]) creditEls[0].textContent = connections.length;
+
+    // Buyer Requests count
+    const buyerRequests = await SE.SupplierAPI.getMyBuyerRequests('pending');
+    const requestEls = document.querySelectorAll('.metric-number.red');
+    if (requestEls[0]) requestEls[0].textContent = buyerRequests.length;
+    const navBadges = document.querySelectorAll('.nav-badge');
+    if (navBadges[0]) navBadges[0].textContent = buyerRequests.length;
+
+    const leads = await SE.LeadsAPI.browseLeads();
+    console.log('Dashboard loaded — Credits:', credits.balance, 'Leads:', leads.length);
+
+    // 渲染 Buying Leads（带分页）
+    const leadsContainer = document.getElementById('leadsContainer');
+    const PER_PAGE = 5;
+    let currentPage = 1;
+    const totalPages = leads && leads.length > 0 ? Math.ceil(leads.length / PER_PAGE) : 1;
+
+    function buildLeadCard(lead) {
+      const items = lead.items || [];
+      const firstItem = items[0] || {};
+      const products = items.map(function(i) { return i.product_name; }).join(', ');
+      const moq = firstItem.quantity ? firstItem.quantity + ' ' + (firstItem.unit || 'pcs') + '/style' : '';
+      const priceRange = firstItem.price_range || '';
+      const expiry = lead.expires_at ? new Date(lead.expires_at) : null;
+      const now = new Date();
+      const daysLeft = expiry ? Math.ceil((expiry - now) / (1000 * 60 * 60 * 24)) : null;
+      const expiryStr = expiry ? expiry.toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'}) : '';
+      const expirySoon = daysLeft !== null && daysLeft <= 7;
+      const isNew = lead.created_at && (now - new Date(lead.created_at)) < 86400000;
+      const newBadge = isNew ? '<span class="lead-badge red">NEW</span>' : '';
+      const expiryClass = expirySoon ? 'lead-expiry amber' : 'lead-expiry normal';
+      const expiryLabel = expirySoon ? 'Valid until ' + expiryStr + ' · Expiring soon' : 'Valid until ' + expiryStr;
+      return '<div class="lead-card">' +
+        '<div class="lead-card-body">' +
+          '<div class="lead-info">' +
+            '<div class="lead-pills">' + newBadge + '</div>' +
+            '<div class="lead-company">' + (lead.title || '') + '</div>' +
+            '<div class="lead-products">' + products + '</div>' +
+            '<div class="lead-details">' +
+              (moq ? '<span><strong>MOQ:</strong> ' + moq + '</span>' : '') +
+              (priceRange ? '<span><strong>Price Range:</strong> ' + priceRange + '</span>' : '') +
+            '</div>' +
+            '<div class="' + expiryClass + '">&#128197; ' + expiryLabel + '</div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="lead-card-footer">' +
+          '<a href="#" class="apply-link" data-lead-id="' + lead.id + '" onclick="applyToLead(this.dataset.leadId);return false;">Apply to this lead &#8594;</a>' +
+        '</div>' +
+      '</div>';
+    }
+
+    function renderLeadsPage() {
+      if (!leadsContainer) return;
+      if (!leads || leads.length === 0) {
+        leadsContainer.innerHTML = '<div style="text-align:center;padding:60px 20px;color:var(--gray-400);font-size:14px;">No buying leads available at the moment.</div>';
+      } else {
+        const start = (currentPage - 1) * PER_PAGE;
+        leadsContainer.innerHTML = leads.slice(start, start + PER_PAGE).map(buildLeadCard).join('');
       }
-    });
-  }
+      const indicator = document.getElementById('pageIndicator');
+      if (indicator) indicator.textContent = 'Page ' + currentPage + ' of ' + totalPages;
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      if (prevBtn) prevBtn.disabled = currentPage === 1;
+      if (nextBtn) nextBtn.disabled = currentPage === totalPages;
+    }
 
+    window.changePage = function(dir) {
+      currentPage = Math.max(1, Math.min(totalPages, currentPage + dir));
+      renderLeadsPage();
+      const leadsSection = document.querySelector('.section-header');
+      if (leadsSection) {
+        const y = leadsSection.getBoundingClientRect().top + window.scrollY - 80;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
+    };
+
+    renderLeadsPage();
+
+
+
+  // Apply to lead
+  // ── Apply Modal ────────────────────────────────────────────
   function showApplyModal(leadId, leadTitle) {
     var overlay = document.createElement('div');
     overlay.id = 'seApplyOverlay';
@@ -265,16 +341,10 @@ document.addEventListener('DOMContentLoaded', async function() {
       try {
         await window.SourcingElf.LeadsAPI.applyToLead(leadId, { message: null });
         overlay.remove();
-        markCardApplied(leadId);
         showApplySuccess();
       } catch(e) {
         overlay.remove();
-        if (e.message && (e.message.includes('Already applied') || e.message.includes('already applied'))) {
-          markCardApplied(leadId);
-          showApplyError('You have already applied to this lead.');
-        } else {
-          showApplyError(e.message || 'Failed to apply. Please try again.');
-        }
+        showApplyError(e.message || 'Failed to apply. Please try again.');
       }
     };
   }
@@ -316,122 +386,12 @@ document.addEventListener('DOMContentLoaded', async function() {
       if (secs <= 0) { clearInterval(timer); banner.remove(); }
     }, 1000);
   }
-  // ─────────────────────────────────────────────────────────────────────────────
 
-  await new Promise(r => setTimeout(r, 500));
-
-  try {
-    const user = SE.AuthAPI.getCurrentUser();
-
-    const credits = await SE.CreditsAPI.getMyCredits();
-    const creditEls = document.querySelectorAll('.metric-number.navy');
-    if (creditEls[1]) creditEls[1].textContent = credits.balance;
-
-    const connections = await SE.MessagesAPI.getMyConnections();
-    if (creditEls[0]) creditEls[0].textContent = connections.length;
-
-    const buyerRequests = await SE.SupplierAPI.getMyBuyerRequests('pending');
-    const requestEls = document.querySelectorAll('.metric-number.red');
-    if (requestEls[0]) requestEls[0].textContent = buyerRequests.length;
-    const navBadges = document.querySelectorAll('.nav-badge');
-    if (navBadges[0]) navBadges[0].textContent = buyerRequests.length;
-
-    leads = await SE.LeadsAPI.browseLeads();
-    console.log('Dashboard loaded — Credits:', credits.balance, 'Leads:', leads.length);
-
-    const leadsContainer = document.getElementById('leadsContainer');
-    const PER_PAGE = 5;
-    let currentPage = 1;
-    const totalPages = leads && leads.length > 0 ? Math.ceil(leads.length / PER_PAGE) : 1;
-
-    function buildLeadCard(lead) {
-      const items = lead.items || [];
-      const firstItem = items[0] || {};
-      const products = items.map(function(i) { return i.product_name; }).join(', ');
-      const moq = firstItem.quantity ? firstItem.quantity + ' ' + (firstItem.unit || 'pcs') + '/style' : '';
-      const priceRange = firstItem.price_range || '';
-      const expiry = lead.expires_at ? new Date(lead.expires_at) : null;
-      const now = new Date();
-      const daysLeft = expiry ? Math.ceil((expiry - now) / (1000 * 60 * 60 * 24)) : null;
-      const expiryStr = expiry ? expiry.toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'}) : '';
-      const expirySoon = daysLeft !== null && daysLeft <= 7;
-      const isNew = lead.created_at && (now - new Date(lead.created_at)) < 86400000;
-      const isApplied = appliedLeadIds.has(lead.id);
-      const pills = isNew ? '<span class="pill pill-red">NEW</span>' : '';
-      const expiryClass = expirySoon ? 'lead-expiry urgent' : 'lead-expiry normal';
-      const expirySuffix = expirySoon ? ' · Expiring soon' : '';
-      const applyFooter = isApplied
-        ? '<span class="apply-link applied">Applied ✓</span>'
-        : '<a href="#" class="apply-link" data-lead-id="' + lead.id + '" onclick="applyToLead(this.dataset.leadId);return false;">Apply to this lead →</a>';
-      return (
-        '<div class="lead-card">' +
-          '<div class="lead-card-body">' +
-            '<div class="lead-info">' +
-              '<div class="lead-pills">' + pills + '</div>' +
-              '<div class="lead-company">' + (lead.title || '') + '</div>' +
-              '<div class="lead-products">' + products + '</div>' +
-              '<div class="lead-details">' +
-                (moq ? '<div class="detail-item"><strong>MOQ:</strong> ' + moq + '</div>' : '') +
-                (priceRange ? '<div class="detail-item"><strong>Price Range:</strong> ' + priceRange + '</div>' : '') +
-              '</div>' +
-              '<div class="' + expiryClass + '">' +
-                '<svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">' +
-                  '<rect x="3" y="4" width="18" height="18" rx="2"/>' +
-                  '<line x1="16" y1="2" x2="16" y2="6"/>' +
-                  '<line x1="8" y1="2" x2="8" y2="6"/>' +
-                  '<line x1="3" y1="10" x2="21" y2="10"/>' +
-                '</svg>' +
-                ' Valid until ' + expiryStr + expirySuffix +
-              '</div>' +
-            '</div>' +
-            '<div style="display:flex;flex-direction:column;align-items:flex-end;gap:12px;flex-shrink:0;">' +
-              '<div style="width:72px"></div>' +
-              '<button class="view-details-btn" onclick="(function(b){var c=b.closest(\'.lead-card\');var n=c&&c.querySelector(\'.lead-notes\');if(n)n.style.display=n.style.display===\'none\'?\'block\':\'none\';})(this)">View Details</button>' +
-            '</div>' +
-          '</div>' +
-          (lead.notes ? '<div class="lead-notes" style="display:none;padding:8px 16px 12px;font-size:13px;color:#374151;border-top:1px solid #f3f4f6;">' + lead.notes + '</div>' : '') +
-          '<div class="lead-card-footer">' +
-            applyFooter +
-            '<span class="lead-id">' + lead.id + '</span>' +
-          '</div>' +
-        '</div>'
-      );
-    }
-
-    function renderLeadsPage() {
-      if (!leadsContainer) return;
-      if (!leads || leads.length === 0) {
-        leadsContainer.innerHTML = '<div style="text-align:center;padding:60px 20px;color:var(--gray-400);font-size:14px;">No buying leads available at the moment.</div>';
-      } else {
-        const start = (currentPage - 1) * PER_PAGE;
-        leadsContainer.innerHTML = leads.slice(start, start + PER_PAGE).map(buildLeadCard).join('');
-      }
-      const indicator = document.getElementById('pageIndicator');
-      if (indicator) indicator.textContent = 'Page ' + currentPage + ' of ' + totalPages;
-      const prevBtn = document.getElementById('prevBtn');
-      const nextBtn = document.getElementById('nextBtn');
-      if (prevBtn) prevBtn.disabled = currentPage === 1;
-      if (nextBtn) nextBtn.disabled = currentPage === totalPages;
-    }
-
-    window.changePage = function(dir) {
-      currentPage = Math.max(1, Math.min(totalPages, currentPage + dir));
-      renderLeadsPage();
-      const leadsSection = document.querySelector('.section-header');
-      if (leadsSection) {
-        const y = leadsSection.getBoundingClientRect().top + window.scrollY - 80;
-        window.scrollTo({ top: y, behavior: 'smooth' });
-      }
-    };
-
-    renderLeadsPage();
-
-    // Set AFTER renderLeadsPage so bundle renderer stub cannot overwrite it
-    window.applyToLead = function(leadId) {
-      var lead = leads ? leads.find(function(l) { return l.id === leadId; }) : null;
-      var title = lead ? (lead.title || '') : '';
-      showApplyModal(leadId, title);
-    };
+  window.applyToLead = function(leadId) {
+    var lead = leads ? leads.find(function(l) { return l.id === leadId; }) : null;
+    var title = lead ? (lead.title || '') : '';
+    showApplyModal(leadId, title);
+  };
 
   } catch(e) {
     console.error('Dashboard load error:', e);
