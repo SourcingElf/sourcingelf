@@ -1266,7 +1266,8 @@
 <div id="applyModal" style="display:none;position:fixed;inset:0;z-index:1000;background:rgba(15,26,46,0.55);backdrop-filter:blur(3px);align-items:center;justify-content:center;">
   <div style="background:#fff;border-radius:14px;padding:32px 28px;max-width:400px;width:calc(100% - 40px);box-shadow:0 24px 60px rgba(26,39,68,0.18);">
     <h3 style="font-family:'Playfair Display',serif;font-size:20px;color:#1a2744;margin-bottom:10px;">Confirm Application</h3>
-    <p style="font-size:14px;color:#4b5563;line-height:1.6;margin-bottom:24px;">This will use <strong>1 credit</strong> from your balance. The buyer will be notified and can choose to connect with you.</p>
+    <p style="font-size:14px;color:#4b5563;line-height:1.6;margin-bottom:16px;">This will use <strong>1 credit</strong> from your balance. The buyer will be notified and can choose to connect with you.</p>
+    <p id="applyErrorMsg" style="display:none;font-size:13px;color:#b91c1c;background:rgba(185,28,28,0.08);padding:10px 12px;border-radius:6px;margin-bottom:16px;line-height:1.5;"></p>
     <div style="display:flex;gap:10px;justify-content:flex-end;">
       <button onclick="closeApplyModal()" style="padding:9px 20px;border:1.5px solid rgba(26,39,68,0.2);border-radius:7px;background:none;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:#4b5563;cursor:pointer;">Cancel</button>
       <button id="applyConfirmBtn" onclick="confirmApply()" style="padding:9px 20px;border:none;border-radius:7px;background:#b91c1c;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:#fff;cursor:pointer;">Apply Now</button>
@@ -1557,6 +1558,8 @@
 
   function closeApplyModal() {
     document.getElementById('applyModal').style.display = 'none';
+    document.getElementById('applyErrorMsg').style.display = 'none';
+    document.getElementById('applyErrorMsg').innerHTML = '';
     var btn = document.getElementById('applyConfirmBtn');
     btn.textContent = 'Apply Now';
     btn.disabled = false;
@@ -1579,7 +1582,16 @@
     } catch (e) {
       btn.textContent = 'Apply Now';
       btn.disabled = false;
-      alert('Failed to apply. Please check your credits balance and try again.');
+      var errEl = document.getElementById('applyErrorMsg');
+      var msg = e.message || '';
+      if (msg.includes('Insufficient credits') || msg.includes('402')) {
+        errEl.innerHTML = 'Insufficient credits. <a href="/credits" style="color:#b91c1c;font-weight:700;text-decoration:underline;">Top up now →</a>';
+      } else if (msg.includes('Already applied')) {
+        errEl.textContent = 'You have already applied to this lead.';
+      } else {
+        errEl.textContent = msg || 'Failed to apply. Please try again.';
+      }
+      errEl.style.display = 'block';
     }
   }
 
