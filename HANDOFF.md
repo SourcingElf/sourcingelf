@@ -1,5 +1,5 @@
 # SourcingElf 交接文档
-**最后更新：2026-05-06**
+**最后更新：2026-05-07**
 
 ---
 
@@ -82,28 +82,28 @@ onclick="alert(&quot;Apply feature coming soon&quot;)"
 ### ⚠️ 已做但未在浏览器验证（下次必须先验证）
 - **Buyer Applications** — 脚本已注入，逻辑：加载所有 lead 的申请，绑定 Connect 到真实 API，待验证
 
+### ✅ 2026-05-07 新增完成
+- **Bug 6c（Buyer 导航加 Messages 入口）** — injectBuyerMessagesNav 改为三次重试 [300,800,1500]ms，验证通过 ✅
+- **Bug 6b（Buyer Dashboard 数据卡片等宽等高）** — 删除 metrics-row 幽灵 `<a>` 元素 + inline style，验证通过 ✅
+- **Supplier Apply to Lead 接入真实 API** — 弹窗 + `POST /api/v1/leads/{id}/apply` 全链路打通；修复 bundle renderer 在 DOMContentLoaded 覆盖 `window.applyToLead` 的竞争问题（改为在 `renderLeadsPage()` 之后赋值）✅
+- **Apply 后卡片状态更新** — 申请成功/400 重复申请均调用 `markCardApplied`，按钮变灰色 "Applied ✓"，NEW 标签消失 ✅
+- **Buying Leads 卡片 UI 统一** — `buildLeadCard` 改为与 bundled template 一致的富结构：`detail-item`、日历 SVG、`view-details-btn`、`lead-id` footer、`pill pill-red`，`appliedLeadIds` Set 保持翻页后申请状态 ✅
+- **inject_all.py 停用** — 所有修改直接在 `sourcingelf/frontend/*.html` 进行；`Copy-Item *.html` 已同步所有页面到部署目录 ✅
+
 ### ⚠️ 已知问题（待处理）
 - **Dashboard 分页**："Page 1 of 3" 是假数据
-- **Supplier Buying Leads "Apply to this lead"**：占位弹窗，未接 API
-- **Buyer 控台数据卡片宽度不等**（Bug 6b）
-- **Buyer 导航缺少 Messages 入口**（Bug 6c）
+- **IM Chat** 需完整重写
 
 ### ⏳ 下一步（按优先级）
-1. **验证 Buyer Applications 页面** — 打开页面确认 Console 无报错，测试 Connect 流程
-2. IM Chat 页面（需重写，不依赖原始备份）
-3. Buying Leads Apply 接入真实 API（供应商端）
-4. Dashboard 分页修复
-5. 部署到 Railway
+1. IM Chat 页面重写
+2. Dashboard 分页修复（真实分页逻辑）
 
 ---
 
 ## 关键技术规则
 
-### 修改 inject_all.py 前必须确认真实内容
-用 repr() 看真实字符串，不靠 PowerShell 显示判断：
-```
-python -c "f=open('inject_all.py',encoding='utf-8').read(); i=f.find('目标字符串'); print(repr(f[i-20:i+100]))"
-```
+### inject_all.py 已停用
+不再运行 inject_all.py。所有修改直接编辑 `C:\Projects\sourcingelf\frontend\*.html`，同时同步更新 `C:\Projects\sourcingelf-frontend\*.html`（如有需要）。
 
 ### JWT
 Supabase 用 ES256，PyJWT verify_signature=False，不要改 database.py。
@@ -132,8 +132,9 @@ Supabase 用 ES256，PyJWT verify_signature=False，不要改 database.py。
 - 正确 Supabase Auth UUID: dcc3f777-c350-4286-9436-af2081118958
 - fix_buyer_uuid.py 已执行：删旧记录 → 用新 UUID 重建 → buyer_profiles.user_id 同步更新
 
-## 今天修改的文件（2026-05-06）
+## 修改文件记录
 
+### 2026-05-06
 | 文件 | 改动 |
 |------|------|
 | inject_all.py | 买家登录：document capture 方案 |
@@ -141,3 +142,11 @@ Supabase 用 ES256，PyJWT verify_signature=False，不要改 database.py。
 | inject_all.py | Buyer Create Task：document capture 拦截 + createLead API |
 | inject_all.py | Buyer Applications：加载申请 + Connect API（待验证） |
 | routers/fix_buyer_uuid.py | 修正买家 UUID 不匹配（已执行，可删） |
+
+### 2026-05-07
+| 文件 | 改动 |
+|------|------|
+| frontend/Buyer Portal - Dashboard.html | Bug 6b：删幽灵 `<a>`，加 inline style 等高等宽；Bug 6c：Messages 导航入口 |
+| frontend/Supplier Dashboard - Home.html | Apply to Lead 全链路：弹窗+API+卡片状态；buildLeadCard 富结构；bundle renderer 竞争修复 |
+| frontend/*.html | Copy-Item 从 sourcingelf-frontend 同步所有页面 |
+| requirements.txt | 加 email-validator（修复 Railway 启动崩溃） |
