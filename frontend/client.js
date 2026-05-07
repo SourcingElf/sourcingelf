@@ -307,6 +307,7 @@ const LeadsAPI = {
   },
   // Supplier
   async browseLeads() { return apiFetch("/api/v1/leads/browse"); },
+  async getMyApplications() { return apiFetch("/api/v1/leads/my-applications"); },
   async applyToLead(id, data) {
     return apiFetch(`/api/v1/leads/${id}/apply`, { method: "POST", body: JSON.stringify(data) });
   },

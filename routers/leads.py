@@ -111,6 +111,17 @@ async def browse_active_leads(
     return leads
 
 
+@router.get("/my-applications", response_model=List[str])
+async def get_my_applied_lead_ids(
+    current_user: dict = Depends(require_role("supplier")),
+    db: Client = Depends(get_db),
+):
+    """Return lead_ids the current supplier has already applied to."""
+    profile = _require_supplier_profile(current_user["id"], db)
+    apps = db.table("lead_applications").select("lead_id").eq("supplier_id", profile["id"]).execute()
+    return [str(a["lead_id"]) for a in (apps.data or [])]
+
+
 @router.get("/{lead_id}", response_model=BuyingLeadResponse)
 async def get_lead(
     lead_id: uuid.UUID,
