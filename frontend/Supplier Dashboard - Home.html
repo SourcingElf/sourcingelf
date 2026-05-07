@@ -1024,7 +1024,7 @@
         </div>
       </div>
       <div class="lead-card-footer">
-        <a href="/leads/1/apply" class="apply-link">
+        <a href="javascript:void(0)" class="apply-link" onclick="applyLead(1)">
           Apply to this lead
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </a>
@@ -1106,7 +1106,7 @@
         </div>
       </div>
       <div class="lead-card-footer">
-        <a href="/leads/3/apply" class="apply-link">
+        <a href="javascript:void(0)" class="apply-link" onclick="applyLead(3)">
           Apply to this lead
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </a>
@@ -1147,7 +1147,7 @@
         </div>
       </div>
       <div class="lead-card-footer">
-        <a href="/leads/4/apply" class="apply-link">
+        <a href="javascript:void(0)" class="apply-link" onclick="applyLead(4)">
           Apply to this lead
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </a>
@@ -1188,7 +1188,7 @@
         </div>
       </div>
       <div class="lead-card-footer">
-        <a href="/leads/5/apply" class="apply-link">
+        <a href="javascript:void(0)" class="apply-link" onclick="applyLead(5)">
           Apply to this lead
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </a>
@@ -1261,6 +1261,18 @@
     </div>
   </div>
 </main>
+
+<!-- APPLY CONFIRMATION MODAL -->
+<div id="applyModal" style="display:none;position:fixed;inset:0;z-index:1000;background:rgba(15,26,46,0.55);backdrop-filter:blur(3px);align-items:center;justify-content:center;">
+  <div style="background:#fff;border-radius:14px;padding:32px 28px;max-width:400px;width:calc(100% - 40px);box-shadow:0 24px 60px rgba(26,39,68,0.18);">
+    <h3 style="font-family:'Playfair Display',serif;font-size:20px;color:#1a2744;margin-bottom:10px;">Confirm Application</h3>
+    <p style="font-size:14px;color:#4b5563;line-height:1.6;margin-bottom:24px;">This will use <strong>1 credit</strong> from your balance. The buyer will be notified and can choose to connect with you.</p>
+    <div style="display:flex;gap:10px;justify-content:flex-end;">
+      <button onclick="closeApplyModal()" style="padding:9px 20px;border:1.5px solid rgba(26,39,68,0.2);border-radius:7px;background:none;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:#4b5563;cursor:pointer;">Cancel</button>
+      <button id="applyConfirmBtn" onclick="confirmApply()" style="padding:9px 20px;border:none;border-radius:7px;background:#b91c1c;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:#fff;cursor:pointer;">Apply Now</button>
+    </div>
+  </div>
+</div>
 
 <!-- MOBILE BOTTOM NAV -->
 <nav class="mobile-bottom-nav">
@@ -1516,7 +1528,7 @@
     const imgPlaceholder = `<div class="lead-image-placeholder"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>`;
     const footer = isApplied
       ? `<span class="applied-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>Applied ✓</span>`
-      : `<a href="/leads/${lead.id}/apply" class="apply-link">Apply to this lead ${arrowSvg}</a>`;
+      : `<a href="javascript:void(0)" class="apply-link" onclick="applyLead(${lead.id})">Apply to this lead ${arrowSvg}</a>`;
     return `<div class="lead-card">
   <div class="lead-card-body">
     <div class="lead-info">
@@ -1533,6 +1545,47 @@
   }
 
   ourRenderLeads();
+
+  // ── Apply to lead modal ──
+  var _pendingApplyId = null;
+
+  function applyLead(id) {
+    _pendingApplyId = id;
+    var modal = document.getElementById('applyModal');
+    modal.style.display = 'flex';
+  }
+
+  function closeApplyModal() {
+    document.getElementById('applyModal').style.display = 'none';
+    var btn = document.getElementById('applyConfirmBtn');
+    btn.textContent = 'Apply Now';
+    btn.disabled = false;
+    _pendingApplyId = null;
+  }
+
+  async function confirmApply() {
+    if (!_pendingApplyId) return;
+    var id = _pendingApplyId;
+    var btn = document.getElementById('applyConfirmBtn');
+    btn.textContent = 'Applying…';
+    btn.disabled = true;
+    try {
+      await SourcingElf.LeadsAPI.applyToLead(id);
+      closeApplyModal();
+      var link = document.querySelector('.apply-link[onclick="applyLead(' + id + ')"]');
+      if (link) {
+        link.outerHTML = '<span class="applied-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>Applied ✓</span>';
+      }
+    } catch (e) {
+      btn.textContent = 'Apply Now';
+      btn.disabled = false;
+      alert('Failed to apply. Please check your credits balance and try again.');
+    }
+  }
+
+  document.getElementById('applyModal').addEventListener('click', function(e) {
+    if (e.target === this) closeApplyModal();
+  });
 </script>
 </body>
 </html>
