@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dashboard 鈥?SourcingElf Supplier Portal</title>
+  <title>Dashboard — SourcingElf Supplier Portal</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
@@ -39,7 +39,7 @@
       overflow-x: hidden;
     }
 
-    /* 鈹€鈹€鈹€ TOP NAV 鈹€鈹€鈹€ */
+    /* ─── TOP NAV ─── */
     .top-nav {
       position: fixed;
       top: 0; left: 0; right: 0;
@@ -133,7 +133,7 @@
     }
     .nav-avatar:hover { border-color: var(--navy); }
 
-    /* 鈹€鈹€鈹€ SIDEBAR 鈹€鈹€鈹€ */
+    /* ─── SIDEBAR ─── */
     .sidebar-overlay {
       position: fixed; inset: 0;
       background: rgba(15,26,46,0.5);
@@ -254,7 +254,7 @@
       color: white;
     }
 
-    /* 鈹€鈹€鈹€ MAIN LAYOUT 鈹€鈹€鈹€ */
+    /* ─── MAIN LAYOUT ─── */
     .main-content {
       margin-top: var(--nav-h);
       padding: 28px 4% 60px;
@@ -289,7 +289,7 @@
       margin-top: 4px;
     }
 
-    /* 鈹€鈹€鈹€ METRIC CARDS 鈹€鈹€鈹€ */
+    /* ─── METRIC CARDS ─── */
     .metric-row {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -381,7 +381,7 @@
       color: #b45309;
     }
 
-    /* 鈹€鈹€鈹€ SECTION 鈹€鈹€鈹€ */
+    /* ─── SECTION ─── */
     .section-header {
       display: flex;
       align-items: center;
@@ -428,7 +428,7 @@
     }
     .filter-btn:hover .coming-soon-tip { display: block; }
 
-    /* 鈹€鈹€鈹€ LEAD CARDS 鈹€鈹€鈹€ */
+    /* ─── LEAD CARDS ─── */
     .leads-feed {
       display: flex;
       flex-direction: column;
@@ -576,7 +576,7 @@
       font-weight: 400;
     }
 
-    /* 鈹€鈹€鈹€ PAGINATION 鈹€鈹€鈹€ */
+    /* ─── PAGINATION ─── */
     .pagination {
       display: flex;
       align-items: center;
@@ -610,7 +610,7 @@
       font-weight: 500;
     }
 
-    /* 鈹€鈹€鈹€ ELFA CHAT 鈹€鈹€鈹€ */
+    /* ─── ELFA CHAT ─── */
     .elfa-section {
       background: var(--white);
       border: 1px solid rgba(26,39,68,0.10);
@@ -765,8 +765,8 @@
     }
     .elfa-send-btn:hover { background: var(--navy-deep); }
 
-    /* 鈹€鈹€鈹€ QUICK ACTIONS MODAL (placeholder) 鈹€鈹€鈹€ */
-    /* 鈹€鈹€鈹€ MOBILE BOTTOM NAV 鈹€鈹€鈹€ */
+    /* ─── QUICK ACTIONS MODAL (placeholder) ─── */
+    /* ─── MOBILE BOTTOM NAV ─── */
     .mobile-bottom-nav {
       display: none;
       position: fixed;
@@ -810,7 +810,7 @@
       text-align: center;
     }
 
-    /* 鈹€鈹€鈹€ RESPONSIVE 鈹€鈹€鈹€ */
+    /* ─── RESPONSIVE ─── */
     @media (max-width: 900px) {
       .metric-row { grid-template-columns: 1fr 1fr; }
     }
@@ -823,7 +823,7 @@
       .elfa-messages { height: 240px; }
     }
 
-    /* 鈹€鈹€鈹€ LOAD ANIMATIONS 鈹€鈹€鈹€ */
+    /* ─── LOAD ANIMATIONS ─── */
     .metric-card { animation: fadeUp 0.4s ease both; }
     .metric-card:nth-child(1) { animation-delay: 0.05s; }
     .metric-card:nth-child(2) { animation-delay: 0.10s; }
@@ -870,7 +870,7 @@
       </svg>
       <span class="sidebar-logo-text">SourcingElf</span>
     </div>
-    <button class="sidebar-close" id="sidebarClose" aria-label="Close menu">脳</button>
+    <button class="sidebar-close" id="sidebarClose" aria-label="Close menu">×</button>
   </div>
 
   <nav class="sidebar-nav">
@@ -937,7 +937,7 @@
 
   <div class="page-header">
     <h1 class="page-greeting">Good morning, Tianyi</h1>
-    <p class="page-subtitle">Wednesday, 30 April 2026 路 Here's your sourcing overview</p>
+    <p class="page-subtitle">Wednesday, 30 April 2026 · Here's your sourcing overview</p>
   </div>
 
   <!-- METRIC CARDS -->
@@ -997,7 +997,7 @@
             <span class="pill pill-new">NEW</span>
           </div>
           <div class="lead-company">A** Fashion Ltd</div>
-          <div class="lead-products">Women's knitwear 鈥?Sweaters, cardigans</div>
+          <div class="lead-products">Women's knitwear — Sweaters, cardigans</div>
           <div class="lead-details">
             <span>
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
@@ -1010,7 +1010,7 @@
           </div>
           <div class="lead-expiry amber">
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline;vertical-align:-1px"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            Valid until 6 May 2026 鈥?expires soon
+            Valid until 6 May 2026 — expires soon
           </div>
         </div>
         <div class="lead-image-wrap">
@@ -1041,7 +1041,7 @@
             <span class="pill pill-navy">Retailer</span>
           </div>
           <div class="lead-company">S** Group</div>
-          <div class="lead-products">Men's casualwear 鈥?T-shirts, polos, hoodies</div>
+          <div class="lead-products">Men's casualwear — T-shirts, polos, hoodies</div>
           <div class="lead-details">
             <span>
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
@@ -1067,7 +1067,8 @@
       <div class="lead-card-footer">
         <span class="applied-label">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
-          Applied 鉁?        </span>
+          Applied ✓
+        </span>
         <span class="lead-id">#BL-2026-041</span>
       </div>
     </div>
@@ -1081,7 +1082,7 @@
             <span class="pill pill-navy">Distributor</span>
           </div>
           <div class="lead-company">M** Trading Co</div>
-          <div class="lead-products">Abayas & modest fashion 鈥?Woven fabric, embroidery</div>
+          <div class="lead-products">Abayas & modest fashion — Woven fabric, embroidery</div>
           <div class="lead-details">
             <span>
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
@@ -1122,7 +1123,7 @@
             <span class="pill pill-navy">Brand</span>
           </div>
           <div class="lead-company">C** Apparel Pty</div>
-          <div class="lead-products">Activewear 鈥?Leggings, sports bras, gym tops</div>
+          <div class="lead-products">Activewear — Leggings, sports bras, gym tops</div>
           <div class="lead-details">
             <span>
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
@@ -1163,7 +1164,7 @@
             <span class="pill pill-navy">Retailer</span>
           </div>
           <div class="lead-company">H** Mode KK</div>
-          <div class="lead-products">Women's dresses 鈥?Casual & formal, woven</div>
+          <div class="lead-products">Women's dresses — Casual & formal, woven</div>
           <div class="lead-details">
             <span>
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
@@ -1198,9 +1199,9 @@
 
   <!-- PAGINATION -->
   <div class="pagination">
-    <button class="pag-btn" disabled>鈫?Previous</button>
+    <button class="pag-btn" disabled>← Previous</button>
     <span class="pag-info">Page 1 of 4</span>
-    <button class="pag-btn">Next 鈫?/button>
+    <button class="pag-btn">Next →</button>
   </div>
 
   <!-- ELFA CHAT -->
@@ -1313,7 +1314,7 @@
 </nav>
 
 <script>
-  // 鈹€鈹€ Block bundle's innerHTML writes to leadsFeed before DOM is ready 鈹€鈹€
+  // ── Block bundle's innerHTML writes to leadsFeed before DOM is ready ──
   (function() {
     var _blocked = true;
     var _orig = Object.getOwnPropertyDescriptor(Element.prototype, 'innerHTML');
@@ -1333,7 +1334,7 @@
     trapContainer();
   })();
 
-  // 鈹€鈹€ Sidebar toggle 鈹€鈹€
+  // ── Sidebar toggle ──
   const sidebar = document.getElementById('sidebar');
   const overlay = document.getElementById('sidebarOverlay');
   const hamburger = document.getElementById('hamburgerBtn');
@@ -1354,7 +1355,7 @@
   closeBtn.addEventListener('click', closeSidebar);
   overlay.addEventListener('click', closeSidebar);
 
-  // 鈹€鈹€ Metric card dynamic rendering 鈹€鈹€
+  // ── Metric card dynamic rendering ──
   // In production, these values come from the API.
   // Placeholder logic: show/hide elements based on values.
   const creditBalance = 2;
@@ -1364,7 +1365,7 @@
   const requestPulseDot = document.getElementById('requestPulseDot');
 
   if (creditBalance === 0) {
-    creditsBadge.innerHTML = '<a href="/credits" style="color:inherit;text-decoration:none;font-weight:600;">Top Up Now 鈫?/a>';
+    creditsBadge.innerHTML = '<a href="/credits" style="color:inherit;text-decoration:none;font-weight:600;">Top Up Now →</a>';
     creditsBadge.classList.remove('amber');
     creditsBadge.style.background = 'rgba(220,38,38,0.1)';
     creditsBadge.style.color = '#b91c1c';
@@ -1376,12 +1377,12 @@
     requestPulseDot.style.display = 'none';
   }
 
-  // 鈹€鈹€ Lead card view stub 鈹€鈹€
+  // ── Lead card view stub ──
   function viewLead(id) {
     window.location.href = '/leads/' + id;
   }
 
-  // 鈹€鈹€ Elfa chat 鈹€鈹€
+  // ── Elfa chat ──
   const elfaInput = document.getElementById('elfaInput');
   const elfaSendBtn = document.getElementById('elfaSendBtn');
   const elfaMessages = document.getElementById('elfaMessages');
@@ -1457,7 +1458,7 @@
       "I'll look into that for you right away.",
       "Great question! Let me pull up the relevant information.",
       "Your 3 pending requests are from buyers in Europe and North America. Would you like details on any specific one?",
-      "I can help you with that. Your credit balance is currently 2 鈥?enough for 2 more connections.",
+      "I can help you with that. Your credit balance is currently 2 — enough for 2 more connections.",
     ];
     const reply = responses[Math.floor(Math.random() * responses.length)];
     addMessage(reply, false);
@@ -1481,7 +1482,7 @@
     elfaInput.focus();
   }
 
-  // 鈹€鈹€ Date greeting 鈹€鈹€
+  // ── Date greeting ──
   const hour = new Date().getHours();
   const greetingEl = document.querySelector('.page-greeting');
   if (greetingEl) {
@@ -1493,55 +1494,18 @@
 
   scrollToBottom();
 
-  // 鈹€鈹€ Load real leads from API, bypassing bundle placeholder 鈹€鈹€
-  let _appliedLeadIds = new Set();
-
+  // ── Load real leads from API, bypassing bundle placeholder ──
   async function ourRenderLeads() {
     try {
       if (typeof SourcingElf === 'undefined' || !SourcingElf.LeadsAPI) return;
-
-      // Fetch applied lead IDs first
-      try {
-        const appliedIds = await SourcingElf.LeadsAPI.getMyApplications();
-        _appliedLeadIds = new Set(appliedIds || []);
-      } catch (e) {
-        // If getMyApplications fails, continue without applied status
-      }
-
       const result = await SourcingElf.LeadsAPI.browseLeads();
       const leads = Array.isArray(result) ? result : (result.leads || result.data || []);
       if (!leads.length) return;
-
-      // Enrich leads with applied status and shortId
-      const enrichedLeads = leads.map(lead => ({
-        ...lead,
-        applied: _appliedLeadIds.has(lead.id),
-        shortId: 'BL-' + lead.id.replace(/-/g, '').slice(0, 8).toUpperCase()
-      }));
-
-      const html = enrichedLeads.map(buildLeadCard).join('');
+      const html = leads.map(buildLeadCard).join('');
       const lc = document.getElementById('leadsFeed');
-      if (!lc) return;
-
-      // Block bundle's innerHTML write with Object.defineProperty
-      var _seAllowWrite = false;
-      var orig = Object.getOwnPropertyDescriptor(Element.prototype, 'innerHTML');
-      if (orig) {
-        Object.defineProperty(lc, 'innerHTML', {
-          set: function(v) { if (_seAllowWrite) orig.set.call(this, v); },
-          get: function() { return orig.get.call(this); },
-          configurable: true
-        });
-      }
-
-      // Write our content
-      _seAllowWrite = true;
-      if (orig) {
-        orig.set.call(lc, html);
-      } else {
-        lc.innerHTML = html;
-      }
-      _seAllowWrite = false;
+      lc.__allowOurRender = true;
+      lc.innerHTML = html;
+      lc.__allowOurRender = false;
     } catch (e) {
       // keep static leads on API error
     }
@@ -1564,26 +1528,26 @@
     const arrowSvg = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>`;
     const imgPlaceholder = `<div class="lead-image-placeholder"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>`;
     const footer = isApplied
-      ? `<span class="applied-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>Applied 鉁?/span>`
+      ? `<span class="applied-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>Applied ✓</span>`
       : `<a href="javascript:void(0)" class="apply-link" onclick="applyLead(${lead.id})">Apply to this lead ${arrowSvg}</a>`;
     return `<div class="lead-card">
   <div class="lead-card-body">
     <div class="lead-info">
       <div class="lead-pills">${pills}</div>
-      <div class="lead-company">${lead.company_name || lead.buyer_name || '鈥?}</div>
+      <div class="lead-company">${lead.company_name || lead.buyer_name || '—'}</div>
       <div class="lead-products">${lead.product_description || lead.products || ''}</div>
       <div class="lead-details">${lead.moq ? `<span>${moqSvg}MOQ: ${lead.moq}</span>` : ''}${lead.price_range ? `<span>${priceSvg}${lead.price_range}</span>` : ''}</div>
-      ${expDate ? `<div class="lead-expiry${soon ? ' amber' : ''}">Valid until ${expDate}${soon ? ' 鈥?expires soon' : ''}</div>` : ''}
+      ${expDate ? `<div class="lead-expiry${soon ? ' amber' : ''}">Valid until ${expDate}${soon ? ' — expires soon' : ''}</div>` : ''}
     </div>
     <div class="lead-image-wrap">${imgPlaceholder}<button class="view-btn" onclick="viewLead(${lead.id})">View Details</button></div>
   </div>
-  <div class="lead-card-footer">${footer}<span class="lead-id">#${lead.shortId || lead.lead_ref || lead.id}</span></div>
+  <div class="lead-card-footer">${footer}<span class="lead-id">#${lead.lead_ref || lead.id}</span></div>
 </div>`;
   }
 
   ourRenderLeads();
 
-  // 鈹€鈹€ Apply to lead modal 鈹€鈹€
+  // ── Apply to lead modal ──
   var _pendingApplyId = null;
 
   function applyLead(id) {
@@ -1606,14 +1570,14 @@
     if (!_pendingApplyId) return;
     var id = _pendingApplyId;
     var btn = document.getElementById('applyConfirmBtn');
-    btn.textContent = 'Applying鈥?;
+    btn.textContent = 'Applying…';
     btn.disabled = true;
     try {
       await SourcingElf.LeadsAPI.applyToLead(id);
       closeApplyModal();
       var link = document.querySelector('.apply-link[onclick="applyLead(' + id + ')"]');
       if (link) {
-        link.outerHTML = '<span class="applied-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>Applied 鉁?/span>';
+        link.outerHTML = '<span class="applied-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>Applied ✓</span>';
       }
     } catch (e) {
       btn.textContent = 'Apply Now';
@@ -1621,7 +1585,7 @@
       var errEl = document.getElementById('applyErrorMsg');
       var msg = e.message || '';
       if (msg.includes('Insufficient credits') || msg.includes('402')) {
-        errEl.innerHTML = 'Insufficient credits. <a href="/credits" style="color:#b91c1c;font-weight:700;text-decoration:underline;">Top up now 鈫?/a>';
+        errEl.innerHTML = 'Insufficient credits. <a href="/credits" style="color:#b91c1c;font-weight:700;text-decoration:underline;">Top up now →</a>';
       } else if (msg.includes('Already applied')) {
         errEl.textContent = 'You have already applied to this lead.';
       } else {
@@ -1637,4 +1601,3 @@
 </script>
 </body>
 </html>
-
