@@ -126,6 +126,22 @@ for _alias, _target in _DEAD_LINK_ALIASES.items():
     )
 
 
+# Stripe Checkout return URLs — direct page routes (no redirect) so the
+# query string from Stripe (e.g. ?session_id=cs_test_xxx) is preserved.
+_EXTRA_PAGES = {
+    "/credits/success":   "Supplier Credits Success.html",
+    "/credits/cancelled": "Supplier Credits Cancelled.html",
+}
+
+for _path, _file in _EXTRA_PAGES.items():
+    app.add_api_route(
+        _path,
+        _make_page_handler(_file),
+        methods=["GET"],
+        include_in_schema=False,
+    )
+
+
 # Serve remaining frontend assets (CSS, JS, images) — mounted last so API
 # routes + explicit page routes always take priority.
 if os.path.isdir(_frontend_dir):
