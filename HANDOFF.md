@@ -91,10 +91,10 @@ F12 Console 必须无红错才算可以开始
 | # | 页面 | 验证状态 | 备注 |
 |---|------|---------|------|
 | 1 | Supplier Landing（登录） | ✅ | 注册 + 登录 |
-| 2 | Supplier Dashboard - Home | ✅ | Buying Leads 接真实 API；Apply 流程含余额预检查；公司名打码 |
+| 2 | Supplier Dashboard - Home | ✅ | Buying Leads 接真实 API；Apply 流程含余额预检查；公司名**后端**打码（K4 done） |
 | 3 | Supplier Dashboard - Requests | ✅ | 接真实 API；loading 占位防闪现；View Profile + Connect Now 流程 |
 | 4 | Supplier Dashboard - Connected | ✅ (bundle 占位) | 页面能进，View Profile / Chat 按钮待 D 阶段接 API（K2） |
-| 5 | Supplier Dashboard - Credits | ✅ (bundle 占位) | 页面能进，余额/交易/Top Up 待 D1-D2 接 API（K3） |
+| 5 | Supplier Dashboard - Credits | ✅ D1 完成 | 真实余额 + 交易历史；Top Up 跳 Stripe Checkout（沙盒）；K3 done |
 | 6 | Buyer Portal - Register Login | ✅ | |
 | 7 | Buyer Portal - Dashboard | ✅ | |
 | 8 | Buyer Portal - Create Task | ✅ | |
@@ -118,17 +118,17 @@ D0 阻塞问题全部清除，**可以进 D1**。
 
 ---
 
-## Known Backlog（待客户测试细化，D1+ 处理）
-
-D0 验证后用户提出但未当场修的事项（统一等上线后客户测试再调）：
+## Known Backlog（待客户测试细化，D2+ 处理）
 
 | # | 项 | 触发条件 | 计划处理时机 |
 |---|----|---------|----|
-| K1 | Buying Lead ID 改 `BL-YYYY-NNN` 格式（如 #BL-2026-047） | 设计稿要求；当前是 `BL-XXXXXXXX` 8 位 hex | D1：需要 `buying_leads` 表加 `sequence_number` 列 + DB migration |
+| K1 | Buying Lead ID 改 `BL-YYYY-NNN` 格式（如 #BL-2026-047） | 设计稿要求；当前是 `BL-XXXXXXXX` 8 位 hex | 需要 `buying_leads` 表加 `sequence_number` 列 + DB migration，D2 单独议 |
 | K2 | Supplier Connected 页面的 View Profile / Chat 按钮接 API | 当前是 bundle 占位，按钮无响应 | D5-D7 (IM Chat 重写时一起做 Chat 按钮) + D 阶段 (View Profile) |
-| K3 | Credits 页面接真实 API（余额、交易历史、Top Up 按钮） | 当前是 bundle 占位 | D1-D2：Supplier Credits 全链路 |
-| K4 | 公司名打码移到后端（前端打码 F12 仍看到完整名） | 隐私要求 | D1：后端 buying_leads /browse 直接返回打码后的 company_name |
+| ~~K3~~ | ~~Credits 页面接真实 API~~ | **D1 已完成** (commits `5d1234`-`9d8765`) | ✅ |
+| ~~K4~~ | ~~公司名打码移到后端~~ | **D1 已完成** (`_mask_company` in `routers/leads.py`) | ✅ |
 | K5 | 17 个 mojibake 损坏的 HTML 文件批量恢复 | PowerShell 误读 UTF-8 留下的字符级损坏 | 等到对应 D 阶段重写整页时一起处理（不再批量） |
+| K6 | Stripe webhook 接入（支付完自动同步余额） | Q2 决策暂跳过，D1 用前端 success 页面跳回 + 自动 refresh 替代 | D 阶段稳定后单独议 |
+| K7 | Top Up modal 内 mock 卡片输入框 | 视觉装饰，实际跳 Stripe Hosted Checkout 填卡 | 客户测试后看是否需要去除装饰避免误导 |
 
 ---
 

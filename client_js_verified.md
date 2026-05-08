@@ -29,7 +29,10 @@
 | `LeadsAPI.getMyApplications` | Supplier Dashboard - Home (D0-2026-05-09 verified) |
 | `LeadsAPI.createLead` | Buyer Portal - Create Task |
 | `LeadsAPI.getMyLeads` | Buyer Portal - Dashboard |
-| `CreditsAPI.getMyCredits` | Supplier Dashboard - Home (apply pre-check), Requests |
+| `CreditsAPI.getMyCredits` | Supplier Dashboard - Home (apply pre-check), Requests, **Credits (D1)** |
+| `CreditsAPI.getMyTransactions` | Supplier Dashboard - Credits (D1) |
+| `CreditsAPI.createCheckout` | Supplier Dashboard - Credits — Top Up button (D1, via redirectToCheckout) |
+| `CreditsAPI.redirectToCheckout` | Supplier Dashboard - Credits — Top Up Stripe flow (D1) |
 | `MessagesAPI.getMyConnections` | Buyer Portal - Dashboard |
 | `SupplierAPI.getConnectedBuyers` | Supplier Dashboard - Connected (bundle 占位调用，D 阶段重写) |
 | `SupplierAPI.getMyBuyerRequests` | Supplier Dashboard - Requests |
@@ -46,10 +49,9 @@
 | `RouteGuard.requireBuyer` | Buyer Portal - Dashboard, Create Task |
 | `CONFIG.SUPPLIER_LOGIN_PAGE / BUYER_LOGIN_PAGE` | Supplier Landing, Buyer Register |
 
-⚠️ **已知未真接 API**（D1-D2 处理）：
-- Supplier Dashboard - Credits：余额 / 交易历史 / Top Up 都是 bundle 占位
-- Supplier Dashboard - Connected：connected buyers 列表 / View Profile / Chat 都是 bundle 占位
-- Home Dashboard 顶部 3 个数据卡片（New Buyer Requests / Connected Buyers / Credits Balance）：可能仍是 bundle 占位（D1 验证）
+⚠️ **已知未真接 API**（后续处理）：
+- Supplier Dashboard - Connected：connected buyers 列表 / View Profile / Chat 都是 bundle 占位（K2，D5-D7）
+- Home Dashboard 顶部 3 个数据卡片（New Buyer Requests / Connected Buyers / Credits Balance）：可能仍是 bundle 占位（D2 验证）
 
 ---
 
@@ -87,12 +89,9 @@
 - `getLead`, `updateLead`, `cancelLead`
 - `getLeadApplications`, `connectWithSupplier`
 
-### CreditsAPI（剩 4 — D1-D2 验证）
+### CreditsAPI（剩 1）
 
-- `getMyTransactions`
-- `getMyPayments`
-- `createCheckout`
-- `redirectToCheckout`
+- `getMyPayments`（D2 时若需要单独看支付记录会接）
 
 ### MessagesAPI（剩 3 — D5-D7 验证）
 
@@ -152,11 +151,11 @@
 | BuyerAPI | 11 | 0 | 11 | 0% |
 | VideoAPI | 5 | 0 | 5 | 0% |
 | LeadsAPI | 10 | 5 | 5 | 50% |
-| CreditsAPI | 5 | 1 | 4 | 20% |
+| CreditsAPI | 5 | 4 | 1 | 80% |
 | MessagesAPI | 4 | 1 | 3 | 25% |
 | AdminAPI | 13 | 0 | 13 | 0% |
 | TokenManager | 8 | 0 | 8 | 0% |
 | RouteGuard | 5 | 2 | 3 | 40% |
 | FormHelper | 3 | 0 | 3 | 0% |
 | NotificationHelper | 4 | 3 | 1 | 75% |
-| **总计** | **91** | **16** | **75** | **18%** |
+| **总计** | **91** | **19** | **72** | **21%** |
