@@ -437,6 +437,11 @@ document.addEventListener('DOMContentLoaded', async function() {
 
   await new Promise(r => setTimeout(r, 300));
 
+  // Replace bundle placeholder cards with a loading state before the API
+  // resolves, so the user doesn't see fake cards swapped for real ones.
+  const _list = document.getElementById('requestsList');
+  if (_list) _list.innerHTML = '<div style="padding:60px 20px;text-align:center;color:#9ca3af;font-size:14px;">Loading buyer requests&hellip;</div>';
+
   try {
     const [requests, credits] = await Promise.all([
       SE.SupplierAPI.getMyBuyerRequests('pending'),
@@ -447,6 +452,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     renderList();
   } catch(e) {
     console.error('Requests load error:', e);
+    if (_list) _list.innerHTML = '<div style="padding:60px 20px;text-align:center;color:#dc2626;font-size:14px;">Failed to load buyer requests. Please refresh.</div>';
     SE.NotificationHelper.error('Failed to load buyer requests.');
   }
 })();
