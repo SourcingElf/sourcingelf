@@ -83,7 +83,14 @@ async function apiFetch(path, options = {}) {
   const data = await res.json().catch(() => ({}));
 
   if (!res.ok) {
-    throw new Error(data.detail || `HTTP ${res.status}`);
+    // FastAPI 422 returns detail as array of {loc, msg, type}; other errors return string
+    let detail = data.detail;
+    if (Array.isArray(detail)) {
+      detail = detail.map(d => (d && d.msg) ? d.msg : JSON.stringify(d)).join('; ');
+    } else if (detail && typeof detail === 'object') {
+      detail = JSON.stringify(detail);
+    }
+    throw new Error(detail || `HTTP ${res.status}`);
   }
 
   return data;
