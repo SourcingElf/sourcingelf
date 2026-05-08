@@ -1055,6 +1055,20 @@
   </div>
 </main>
 
+<!-- LEAD DETAIL MODAL (Q3 decision: modal, not standalone page) -->
+<div id="leadDetailModal" onclick="if(event.target===this)closeLeadDetail()" style="display:none;position:fixed;inset:0;z-index:1000;background:rgba(15,26,46,0.55);backdrop-filter:blur(3px);align-items:center;justify-content:center;padding:20px;">
+  <div style="background:#fff;border-radius:14px;max-width:560px;width:100%;max-height:calc(100vh - 40px);box-shadow:0 24px 60px rgba(26,39,68,0.18);display:flex;flex-direction:column;">
+    <div style="padding:24px 28px 16px;border-bottom:1px solid rgba(26,39,68,0.06);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
+      <h3 style="font-family:'Playfair Display',serif;font-size:20px;font-weight:600;color:#1a2744;">Buying Lead</h3>
+      <button onclick="closeLeadDetail()" aria-label="Close" style="background:none;border:none;cursor:pointer;color:#9ca3af;padding:4px;border-radius:4px;line-height:0;">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div id="leadDetailBody" style="padding:20px 28px;overflow-y:auto;flex:1;"></div>
+    <div id="leadDetailFooter" style="padding:16px 28px 20px;border-top:1px solid rgba(26,39,68,0.06);display:flex;gap:10px;justify-content:flex-end;flex-shrink:0;"></div>
+  </div>
+</div>
+
 <!-- APPLY CONFIRMATION MODAL -->
 <div id="applyModal" style="display:none;position:fixed;inset:0;z-index:1000;background:rgba(15,26,46,0.55);backdrop-filter:blur(3px);align-items:center;justify-content:center;">
   <div style="background:#fff;border-radius:14px;padding:32px 28px;max-width:400px;width:calc(100% - 40px);box-shadow:0 24px 60px rgba(26,39,68,0.18);">
@@ -1170,9 +1184,69 @@
     requestPulseDot.style.display = 'none';
   }
 
-  // ── Lead card view stub ──
+  // ── Lead detail modal (Q3 decision: modal, not standalone page) ──
   function viewLead(id) {
-    window.location.href = '/leads/' + id;
+    const lead = _leadsCache.find(l => l.id === id);
+    if (!lead) return;
+
+    const modal = document.getElementById('leadDetailModal');
+    const body = document.getElementById('leadDetailBody');
+    const footer = document.getElementById('leadDetailFooter');
+
+    const isNew = lead.created_at ? ((Date.now() - new Date(lead.created_at).getTime()) < 7 * 864e5) : false;
+    const expDate = lead.expires_at
+      ? new Date(lead.expires_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
+      : '';
+    const soon = lead.expires_at && (new Date(lead.expires_at) - Date.now() < 7 * 864e5);
+
+    const pillsHtml = [
+      lead.buyer_country ? `<span class="pill pill-blue">${lead.buyer_country}</span>` : '',
+      lead.buyer_type ? `<span class="pill pill-navy">${lead.buyer_type}</span>` : '',
+      isNew ? '<span class="pill pill-new">NEW</span>' : '',
+    ].join('');
+
+    const itemsHtml = (lead.items || []).map((it, idx) => {
+      const refUrls = (it.reference_urls || []).map(u =>
+        `<a href="${u}" target="_blank" rel="noopener" style="color:#1a2744;text-decoration:underline;font-size:12px;word-break:break-all;">${u}</a>`
+      ).join('<br>');
+      const moq = it.quantity ? `${it.quantity} pcs` : '';
+      return `<div style="padding:14px 0;${idx > 0 ? 'border-top:1px solid rgba(26,39,68,0.08);' : ''}">
+        <div style="font-size:15px;font-weight:600;color:#1a2744;margin-bottom:6px;">${it.product_name || '—'}</div>
+        ${it.description ? `<div style="font-size:13px;color:#4b5563;line-height:1.5;margin-bottom:8px;">${it.description}</div>` : ''}
+        <div style="display:flex;flex-wrap:wrap;gap:14px;font-size:12px;color:#6b7280;">
+          ${moq ? `<span><strong style="color:#1a2744;">MOQ:</strong> ${moq}</span>` : ''}
+          ${it.price_range ? `<span><strong style="color:#1a2744;">Price:</strong> ${it.price_range}</span>` : ''}
+          ${it.oem_odm ? `<span><strong style="color:#1a2744;">OEM/ODM:</strong> ${it.oem_odm}</span>` : ''}
+        </div>
+        ${refUrls ? `<div style="margin-top:8px;font-size:12px;color:#6b7280;"><strong style="color:#1a2744;">Reference:</strong><br>${refUrls}</div>` : ''}
+      </div>`;
+    }).join('');
+
+    body.innerHTML = `
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;">${pillsHtml}</div>
+      <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:600;color:#1a2744;margin-bottom:6px;">${lead.buyer_company || lead.title || ''}</div>
+      <div style="font-size:13px;color:#9ca3af;margin-bottom:18px;">${lead.title || ''}</div>
+      ${itemsHtml ? `<h4 style="font-size:11px;font-weight:600;color:#9ca3af;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;">Products</h4><div style="margin-bottom:18px;">${itemsHtml}</div>` : ''}
+      ${lead.notes ? `<h4 style="font-size:11px;font-weight:600;color:#9ca3af;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;">Notes</h4><div style="font-size:13px;color:#4b5563;line-height:1.6;margin-bottom:18px;white-space:pre-wrap;">${lead.notes}</div>` : ''}
+      ${expDate ? `<div style="font-size:13px;color:${soon ? '#d97706' : '#6b7280'};margin-bottom:6px;${soon ? 'font-weight:600;' : ''}">Valid until ${expDate}${soon ? ' — expires soon' : ''}</div>` : ''}
+      <div style="font-size:12px;color:#9ca3af;">#${lead.shortId || lead.id}</div>
+    `;
+
+    const arrowSvg = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>';
+    const applyBtn = lead.applied
+      ? `<span style="display:inline-flex;align-items:center;gap:6px;color:#16a34a;font-size:13px;font-weight:600;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>Applied</span>`
+      : `<button onclick="closeLeadDetail();applyLead(&quot;${lead.id}&quot;)" style="padding:9px 20px;border:none;border-radius:7px;background:#b91c1c;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:#fff;cursor:pointer;display:inline-flex;align-items:center;gap:6px;">Apply to this lead ${arrowSvg}</button>`;
+    footer.innerHTML = `
+      <button onclick="closeLeadDetail()" style="padding:9px 20px;border:1.5px solid rgba(26,39,68,0.2);border-radius:7px;background:none;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:#4b5563;cursor:pointer;">Close</button>
+      ${applyBtn}
+    `;
+
+    modal.style.display = 'flex';
+  }
+
+  function closeLeadDetail() {
+    const modal = document.getElementById('leadDetailModal');
+    if (modal) modal.style.display = 'none';
   }
 
   // ── Elfa chat ──
@@ -1288,6 +1362,7 @@
   scrollToBottom();
 
   // ── Load real leads from API, bypassing bundle placeholder ──
+  let _leadsCache = [];  // viewLead() reads from this cache
   async function ourRenderLeads() {
     const lc = document.getElementById('leadsFeed');
     try {
@@ -1309,6 +1384,9 @@
         applied: appliedSet.has(l.id),
         shortId: l.id ? ('BL-' + l.id.replace(/-/g, '').slice(0, 8).toUpperCase()) : ''
       }));
+
+      // Cache enriched leads so viewLead() can read full data without re-fetching
+      _leadsCache = enriched;
 
       const html = enriched.length
         ? enriched.map(buildLeadCard).join('')
