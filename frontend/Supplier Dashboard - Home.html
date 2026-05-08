@@ -1325,7 +1325,8 @@
 
   function buildLeadCard(lead) {
     const isApplied = lead.applied || lead.has_applied;
-    const isNew = lead.is_new;
+    // NEW = lead created within the last 7 days
+    const isNew = lead.created_at ? ((Date.now() - new Date(lead.created_at).getTime()) < 7 * 864e5) : false;
     const item = (lead.items && lead.items[0]) || {};
     const productName = item.product_name || '';
     const moq = item.quantity ? (item.quantity + ' pcs') : '';

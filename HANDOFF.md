@@ -129,6 +129,7 @@ D0 阻塞问题全部清除，**可以进 D1**。
 | K5 | 17 个 mojibake 损坏的 HTML 文件批量恢复 | PowerShell 误读 UTF-8 留下的字符级损坏 | 等到对应 D 阶段重写整页时一起处理（不再批量） |
 | K6 | Stripe webhook 接入（支付完自动同步余额） | Q2 决策暂跳过，D1 用前端 success 页面跳回 + 自动 refresh 替代 | D 阶段稳定后单独议 |
 | K7 | Top Up modal 内 mock 卡片输入框 | 视觉装饰，实际跳 Stripe Hosted Checkout 填卡 | 客户测试后看是否需要去除装饰避免误导 |
+| K8 | Stripe 支付页面布局自定义（左金额右表单不对齐） | Stripe Hosted Checkout 全球默认布局，无法用前端 CSS 修改 | 如需完全控制 UI，需迁移到 Stripe Elements (Stripe.js SDK 嵌入到 Top Up modal) — 工作量大，看客户反馈再决定 |
 
 ---
 
