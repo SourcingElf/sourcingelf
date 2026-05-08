@@ -28,6 +28,20 @@ def _require_supplier_profile(user_id: str, db: Client) -> dict:
     return result.data
 
 
+def _mask_company(name: str) -> str:
+    """Mask buyer company name until supplier connects.
+    "Test Buyer Co" -> "T** Buyer Co". Privacy: full name is sent only after
+    a paid connection is created (via /leads/{id}/applications/{app_id}/connect).
+    """
+    if not name:
+        return ""
+    parts = str(name).split()
+    if not parts or len(parts[0]) <= 1:
+        return name
+    parts[0] = parts[0][0] + "**"
+    return " ".join(parts)
+
+
 def _get_lead_with_items(lead_id: str, db: Client) -> dict:
     result = db.table("buying_leads").select("*").eq("id", lead_id).maybe_single().execute()
     if not result.data:
@@ -103,7 +117,7 @@ async def browse_active_leads(
         try:
             profile = db.table("buyer_profiles").select("company_name,country,positioning,business_nature").eq("id", lead["buyer_id"]).maybe_single().execute()
             if profile.data:
-                lead["buyer_company"] = profile.data.get("company_name")
+                lead["buyer_company"] = _mask_company(profile.data.get("company_name"))
                 lead["buyer_country"] = profile.data.get("country")
                 lead["buyer_positioning"] = profile.data.get("positioning") or []
                 lead["buyer_type"] = profile.data.get("business_nature")
