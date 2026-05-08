@@ -131,6 +131,7 @@ D0 阻塞问题全部清除，**可以进 D1**。
 | K7 | Top Up modal 内 mock 卡片输入框 | 视觉装饰，实际跳 Stripe Hosted Checkout 填卡 | 客户测试后看是否需要去除装饰避免误导 |
 | K8 | Stripe 支付页面布局自定义（左金额右表单不对齐） | Stripe Hosted Checkout 全球默认布局，无法用前端 CSS 修改 | 如需完全控制 UI，需迁移到 Stripe Elements (Stripe.js SDK 嵌入到 Top Up modal) — 工作量大，看客户反馈再决定 |
 | K9 | View Details modal 字段太少 | 当前只显示 buyer/items/notes/valid-until/shortId | 等用户列要补的字段（如 buyer 历史订单数、平台验证状态、定位标签、关键产品照片等）后再扩展 |
+| K10 | D1 Stripe 沙盒端到端付款验收 | 用户决策延后：上线前跟 K6 webhook 一起统一测试 | 上线前合并验收（含真实卡 4242 → 余额入账确认） |
 
 ---
 
