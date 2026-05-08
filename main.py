@@ -1,6 +1,7 @@
 import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 
 from config import settings
@@ -36,7 +37,82 @@ def health_check():
     return {"status": "ok", "env": settings.app_env}
 
 
-# Serve frontend static files — must be mounted last so API routes take priority
 _frontend_dir = os.path.join(os.path.dirname(__file__), "frontend")
+
+# Explicit per-page routes — registered BEFORE the StaticFiles mount so URL
+# matching is deterministic for every page (no edge cases with encoded spaces).
+_FRONTEND_PAGES = [
+    "Admin Backend.html",
+    "Buyer Portal - Applications.html",
+    "Buyer Portal - Connected.html",
+    "Buyer Portal - Create Task.html",
+    "Buyer Portal - Dashboard.html",
+    "Buyer Portal - Featured Suppliers.html",
+    "Buyer Portal - Hub.html",
+    "Buyer Portal - Landing.html",
+    "Buyer Portal - Lead Form.html",
+    "Buyer Portal - Profile.html",
+    "Buyer Portal - Register Login.html",
+    "Buyer Portal - Requests.html",
+    "Buyer Portal - Tasks.html",
+    "IM Chat.html",
+    "SourcingElf Homepage.html",
+    "Supplier Dashboard - Connected.html",
+    "Supplier Dashboard - Credits.html",
+    "Supplier Dashboard - Home.html",
+    "Supplier Dashboard - Requests.html",
+    "Supplier Dashboard - Video Submit.html",
+    "Supplier Dashboard - Video.html",
+    "Supplier Landing.html",
+]
+
+
+def _make_page_handler(filename: str):
+    full_path = os.path.join(_frontend_dir, filename)
+
+    def handler():
+        return FileResponse(full_path, media_type="text/html")
+
+    handler.__name__ = "page_" + filename.replace(" ", "_").replace("-", "_").replace(".html", "")
+    return handler
+
+
+for _page in _FRONTEND_PAGES:
+    app.add_api_route(
+        f"/{_page}",
+        _make_page_handler(_page),
+        methods=["GET"],
+        include_in_schema=False,
+    )
+
+
+# Dead-link aliases — old inline templates link to short lowercase URLs that
+# never matched a real file. Redirect them to the actual page so existing
+# buttons keep working while the source HTML gets cleaned up.
+_DEAD_LINK_ALIASES = {
+    "credits.html": "Supplier Dashboard - Credits.html",
+    "video.html":   "Supplier Dashboard - Video.html",
+}
+
+
+def _make_alias_handler(target: str):
+    def handler():
+        return RedirectResponse(url=f"/{target}", status_code=302)
+
+    handler.__name__ = "alias_" + target.replace(" ", "_").replace("-", "_").replace(".html", "")
+    return handler
+
+
+for _alias, _target in _DEAD_LINK_ALIASES.items():
+    app.add_api_route(
+        f"/{_alias}",
+        _make_alias_handler(_target),
+        methods=["GET"],
+        include_in_schema=False,
+    )
+
+
+# Serve remaining frontend assets (CSS, JS, images) — mounted last so API
+# routes + explicit page routes always take priority.
 if os.path.isdir(_frontend_dir):
     app.mount("/", StaticFiles(directory=_frontend_dir, html=True), name="frontend")
