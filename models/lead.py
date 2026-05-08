@@ -77,6 +77,7 @@ class BuyingLeadResponse(BaseModel):
     buyer_company: Optional[str] = None
     buyer_country: Optional[str] = None
     buyer_positioning: Optional[List[str]] = None
+    buyer_type: Optional[str] = None
 
     model_config = {"from_attributes": True}
 

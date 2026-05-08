@@ -101,11 +101,12 @@ async def browse_active_leads(
     for lead in leads:
         lead["items"] = db.table("buying_lead_items").select("*").eq("lead_id", lead["id"]).order("sort_order").execute().data
         try:
-            profile = db.table("buyer_profiles").select("company_name,country,positioning").eq("id", lead["buyer_id"]).maybe_single().execute()
+            profile = db.table("buyer_profiles").select("company_name,country,positioning,business_nature").eq("id", lead["buyer_id"]).maybe_single().execute()
             if profile.data:
                 lead["buyer_company"] = profile.data.get("company_name")
                 lead["buyer_country"] = profile.data.get("country")
                 lead["buyer_positioning"] = profile.data.get("positioning") or []
+                lead["buyer_type"] = profile.data.get("business_nature")
         except Exception:
             pass
     return leads
