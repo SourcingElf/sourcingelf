@@ -1,163 +1,165 @@
 # SourcingElf 交接文档
-**最后更新：2026-05-07**
+
+**最后更新：2026-05-08（Day 0 基建完成）**
+**当前阶段：Direct HTML 14 天周期，Day 0 已完成**
+
+---
+
+## 项目背景
+
+SourcingElf 是 B2B SaaS 平台，连接亚洲服装供应商和欧美买家。
+
+- **后端**：FastAPI + Supabase + Stripe，部署在 Railway
+- **前端**：22 个 HTML 文件（手写 Direct HTML）
+- **生产 URL**：https://web-production-1875f.up.railway.app
+- **GitHub repo**：SourcingElf/sourcingelf
+- **角色**：用户是非技术创办人，Claude Code 担任 CTO 角色
 
 ---
 
 ## 启动步骤（每次开发前）
 
 ```
-窗口1：cd C:\Projects\sourcingelf → uvicorn main:app --reload
-窗口2：cd C:\Projects\sourcingelf-frontend → python -m http.server 3000
-浏览器验证：http://localhost:3000/Supplier%20Dashboard%20-%20Home.html
+窗口1：cd C:\Projects\sourcingelf  → uvicorn main:app --reload
+窗口2：cd C:\Projects\sourcingelf  → python -m http.server 3000 --directory frontend
+浏览器：http://localhost:3000/Supplier%20Dashboard%20-%20Home.html
+F12 Console 必须无红错才算可以开始
 ```
 
----
+**测试账号**：
 
-## 给新对话的第一件事
-
-**不要假设上次收工时一切正常。**
-每次开始工作，必须先打开浏览器，打开 F12 Console，确认没有红色报错，才能开始。
-上次对话就是因为没有做这步，带着错误收工，浪费了今天大量时间。
-
----
-
-## 最容易犯的错误（必须牢记）
-
-### 引号嵌套错误
-在 JavaScript 的 onclick 属性里，外层是双引号，里面绝对不能用单引号。
-
-```
-❌ 错误（会产生 SyntaxError: Unexpected identifier）：
-onclick="window.location.href='IM Chat.html'"
-onclick="alert('Apply feature coming soon')"
-
-✅ 正确（用 &quot; 代替单引号）：
-onclick="window.location.href=&quot;IM Chat.html&quot;"
-onclick="alert(&quot;Apply feature coming soon&quot;)"
-```
-
-**每次写任何包含 onclick 的代码，写完必须立即检查引号，再给出文件。**
-
-### 买家端原始 HTML 是打包格式
-- 无法用 PowerShell debug 脚本读取元素结构
-- 必须用浏览器 F12 → 元素标签查看渲染后的真实结构
-- 拦截链接必须用 document capture（见下方买家登录说明）
-
----
-
-## 测试账号
-
-| Email | Password | Role |
-|-------|----------|------|
+| 邮箱 | 密码 | 角色 |
+|------|------|------|
 | test.supplier@sourcingelf.com | Test1234! | supplier |
 | test.buyer@sourcingelf.com | Test1234! | buyer |
 
 ---
 
-## 测试数据（Supabase 已插入）
+## 技术方案：Direct HTML（已确定，不再讨论）
 
-| 表 | ID | 内容 |
-|---|------|------|
-| users（买家） | **dcc3f777-c350-4286-9436-af2081118958** | test.buyer@sourcingelf.com（UUID 已修正） |
-| buyer_profiles | 8ea03203-0c55-44b6-acac-6f7085106aac | Test Buyer Co / US / Brand |
-| buying_leads | 30837a3c-8b92-40bd-a817-b3334d06c599 | Women's Knitwear lead（+ 用户今天新增了几条） |
-| buying_lead_items | （自动生成） | 500 pcs / Mid-range / Premium |
-| buyer_requests | Sarah Johnson | Anthropologie Group / US / Brand |
-| supplier_profiles | f37d3e21-3ed8-4eed-a9b9-017746239e75 | 供应商测试账号 |
+**决策依据**：
 
----
+- Direct HTML 把握 75%，Next.js 把握仅 55%
+- `Supplier Dashboard - Home.html`（49KB）已验证此模式可行
+- 后端 70 个 API 路由完整不动
+- `client.js`（547 行）drop-in 复用，全局暴露 `window.SourcingElf`
 
-## 前端对接进度（2026-05-06）
+**架构**：
 
-### ✅ 已完成并在浏览器验证通过
-- 22/22 页面注入 client.js
-- 供应商登录流程
-- Supplier Dashboard — 三个数据卡片（真实数据）+ Buying Leads 卡片
-- Supplier Requests — View Profile 弹窗 + 买家信息遮码 + Connect Now
-- Supplier Connected — API 正常
-- **买家登录** — document capture phase 方案，验证通过 ✅
-- **买家 Dashboard** — 接入真实 API（connections + active leads 计数）✅
-- **买家 Create Task** — document capture 拦截 tasks.html 链接，表单提交接入 createLead API ✅
-
-### ⚠️ 已做但未在浏览器验证（下次必须先验证）
-- **Buyer Applications** — 脚本已注入，逻辑：加载所有 lead 的申请，绑定 Connect 到真实 API，待验证
-
-### ✅ 2026-05-07 新增完成
-- **Bug 6c（Buyer 导航加 Messages 入口）** — injectBuyerMessagesNav 改为三次重试 [300,800,1500]ms，验证通过 ✅
-- **Bug 6b（Buyer Dashboard 数据卡片等宽等高）** — 删除 metrics-row 幽灵 `<a>` 元素 + inline style，验证通过 ✅
-- **Supplier Apply to Lead 接入真实 API** — 弹窗 + `POST /api/v1/leads/{id}/apply` 全链路打通；修复 bundle renderer 在 DOMContentLoaded 覆盖 `window.applyToLead` 的竞争问题（改为在 `renderLeadsPage()` 之后赋值）✅
-- **Apply 后卡片状态更新** — 申请成功/400 重复申请均调用 `markCardApplied`，按钮变灰色 "Applied ✓"，NEW 标签消失 ✅
-- **Buying Leads 卡片 UI 统一** — `buildLeadCard` 改为与 bundled template 一致的富结构：`detail-item`、日历 SVG、`view-details-btn`、`lead-id` footer、`pill pill-red`，`appliedLeadIds` Set 保持翻页后申请状态 ✅
-- **inject_all.py 停用** — 所有修改直接在 `sourcingelf/frontend/*.html` 进行；`Copy-Item *.html` 已同步所有页面到部署目录 ✅
-- **Buying Leads 闪变修复** — `Object.defineProperty` 拦截 `#leadsFeed` 的 `innerHTML` setter；IIFE 在 `<script>` 顶部同步执行，bundle 的假数据写入被静默丢弃；`_ourRenderLeads` 用 `__allowOurRender` flag 单独开门写入真实 API 数据，零闪变 ✅
-- **Apply 链接修复** — 4 个静态卡片 + `buildLeadCard` 动态模板的 `<a href="/leads/X/apply">` 全部改为 `onclick="applyLead(X)"`，不再跳页 ✅
-- **Apply 弹窗错误处理** — 移除 `alert()`，改为 modal 内联红色错误区域；按 API 返回分三类提示：402 credit 不足（含"Top up now →"跳转链接）、400 重复申请、其他显示原始 `e.message` ✅
-- **Apply 500/4xx 错误根因定位** — 静态卡片 ID 为整数（1~5），API 要求 UUID；`ourRenderLeads()` 从 `/api/v1/leads/browse` 拿到真实 UUID 后 Apply 才走完整链路；credits 余额不足时后端返回 402 "Insufficient credits — please top up"，前端已正确捕获并展示 ✅
-
-### ⚠️ 部署状态（2026-05-07 收工时）
-最新三次 push（c101ddb）已推送到 GitHub，**Railway 尚未成功部署**（Railway 服务器问题，deploy 卡住）。
-明天开始工作时，第一件事：Railway 控制台 → 手动 Redeploy，确认部署成功后再测试。
-
-### ⚠️ 已知问题（待处理）
-- **Dashboard 分页**："Page 1 of 3" 是假数据
-- **IM Chat** 需完整重写
-
-### ⏳ 下一步（按优先级）
-1. **IM Chat 页面重写**（明天主任务）
-2. Dashboard 分页修复（真实分页逻辑）
+| 层 | 实现 |
+|---|---|
+| 前端 | 22 个手写 HTML，每个 `<head>` 引 `<script src="api/client.js">` |
+| 静态服务 | FastAPI `main.py:42` 把 `frontend/` 挂载到 `/` |
+| API | 所有路由都在 `/api/v1/*` 下，前端调用同源 |
+| Auth | Supabase JWT（ES256，`verify_signature=False`），存 `localStorage.sb_session` |
 
 ---
 
-## 关键技术规则
+## 已确定决策（不再讨论）
 
-### inject_all.py 已停用
-不再运行 inject_all.py。所有修改直接编辑 `C:\Projects\sourcingelf\frontend\*.html`，同时同步更新 `C:\Projects\sourcingelf-frontend\*.html`（如有需要）。
-
-### JWT
-Supabase 用 ES256，PyJWT verify_signature=False，不要改 database.py。
-
-### client.js
-- API_BASE_URL = http://localhost:8000（不加 /api/v1）
-- token 存在 localStorage，key 是 'token'
-
-### 工作方式
-- 一次只做一件事
-- 做完立即浏览器验证（页面 + Console）
-- 确认没问题才进行下一步
-- 不要在没有验证的情况下收工
+| 决策 | 选择 | 理由 |
+|------|------|------|
+| Q1: Day 0 基建 | 先做不跳过 | 减少重复踩坑 |
+| Q2: Stripe webhook | 沙盒账号，webhook 暂跳过 | 等部署稳定后再配 |
+| Q3: viewLead 详情 | 弹窗模态 | 不做独立详情页 |
 
 ---
 
-## 重要技术记录
+## 工作规则（11 条，违反过多次的坑）
 
-### 买家端所有链接用 document capture 拦截
-买家端 HTML 是打包格式，按钮都是 `<a href="xxx.html">` 直接跳转。
-**必须用 `document.addEventListener('click', handler, true)` 拦截**，不要用 MutationObserver 或 setInterval。
-判断条件：`link.href.includes('xxx.html')`，然后 `e.preventDefault() + e.stopPropagation()`。
+完整规则见 `C:\Users\chean\.claude\projects\c--Projects-sourcingelf\memory\feedback_key_rules.md`。
 
-### test.buyer UUID 已修正（2026-05-06）
-- 原 users 表 id（手动插入错误）: bae1599d-b815-4473-a248-52c76609a04d
-- 正确 Supabase Auth UUID: dcc3f777-c350-4286-9436-af2081118958
-- fix_buyer_uuid.py 已执行：删旧记录 → 用新 UUID 重建 → buyer_profiles.user_id 同步更新
+简版速查：
 
-## 修改文件记录
+1. **onclick 引号嵌套** — 双引号外，里用 `&quot;` 不用单引号
+2. **修代码前用 Python `repr()`** 确认真实字符（PowerShell 显示会乱码）
+3. **收工前必须浏览器 F12 验证无红错**
+4. **买家端 HTML 是打包格式** — 用 F12 看真实 DOM
+5. **不要猜，先确认**（标识符/路径/CSS class）
+6. **Python 写文件，绝不用 PowerShell** 粘贴代码
+7. **全程中文沟通**
+8. **重启服务前先 `ls` 确认文件存在**
+9. **操作 DOM 前先解码 bundler template** 确认真实 element ID
+10. **修死链/路由前必须先全局 grep** 摊清楚同类项
+11. **CTO 模式工作** — 不给 A/B/C 菜单，给有信心的明确推荐
 
-### 2026-05-06
-| 文件 | 改动 |
+---
+
+## 已浏览器验证可用（7 个流程）
+
+| # | 页面 | 验证状态 | 备注 |
+|---|------|---------|------|
+| 1 | Supplier Landing（登录） | ✅ | 注册 + 登录 |
+| 2 | Supplier Dashboard - Home | ✅ | 数据卡片 + Apply 流程；`creditBalance` **还硬编码为 2**，未真接 `getMyCredits` |
+| 3 | Supplier Dashboard - Requests | ✅ | View Profile + 遮码 + Connect Now |
+| 4 | Supplier Dashboard - Connected | ✅ | |
+| 5 | Buyer Portal - Register Login | ✅ | |
+| 6 | Buyer Portal - Dashboard | ✅ | |
+| 7 | Buyer Portal - Create Task | ✅ | |
+
+---
+
+## 今天部署但未验证（Day 0 必测）
+
+| Commit | 内容 | 状态 |
+|--------|------|------|
+| `b6c6f37` | Home `buildLeadCard` 字段映射重写 | ⚠️ 待验证 |
+| `a5feca5` | `main.py` 22 个显式路由 | ⚠️ 待验证 |
+| `313eded` | 7 个无扩展名 alias | ⚠️ 待验证 |
+
+**用户在生产无痕窗口测 3 件事**：
+
+1. Home Buying Leads 卡片是否从 API 渲染真实数据
+2. 点 Apply 按钮全流程是否走通
+3. 点侧栏 Credits、Connected、Requests 是否正常跳转
+
+---
+
+## 待完成 15 个页面（按优先级）
+
+| 阶段 | 页面 | 备注 |
+|------|------|------|
+| D1-D2 | Supplier Credits 全链路 | Stripe 沙盒 + 余额展示 + 历史 |
+| D3-D4 | Supplier Video + Video Submit | |
+| D5-D7 | IM Chat 完整重写 | v1 用 3 秒轮询，不上 WebSocket |
+| D8-D9 | Buyer Tasks + Applications | |
+| D10-D11 | Buyer Hub + Featured Suppliers + Lead Form | |
+| D12-D13 | Buyer Profile + Connected + Requests + Landing | |
+| D14 | Admin + Homepage + 整站回归 | |
+
+---
+
+## 关键参考路径
+
+| 资源 | 路径 |
 |------|------|
-| inject_all.py | 买家登录：document capture 方案 |
-| inject_all.py | Buyer Dashboard：接入 connections + active leads API |
-| inject_all.py | Buyer Create Task：document capture 拦截 + createLead API |
-| inject_all.py | Buyer Applications：加载申请 + Connect API（待验证） |
-| routers/fix_buyer_uuid.py | 修正买家 UUID 不匹配（已执行，可删） |
+| 后端项目根 | `C:\Projects\sourcingelf` |
+| 前端 HTML | `C:\Projects\sourcingelf\frontend\*.html` |
+| client.js | `C:\Projects\sourcingelf\frontend\api\client.js` |
+| API routers | `C:\Projects\sourcingelf\routers\*.py` |
+| Models (pydantic) | `C:\Projects\sourcingelf\models\*.py` |
+| backup 干净 HTML | `C:\Projects\Claude Design Backup\standalone\` |
+| 一次性脚本归档 | `C:\Projects\sourcingelf\scripts\` |
+| client.js 验证清单 | `C:\Projects\sourcingelf\client_js_verified.md` |
+| 项目说明 | `C:\Projects\sourcingelf\CLAUDE.md` |
 
-### 2026-05-07
-| 文件 | 改动 |
-|------|------|
-| frontend/Buyer Portal - Dashboard.html | Bug 6b：删幽灵 `<a>`，加 inline style 等高等宽；Bug 6c：Messages 导航入口 |
-| frontend/Supplier Dashboard - Home.html | Apply to Lead 全链路：弹窗+API+卡片状态；buildLeadCard 富结构；bundle renderer 竞争修复 |
-| frontend/Supplier Dashboard - Home.html | Buying Leads 闪变修复：`Object.defineProperty` guard + `__allowOurRender` flag（commit 150fef0） |
-| frontend/Supplier Dashboard - Home.html | Apply 链接去除 href 跳转，改 onclick 弹窗（commit 01cf486） |
-| frontend/Supplier Dashboard - Home.html | Apply 错误处理：内联 modal 错误区域替换 alert()，分类提示 402/400/其他（commit c101ddb） |
-| frontend/*.html | Copy-Item 从 sourcingelf-frontend 同步所有页面 |
-| requirements.txt | 加 email-validator（修复 Railway 启动崩溃） |
+---
+
+## Day 0 已完成清单（2026-05-08）
+
+- [x] `.vscode/settings.json`：UTF-8 + LF + 去尾随空格
+- [x] `.gitattributes`：所有源码 LF + UTF-8 强制
+- [x] `scripts/` 目录建立 + 5 个一次性脚本归档（带 README）
+- [x] `HANDOFF.md` 重写（本文件）
+- [x] `client_js_verified.md` 创建（已验证 11 个函数 + 未验证清单）
+- [x] 全部用 Python 写文件，UTF-8 验证通过
+
+---
+
+## 用户须知（每次新对话开始时）
+
+1. 读 `CLAUDE.md`
+2. 读 `memory/feedback_key_rules.md`（11 条规则）
+3. 读本文件最新状态
+4. 回复"准备就绪，确认按 X 步执行"
+5. 等用户说"开始"再动手
