@@ -264,14 +264,26 @@ document.addEventListener('DOMContentLoaded', async function() {
       }
     };
 
+    function applyState(stateNum) {
+      // Bundle's showState(n, btn) requires a button arg; if button missing, do it manually.
+      var btn = document.querySelectorAll('.state-btn')[stateNum - 1];
+      if (btn && typeof showState === 'function') {
+        showState(stateNum, btn);
+        return;
+      }
+      var panels = document.querySelectorAll('.state-panel');
+      panels.forEach(function(p) { p.classList.remove('visible'); });
+      var panel = document.getElementById('state' + stateNum);
+      if (panel) panel.classList.add('visible');
+    }
+
     try {
       var videos = await SE.VideoAPI.getMyVideos();
       currentVideo = (videos && videos.length) ? videos[0] : null;
-      var stateNum = pickState(currentVideo && currentVideo.status);
-      if (typeof showState === 'function') showState(stateNum);
+      applyState(pickState(currentVideo && currentVideo.status));
     } catch (e) {
       console.error('Video load error:', e);
-      if (typeof showState === 'function') showState(1);
+      applyState(1);
     }
   })();
   </script>

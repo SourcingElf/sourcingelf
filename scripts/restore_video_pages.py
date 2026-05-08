@@ -66,14 +66,26 @@ VIDEO_INIT = """  <!-- D3 live integration: load real video status, override bun
       }
     };
 
+    function applyState(stateNum) {
+      // Bundle's showState(n, btn) requires a button arg; if button missing, do it manually.
+      var btn = document.querySelectorAll('.state-btn')[stateNum - 1];
+      if (btn && typeof showState === 'function') {
+        showState(stateNum, btn);
+        return;
+      }
+      var panels = document.querySelectorAll('.state-panel');
+      panels.forEach(function(p) { p.classList.remove('visible'); });
+      var panel = document.getElementById('state' + stateNum);
+      if (panel) panel.classList.add('visible');
+    }
+
     try {
       var videos = await SE.VideoAPI.getMyVideos();
       currentVideo = (videos && videos.length) ? videos[0] : null;
-      var stateNum = pickState(currentVideo && currentVideo.status);
-      if (typeof showState === 'function') showState(stateNum);
+      applyState(pickState(currentVideo && currentVideo.status));
     } catch (e) {
       console.error('Video load error:', e);
-      if (typeof showState === 'function') showState(1);
+      applyState(1);
     }
   })();
   </script>
@@ -90,9 +102,15 @@ VIDEO_SUBMIT_INIT = """  <!-- D3 live integration: replace bundle's file-upload 
 
     if (SE.RouteGuard && SE.RouteGuard.requireSupplier) SE.RouteGuard.requireSupplier();
 
-    // K11 MVP: replace bundle's photo file-upload UI with URL textarea
+    // K11 MVP: replace bundle's photo file-upload UI with URL textareas.
+    // Important: also clear the parent div's onclick (it referenced #photoInput
+    // which we're removing — leaving the onclick would null.click() on every
+    // mousedown).
     var photoArea = document.getElementById('photoUploadArea') || document.getElementById('photoGrid');
     if (photoArea) {
+      photoArea.removeAttribute('onclick');
+      photoArea.onclick = null;
+      photoArea.style.cursor = 'default';
       photoArea.innerHTML = '<div style="padding:18px;border:1px dashed rgba(26,39,68,0.25);border-radius:10px;background:rgba(26,39,68,0.02);">' +
         '<label style="display:block;font-size:13px;font-weight:600;color:#1a2744;margin-bottom:6px;">Product photo URLs</label>' +
         '<textarea id="photoUrlsInput" rows="3" placeholder="One URL per line. Public Google Drive / Dropbox / Imgur links work." style="width:100%;padding:10px 12px;border:1px solid rgba(26,39,68,0.15);border-radius:7px;font-family:inherit;font-size:13px;resize:vertical;"></textarea>' +
@@ -102,8 +120,7 @@ VIDEO_SUBMIT_INIT = """  <!-- D3 live integration: replace bundle's file-upload 
         '</div>';
     }
 
-    // Override bundle's handleSubmit with real API call
-    window.handleSubmit = async function() {
+    function collectPayload() {
       var photoTxt = (document.getElementById('photoUrlsInput') || {}).value || '';
       var videoTxt = (document.getElementById('videoUrlsInput') || {}).value || '';
       var photo_urls = photoTxt.split(/\\r?\\n/).map(function(s) { return s.trim(); }).filter(Boolean);
@@ -111,33 +128,85 @@ VIDEO_SUBMIT_INIT = """  <!-- D3 live integration: replace bundle's file-upload 
 
       var mainProductsEl = document.getElementById('mainProducts');
       var mainProductsDesc = mainProductsEl ? mainProductsEl.value.trim() : '';
-      if (!mainProductsDesc) {
-        SE.NotificationHelper.error('Please describe your main products');
+
+      // MOQ: the only <input type="number"> on the page
+      var moqInput = document.querySelector('input[type="number"]');
+      var min_order_qty = moqInput && moqInput.value ? parseInt(moqInput.value, 10) : null;
+
+      // MOQ unit: the only <select> on the page
+      var unitSel = document.querySelector('select');
+      var min_order_unit = unitSel && unitSel.value ? unitSel.value : 'pcs';
+
+      // Buyer Nature: .checkbox-group <input type="checkbox"> checked, label text from sibling <span>
+      var buyerNature = Array.prototype.slice.call(document.querySelectorAll('.checkbox-group input[type="checkbox"]'))
+        .filter(function(cb) { return cb.checked; })
+        .map(function(cb) {
+          var sp = cb.parentElement.querySelector('span');
+          return sp ? sp.textContent.trim() : '';
+        })
+        .filter(Boolean);
+
+      // Positioning: .toggle-btn.selected NOT inside #marketToggles (markets share the class)
+      var positioning = Array.prototype.slice.call(document.querySelectorAll('.toggle-btn.selected'))
+        .filter(function(b) { return !b.closest('#marketToggles'); })
+        .map(function(b) { return b.textContent.trim(); })
+        .filter(Boolean);
+
+      // Selling points: every input inside #sellingPoints with a value
+      var sellingPoints = Array.prototype.slice.call(document.querySelectorAll('#sellingPoints input'))
+        .map(function(el, idx) { return { description: (el.value || '').trim(), sort_order: idx }; })
+        .filter(function(sp) { return sp.description; });
+
+      // Additional notes: the textarea whose placeholder starts with "Anything else"
+      var notesEl = Array.prototype.slice.call(document.querySelectorAll('textarea'))
+        .filter(function(t) { return /^Anything else/i.test(t.placeholder || ''); })[0];
+      var additional_notes = notesEl ? notesEl.value.trim() : '';
+
+      return {
+        main_products_desc: mainProductsDesc,
+        additional_notes: additional_notes || null,
+        target_positioning: positioning.length ? positioning : null,
+        target_buyer_nature: buyerNature.length ? buyerNature : null,
+        min_order_qty: min_order_qty,
+        min_order_unit: min_order_unit,
+        photo_urls: photo_urls,
+        video_urls: video_urls,
+        selling_points: sellingPoints.length ? sellingPoints : null,
+      };
+    }
+
+    // Override bundle's handleSubmit. Preserve its 2-stage legal flow:
+    //   click 1 -> show #legalPanel + change button text + disable
+    //   user ticks #legalCheck -> bundle's toggleFinalSubmit re-enables button
+    //   click 2 -> actually call submitMaterials
+    var legalShown = false;
+    window.handleSubmit = async function() {
+      if (!legalShown) {
+        // Validate before showing legal panel
+        var mp = document.getElementById('mainProducts');
+        if (!mp || !mp.value.trim()) {
+          SE.NotificationHelper.error('Please describe your main products');
+          return;
+        }
+        legalShown = true;
+        var panel = document.getElementById('legalPanel');
+        if (panel) {
+          panel.classList.add('open');
+          var y = panel.getBoundingClientRect().top + window.scrollY - 80;
+          window.scrollTo({ top: y, behavior: 'smooth' });
+        }
+        var btn1 = document.getElementById('submitBtn');
+        if (btn1) {
+          btn1.textContent = 'Confirm & Submit \\u2192';
+          btn1.disabled = true;
+        }
         return;
       }
 
-      // Collect selected positioning chips (.positioning-toggle.active or similar)
-      var positioning = Array.prototype.slice.call(document.querySelectorAll('[data-positioning].active, .positioning-chip.active'))
-        .map(function(el) { return el.getAttribute('data-positioning') || el.textContent.trim(); }).filter(Boolean);
+      var legalCheck = document.getElementById('legalCheck');
+      if (!legalCheck || !legalCheck.checked) return;
 
-      // Collect selected buyer-nature toggles
-      var buyerNature = Array.prototype.slice.call(document.querySelectorAll('[data-buyer-nature].active, .buyer-nature-chip.active'))
-        .map(function(el) { return el.getAttribute('data-buyer-nature') || el.textContent.trim(); }).filter(Boolean);
-
-      // Collect selling points (each .selling-point input or textarea)
-      var sellingPoints = Array.prototype.slice.call(document.querySelectorAll('.selling-point-input, [data-selling-point]'))
-        .map(function(el, idx) { return { description: (el.value || el.textContent || '').trim(), sort_order: idx }; })
-        .filter(function(sp) { return sp.description; });
-
-      var payload = {
-        main_products_desc: mainProductsDesc,
-        photo_urls: photo_urls,
-        video_urls: video_urls,
-        target_positioning: positioning.length ? positioning : null,
-        target_buyer_nature: buyerNature.length ? buyerNature : null,
-        selling_points: sellingPoints.length ? sellingPoints : null,
-      };
-
+      var payload = collectPayload();
       var btn = document.getElementById('submitBtn');
       if (btn) { btn.disabled = true; btn.textContent = 'Submitting\\u2026'; }
       try {
@@ -145,7 +214,7 @@ VIDEO_SUBMIT_INIT = """  <!-- D3 live integration: replace bundle's file-upload 
         SE.NotificationHelper.success('Materials submitted! Our team will start production.');
         setTimeout(function() { window.location.href = '/Supplier%20Dashboard%20-%20Video.html'; }, 1200);
       } catch (e) {
-        if (btn) { btn.disabled = false; btn.textContent = 'Submit'; }
+        if (btn) { btn.disabled = false; btn.textContent = 'Confirm & Submit \\u2192'; }
         SE.NotificationHelper.error(e.message || 'Submission failed');
       }
     };

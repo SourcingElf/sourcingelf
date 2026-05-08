@@ -59,18 +59,24 @@ async def submit_materials(
     profile = _require_supplier_profile(current_user["id"], db)
     now = datetime.now(timezone.utc).isoformat()
 
-    # Find an existing video in a submittable state, or create one
+    # Find an existing video in a submittable state, or create one.
+    # Uses limit(1) instead of maybe_single() because PostgREST raises
+    # PGRST116 (returned >1 row) on maybe_single when a supplier has
+    # multiple legacy videos in the same status — that surfaced as a
+    # 500 during D3 testing.
     existing = (
         db.table("videos")
         .select("*")
         .eq("supplier_id", profile["id"])
         .in_("status", ["none", "revision_requested"])
-        .maybe_single()
+        .order("created_at", desc=True)
+        .limit(1)
         .execute()
     )
+    existing_data = existing.data[0] if existing.data else None
 
-    if existing.data:
-        video_id = existing.data["id"]
+    if existing_data:
+        video_id = existing_data["id"]
         db.table("videos").update({
             "status": "materials_submitted",
             "materials_submitted_at": now,
