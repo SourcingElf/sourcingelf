@@ -1335,8 +1335,18 @@
       ? new Date(lead.expires_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
       : '';
     const countryPill = lead.buyer_country ? `<span class="pill pill-blue">${lead.buyer_country}</span>` : '';
+    const typePill = lead.buyer_type ? `<span class="pill pill-navy">${lead.buyer_type}</span>` : '';
     const newPill = isNew ? '<span class="pill pill-new">NEW</span>' : '';
-    const pills = countryPill + newPill;
+    const pills = countryPill + typePill + newPill;
+    // Mask buyer company name until supplier connects (privacy until paid connection)
+    function maskCompany(name) {
+      if (!name) return '';
+      var parts = String(name).split(/\s+/);
+      if (!parts[0] || parts[0].length <= 1) return name;
+      parts[0] = parts[0][0] + '**';
+      return parts.join(' ');
+    }
+    const maskedCompany = maskCompany(lead.buyer_company);
     const moqSvg = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>`;
     const priceSvg = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>`;
     const arrowSvg = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>`;
@@ -1348,7 +1358,7 @@
   <div class="lead-card-body">
     <div class="lead-info">
       <div class="lead-pills">${pills}</div>
-      <div class="lead-company">${lead.buyer_company || lead.title || ''}</div>
+      <div class="lead-company">${maskedCompany || lead.title || ''}</div>
       <div class="lead-products">${productName || lead.title || ''}</div>
       <div class="lead-details">${moq ? `<span>${moqSvg}MOQ: ${moq}</span>` : ''}${priceRange ? `<span>${priceSvg}${priceRange}</span>` : ''}</div>
       ${expDate ? `<div class="lead-expiry${soon ? ' amber' : ''}">Valid until ${expDate}${soon ? ' — expires soon' : ''}</div>` : ''}
@@ -1364,10 +1374,35 @@
   // ── Apply to lead modal ──
   var _pendingApplyId = null;
 
-  function applyLead(id) {
+  async function applyLead(id) {
     _pendingApplyId = id;
     var modal = document.getElementById('applyModal');
     modal.style.display = 'flex';
+
+    // Reset modal state
+    var btn = document.getElementById('applyConfirmBtn');
+    var errEl = document.getElementById('applyErrorMsg');
+    btn.disabled = false;
+    btn.textContent = 'Apply Now';
+    btn.style.background = '#b91c1c';
+    btn.style.cursor = 'pointer';
+    errEl.style.display = 'none';
+    errEl.innerHTML = '';
+
+    // Check available credits before letting user submit
+    try {
+      var credits = await SourcingElf.CreditsAPI.getMyCredits();
+      var available = (credits.balance || 0) - (credits.reserved || 0);
+      if (available < 1) {
+        btn.disabled = true;
+        btn.style.background = '#9ca3af';
+        btn.style.cursor = 'not-allowed';
+        errEl.innerHTML = 'Insufficient credits. <a href="/credits" style="color:#b91c1c;font-weight:700;text-decoration:underline;">Top up now &rarr;</a>';
+        errEl.style.display = 'block';
+      }
+    } catch (e) {
+      // Network/API error: keep button enabled so user can still try; confirmApply handles real failures
+    }
   }
 
   function closeApplyModal() {
