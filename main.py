@@ -90,8 +90,22 @@ for _page in _FRONTEND_PAGES:
 # never matched a real file. Redirect them to the actual page so existing
 # buttons keep working while the source HTML gets cleaned up.
 _DEAD_LINK_ALIASES = {
-    "credits.html": "Supplier Dashboard - Credits.html",
-    "video.html":   "Supplier Dashboard - Video.html",
+    # `.html`-suffixed aliases — buyer-portal bundle templates and supplier
+    # inline templates link to these short names. Keep them.
+    "credits.html":  "Supplier Dashboard - Credits.html",
+    "video.html":    "Supplier Dashboard - Video.html",
+    # Extensionless aliases — Supplier Dashboard - Home.html uses clean URLs
+    # like /credits, /dashboard, /leads, but the real files have spaced names.
+    # 19 of the 19 extensionless dead-link occurrences in Home.html resolve
+    # via these 7 redirects (the remaining 2 — /leads/<uuid> and /settings —
+    # are skipped because the target pages do not exist yet).
+    "connected":     "Supplier Dashboard - Connected.html",
+    "credits":       "Supplier Dashboard - Credits.html",
+    "dashboard":     "Supplier Dashboard - Home.html",
+    "leads":         "Supplier Dashboard - Home.html",
+    "requests":      "Supplier Dashboard - Requests.html",
+    "videos":        "Supplier Dashboard - Video.html",
+    "videos/create": "Supplier Dashboard - Video Submit.html",
 }
 
 
