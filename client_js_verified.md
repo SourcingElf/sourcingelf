@@ -37,6 +37,10 @@
 | `SupplierAPI.getConnectedBuyers` | Supplier Dashboard - Connected (bundle 占位调用，D 阶段重写) |
 | `SupplierAPI.getMyBuyerRequests` | Supplier Dashboard - Requests |
 | `apiFetch`（底层） | Supplier Dashboard - Requests; 422 detail 数组解析已验证 |
+| `VideoAPI.getMyVideos` | Supplier Dashboard - Video (D3) |
+| `VideoAPI.submitMaterials` | Supplier Dashboard - Video Submit (D3) |
+| `VideoAPI.approveVideo` | Supplier Dashboard - Video — Confirm Publish (D3) |
+| `VideoAPI.requestRevision` | Supplier Dashboard - Video — Submit Revision (D3) |
 
 ### 辅助（6）
 
@@ -80,9 +84,9 @@
 - `addMarket`, `deleteMarket`
 - `submitRequest`, `getMyRequests`, `getConnectedSuppliers`
 
-### VideoAPI（5，全部未验证 — D3-D4 验证）
+### VideoAPI（剩 1 — getVideo 单条查询，可选）
 
-- `getMyVideos`, `getVideo`, `submitMaterials`, `approveVideo`, `requestRevision`
+- `getVideo`（当前 Video.html 直接用 getMyVideos 列表里的第一条；如未来需要按 ID 看详情时再启用）
 
 ### LeadsAPI（剩 5）
 
@@ -149,7 +153,7 @@
 | AuthAPI | 6 | 2 | 4 | 33% |
 | SupplierAPI | 17 | 2 | 15 | 12% |
 | BuyerAPI | 11 | 0 | 11 | 0% |
-| VideoAPI | 5 | 0 | 5 | 0% |
+| VideoAPI | 5 | 4 | 1 | 80% |
 | LeadsAPI | 10 | 5 | 5 | 50% |
 | CreditsAPI | 5 | 4 | 1 | 80% |
 | MessagesAPI | 4 | 1 | 3 | 25% |
@@ -158,4 +162,4 @@
 | RouteGuard | 5 | 2 | 3 | 40% |
 | FormHelper | 3 | 0 | 3 | 0% |
 | NotificationHelper | 4 | 3 | 1 | 75% |
-| **总计** | **91** | **19** | **72** | **21%** |
+| **总计** | **91** | **23** | **68** | **25%** |

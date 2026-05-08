@@ -86,19 +86,21 @@ F12 Console 必须无红错才算可以开始
 
 ---
 
-## 已浏览器验证可用（9 个流程）
+## 已浏览器验证可用（11 个流程）
 
 | # | 页面 | 验证状态 | 备注 |
 |---|------|---------|------|
 | 1 | Supplier Landing（登录） | ✅ | 注册 + 登录 |
-| 2 | Supplier Dashboard - Home | ✅ | Buying Leads 接真实 API；Apply 流程含余额预检查；公司名**后端**打码（K4 done） |
+| 2 | Supplier Dashboard - Home | ✅ | Buying Leads 接真实 API；View Details 弹窗 modal；Apply 余额预检查；公司名后端打码 |
 | 3 | Supplier Dashboard - Requests | ✅ | 接真实 API；loading 占位防闪现；View Profile + Connect Now 流程 |
 | 4 | Supplier Dashboard - Connected | ✅ (bundle 占位) | 页面能进，View Profile / Chat 按钮待 D 阶段接 API（K2） |
 | 5 | Supplier Dashboard - Credits | ✅ D1 完成 | 真实余额 + 交易历史；Top Up 跳 Stripe Checkout（沙盒）；K3 done |
-| 6 | Buyer Portal - Register Login | ✅ | |
-| 7 | Buyer Portal - Dashboard | ✅ | |
-| 8 | Buyer Portal - Create Task | ✅ | |
-| 9 | 侧栏跳转（无扩展名 alias） | ✅ | /credits /connected /requests /dashboard 等全部 ok |
+| 6 | **Supplier Dashboard - Video** | **✅ D3 完成** | getMyVideos 驱动 4 状态切换；Approve/Revision 真接 API |
+| 7 | **Supplier Dashboard - Video Submit** | **✅ D3 完成** | submitMaterials 真接 API；photo_urls/video_urls 用 URL textarea (K11 MVP) |
+| 8 | Buyer Portal - Register Login | ✅ | |
+| 9 | Buyer Portal - Dashboard | ✅ | |
+| 10 | Buyer Portal - Create Task | ✅ | |
+| 11 | 侧栏跳转（无扩展名 alias） | ✅ | /credits /connected /requests /dashboard 等全部 ok |
 
 ---
 
@@ -132,6 +134,7 @@ D0 阻塞问题全部清除，**可以进 D1**。
 | K8 | Stripe 支付页面布局自定义（左金额右表单不对齐） | Stripe Hosted Checkout 全球默认布局，无法用前端 CSS 修改 | 如需完全控制 UI，需迁移到 Stripe Elements (Stripe.js SDK 嵌入到 Top Up modal) — 工作量大，看客户反馈再决定 |
 | K9 | View Details modal 字段太少 | 当前只显示 buyer/items/notes/valid-until/shortId | 等用户列要补的字段（如 buyer 历史订单数、平台验证状态、定位标签、关键产品照片等）后再扩展 |
 | K10 | D1 Stripe 沙盒端到端付款验收 | 用户决策延后：上线前跟 K6 webhook 一起统一测试 | 上线前合并验收（含真实卡 4242 → 余额入账确认） |
+| K11 | Video Submit 文件上传集成 | D3-D4 MVP 用 URL 字符串（supplier 自己把图/视频传到云盘后填公开链接）。需要后端文件上传 endpoint + Supabase Storage 桶 + 前端拖拽上传 UI | 客户测试反馈或 D 阶段稳定后单独议（约 1 天工作量） |
 
 ---
 
@@ -139,9 +142,9 @@ D0 阻塞问题全部清除，**可以进 D1**。
 
 | 阶段 | 页面 | 备注 |
 |------|------|------|
-| D1-D2 | Supplier Credits 全链路 | Stripe 沙盒 + 余额展示 + 历史 |
-| D3-D4 | Supplier Video + Video Submit | |
-| D5-D7 | IM Chat 完整重写 | v1 用 3 秒轮询，不上 WebSocket |
+| ~~D1-D2~~ | ~~Supplier Credits 全链路~~ | ✅ D1 完成（Stripe 沙盒 + 余额 + 历史） |
+| ~~D3-D4~~ | ~~Supplier Video + Video Submit~~ | ✅ D3 完成（K11 MVP URL 输入） |
+| **D5-D7** | **IM Chat 完整重写** | v1 用 3 秒轮询，不上 WebSocket（下一站） |
 | D8-D9 | Buyer Tasks + Applications | |
 | D10-D11 | Buyer Hub + Featured Suppliers + Lead Form | |
 | D12-D13 | Buyer Profile + Connected + Requests + Landing | |
