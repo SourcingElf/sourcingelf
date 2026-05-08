@@ -102,7 +102,7 @@ async def create_checkout(
                 "currency": "usd",
                 "unit_amount": int(pkg["price_usd"] * 100),
                 "product_data": {
-                    "name": f"SourcingElf Credits ?{payload.package_type.value.replace('_', ' ').title()}",
+                    "name": f"SourcingElf Credits - {payload.package_type.value.replace('_', ' ').title()}",
                     "description": f"{pkg['credits']} connection credit(s)",
                 },
             },
