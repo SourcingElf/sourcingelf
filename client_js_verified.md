@@ -26,13 +26,14 @@
 | `AuthAPI.register` | Supplier Landing, Buyer Portal - Register Login |
 | `LeadsAPI.browseLeads` | Supplier Dashboard - Home |
 | `LeadsAPI.applyToLead` | Supplier Dashboard - Home |
+| `LeadsAPI.getMyApplications` | Supplier Dashboard - Home (D0-2026-05-09 verified) |
 | `LeadsAPI.createLead` | Buyer Portal - Create Task |
 | `LeadsAPI.getMyLeads` | Buyer Portal - Dashboard |
-| `CreditsAPI.getMyCredits` | Supplier Dashboard - Requests |
+| `CreditsAPI.getMyCredits` | Supplier Dashboard - Home (apply pre-check), Requests |
 | `MessagesAPI.getMyConnections` | Buyer Portal - Dashboard |
-| `SupplierAPI.getConnectedBuyers` | Supplier Dashboard - Connected |
+| `SupplierAPI.getConnectedBuyers` | Supplier Dashboard - Connected (bundle 占位调用，D 阶段重写) |
 | `SupplierAPI.getMyBuyerRequests` | Supplier Dashboard - Requests |
-| `apiFetch`（底层） | Supplier Dashboard - Requests |
+| `apiFetch`（底层） | Supplier Dashboard - Requests; 422 detail 数组解析已验证 |
 
 ### 辅助（6）
 
@@ -45,8 +46,10 @@
 | `RouteGuard.requireBuyer` | Buyer Portal - Dashboard, Create Task |
 | `CONFIG.SUPPLIER_LOGIN_PAGE / BUYER_LOGIN_PAGE` | Supplier Landing, Buyer Register |
 
-⚠️ **已知未真接 API 的硬编码**：
-- `Supplier Dashboard - Home.html` 里 `creditBalance` 还硬编码为 `2`，未真接 `CreditsAPI.getMyCredits`（D1-D2 阶段修复）
+⚠️ **已知未真接 API**（D1-D2 处理）：
+- Supplier Dashboard - Credits：余额 / 交易历史 / Top Up 都是 bundle 占位
+- Supplier Dashboard - Connected：connected buyers 列表 / View Profile / Chat 都是 bundle 占位
+- Home Dashboard 顶部 3 个数据卡片（New Buyer Requests / Connected Buyers / Credits Balance）：可能仍是 bundle 占位（D1 验证）
 
 ---
 
@@ -79,11 +82,10 @@
 
 - `getMyVideos`, `getVideo`, `submitMaterials`, `approveVideo`, `requestRevision`
 
-### LeadsAPI（剩 6）
+### LeadsAPI（剩 5）
 
 - `getLead`, `updateLead`, `cancelLead`
 - `getLeadApplications`, `connectWithSupplier`
-- `getMyApplications`
 
 ### CreditsAPI（剩 4 — D1-D2 验证）
 
@@ -149,7 +151,7 @@
 | SupplierAPI | 17 | 2 | 15 | 12% |
 | BuyerAPI | 11 | 0 | 11 | 0% |
 | VideoAPI | 5 | 0 | 5 | 0% |
-| LeadsAPI | 10 | 4 | 6 | 40% |
+| LeadsAPI | 10 | 5 | 5 | 50% |
 | CreditsAPI | 5 | 1 | 4 | 20% |
 | MessagesAPI | 4 | 1 | 3 | 25% |
 | AdminAPI | 13 | 0 | 13 | 0% |
@@ -157,4 +159,4 @@
 | RouteGuard | 5 | 2 | 3 | 40% |
 | FormHelper | 3 | 0 | 3 | 0% |
 | NotificationHelper | 4 | 3 | 1 | 75% |
-| **总计** | **91** | **15** | **76** | **16%** |
+| **总计** | **91** | **16** | **75** | **18%** |

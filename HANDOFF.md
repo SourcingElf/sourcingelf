@@ -65,9 +65,9 @@ F12 Console 必须无红错才算可以开始
 
 ---
 
-## 工作规则（11 条，违反过多次的坑）
+## 工作规则（12 条，违反过多次的坑）
 
-完整规则见 `C:\Users\chean\.claude\projects\c--Projects-sourcingelf\memory\feedback_key_rules.md`。
+完整规则见 `C:\Users\chean\.claude\projects\c--Projects-sourcingelf\memory\feedback_key_rules.md` 和 `feedback_file_management.md`。
 
 简版速查：
 
@@ -82,36 +82,53 @@ F12 Console 必须无红错才算可以开始
 9. **操作 DOM 前先解码 bundler template** 确认真实 element ID
 10. **修死链/路由前必须先全局 grep** 摊清楚同类项
 11. **CTO 模式工作** — 不给 A/B/C 菜单，给有信心的明确推荐
+12. **每轮收工前同步 HANDOFF.md / client_js_verified.md / scripts/**，commit 写"为什么改"
 
 ---
 
-## 已浏览器验证可用（7 个流程）
+## 已浏览器验证可用（9 个流程）
 
 | # | 页面 | 验证状态 | 备注 |
 |---|------|---------|------|
 | 1 | Supplier Landing（登录） | ✅ | 注册 + 登录 |
-| 2 | Supplier Dashboard - Home | ✅ | 数据卡片 + Apply 流程；`creditBalance` **还硬编码为 2**，未真接 `getMyCredits` |
-| 3 | Supplier Dashboard - Requests | ✅ | View Profile + 遮码 + Connect Now |
-| 4 | Supplier Dashboard - Connected | ✅ | |
-| 5 | Buyer Portal - Register Login | ✅ | |
-| 6 | Buyer Portal - Dashboard | ✅ | |
-| 7 | Buyer Portal - Create Task | ✅ | |
+| 2 | Supplier Dashboard - Home | ✅ | Buying Leads 接真实 API；Apply 流程含余额预检查；公司名打码 |
+| 3 | Supplier Dashboard - Requests | ✅ | 接真实 API；loading 占位防闪现；View Profile + Connect Now 流程 |
+| 4 | Supplier Dashboard - Connected | ✅ (bundle 占位) | 页面能进，View Profile / Chat 按钮待 D 阶段接 API（K2） |
+| 5 | Supplier Dashboard - Credits | ✅ (bundle 占位) | 页面能进，余额/交易/Top Up 待 D1-D2 接 API（K3） |
+| 6 | Buyer Portal - Register Login | ✅ | |
+| 7 | Buyer Portal - Dashboard | ✅ | |
+| 8 | Buyer Portal - Create Task | ✅ | |
+| 9 | 侧栏跳转（无扩展名 alias） | ✅ | /credits /connected /requests /dashboard 等全部 ok |
 
 ---
 
-## 今天部署但未验证（Day 0 必测）
+## D0 验证已完成（2026-05-09）
 
-| Commit | 内容 | 状态 |
-|--------|------|------|
-| `b6c6f37` | Home `buildLeadCard` 字段映射重写 | ⚠️ 待验证 |
-| `a5feca5` | `main.py` 22 个显式路由 | ⚠️ 待验证 |
-| `313eded` | 7 个无扩展名 alias | ⚠️ 待验证 |
+D0 浏览器验证轮跑完，下面 5 件事全部通过 ✓：
 
-**用户在生产无痕窗口测 3 件事**：
+| # | 验证 | 状态 | 修复来源 commit |
+|---|------|------|----------------|
+| 1 | Home Buying Leads 卡片从 API 渲染真实数据 | ✅ | `c128f69` (字段映射 + buyer_type pill + 公司打码) |
+| 2 | Apply 流程：余额足够正常扣 1 credit；余额不足按钮灰色禁用 | ✅ | `c128f69` (applyLead 预检查) + `762f9f6` (apiFetch 422 detail 解析) |
+| 3 | Credits 侧栏跳转 → 页面正常 | ✅ | `e9beff3` (从 backup 恢复) |
+| 4 | Connected 侧栏跳转 → 页面正常 | ✅ | `e9beff3` (从 backup 恢复) |
+| 5 | Requests 占位卡片不再"几张 → 1 张"闪现 | ✅ | `fd38028` (loading 占位) |
 
-1. Home Buying Leads 卡片是否从 API 渲染真实数据
-2. 点 Apply 按钮全流程是否走通
-3. 点侧栏 Credits、Connected、Requests 是否正常跳转
+D0 阻塞问题全部清除，**可以进 D1**。
+
+---
+
+## Known Backlog（待客户测试细化，D1+ 处理）
+
+D0 验证后用户提出但未当场修的事项（统一等上线后客户测试再调）：
+
+| # | 项 | 触发条件 | 计划处理时机 |
+|---|----|---------|----|
+| K1 | Buying Lead ID 改 `BL-YYYY-NNN` 格式（如 #BL-2026-047） | 设计稿要求；当前是 `BL-XXXXXXXX` 8 位 hex | D1：需要 `buying_leads` 表加 `sequence_number` 列 + DB migration |
+| K2 | Supplier Connected 页面的 View Profile / Chat 按钮接 API | 当前是 bundle 占位，按钮无响应 | D5-D7 (IM Chat 重写时一起做 Chat 按钮) + D 阶段 (View Profile) |
+| K3 | Credits 页面接真实 API（余额、交易历史、Top Up 按钮） | 当前是 bundle 占位 | D1-D2：Supplier Credits 全链路 |
+| K4 | 公司名打码移到后端（前端打码 F12 仍看到完整名） | 隐私要求 | D1：后端 buying_leads /browse 直接返回打码后的 company_name |
+| K5 | 17 个 mojibake 损坏的 HTML 文件批量恢复 | PowerShell 误读 UTF-8 留下的字符级损坏 | 等到对应 D 阶段重写整页时一起处理（不再批量） |
 
 ---
 
