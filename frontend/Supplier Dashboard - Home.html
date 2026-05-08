@@ -1292,10 +1292,26 @@
     const lc = document.getElementById('leadsFeed');
     try {
       if (typeof SourcingElf === 'undefined' || !SourcingElf.LeadsAPI) return;
+
+      // Pre-fetch applied lead IDs so we can hide the Apply button on those cards
+      let appliedSet = new Set();
+      try {
+        const appliedIds = await SourcingElf.LeadsAPI.getMyApplications();
+        appliedSet = new Set(appliedIds || []);
+      } catch (e) { /* non-fatal */ }
+
       const result = await SourcingElf.LeadsAPI.browseLeads();
       const leads = Array.isArray(result) ? result : (result.leads || result.data || []);
-      const html = leads.length
-        ? leads.map(buildLeadCard).join('')
+
+      // Enrich each lead with a short BL- id and applied status
+      const enriched = leads.map(l => ({
+        ...l,
+        applied: appliedSet.has(l.id),
+        shortId: l.id ? ('BL-' + l.id.replace(/-/g, '').slice(0, 8).toUpperCase()) : ''
+      }));
+
+      const html = enriched.length
+        ? enriched.map(buildLeadCard).join('')
         : '<div class="leads-empty" style="padding:40px;text-align:center;color:#9ca3af;font-size:14px;">No active buying leads at the moment.</div>';
       lc.__allowOurRender = true;
       lc.innerHTML = html;
@@ -1318,7 +1334,9 @@
     const expDate = lead.expires_at
       ? new Date(lead.expires_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
       : '';
-    const pills = isNew ? '<span class="pill pill-new">NEW</span>' : '';
+    const countryPill = lead.buyer_country ? `<span class="pill pill-blue">${lead.buyer_country}</span>` : '';
+    const newPill = isNew ? '<span class="pill pill-new">NEW</span>' : '';
+    const pills = countryPill + newPill;
     const moqSvg = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>`;
     const priceSvg = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>`;
     const arrowSvg = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>`;
@@ -1330,14 +1348,14 @@
   <div class="lead-card-body">
     <div class="lead-info">
       <div class="lead-pills">${pills}</div>
-      <div class="lead-company">${lead.title || ''}</div>
-      <div class="lead-products">${productName}</div>
+      <div class="lead-company">${lead.buyer_company || lead.title || ''}</div>
+      <div class="lead-products">${productName || lead.title || ''}</div>
       <div class="lead-details">${moq ? `<span>${moqSvg}MOQ: ${moq}</span>` : ''}${priceRange ? `<span>${priceSvg}${priceRange}</span>` : ''}</div>
       ${expDate ? `<div class="lead-expiry${soon ? ' amber' : ''}">Valid until ${expDate}${soon ? ' — expires soon' : ''}</div>` : ''}
     </div>
     <div class="lead-image-wrap">${imgPlaceholder}<button class="view-btn" onclick="viewLead(&quot;${lead.id}&quot;)">View Details</button></div>
   </div>
-  <div class="lead-card-footer">${footer}<span class="lead-id">#${lead.lead_ref || (lead.id ? lead.id.slice(0, 8) : '')}</span></div>
+  <div class="lead-card-footer">${footer}<span class="lead-id">#${lead.shortId || lead.lead_ref || (lead.id ? lead.id.slice(0, 8) : '')}</span></div>
 </div>`;
   }
 
@@ -1369,7 +1387,7 @@
     btn.textContent = 'Applying…';
     btn.disabled = true;
     try {
-      await SourcingElf.LeadsAPI.applyToLead(id);
+      await SourcingElf.LeadsAPI.applyToLead(id, {});
       closeApplyModal();
       var link = document.querySelector('.apply-link[data-lead-id="' + id + '"]');
       if (link) {
