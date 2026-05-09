@@ -552,3 +552,56 @@ window.SourcingElf = {
     scheduleAll();
   }
 })();
+
+// ── 供应商侧栏死链修复（6 个页面统一）──────────────────────────
+// Supplier sidebar bundle templates ship with href="#" on Buying Leads
+// and Settings, and the Chat with Elfa button has no handler on most
+// pages. Polling-based patch (mirrors injectBuyerMessagesNav) so it
+// works after the bundler's replaceWith finishes.
+(function fixSupplierSidebar() {
+  function tryFix() {
+    var items = document.querySelectorAll('a.nav-item:not([data-se-wired])');
+    var any = false;
+    items.forEach(function(a) {
+      var text = (a.textContent || '').trim();
+      var href = a.getAttribute('href');
+      if (href === '#') {
+        if (/Buying Leads/i.test(text)) {
+          a.setAttribute('href', 'index.html');  // resolved by alias to Home
+          a.setAttribute('data-se-wired', '1');
+          any = true;
+        } else if (/Settings/i.test(text)) {
+          a.setAttribute('data-se-wired', '1');
+          a.addEventListener('click', function(e) {
+            e.preventDefault();
+            if (window.SourcingElf && window.SourcingElf.NotificationHelper) {
+              window.SourcingElf.NotificationHelper.info('Settings coming soon');
+            }
+          });
+          any = true;
+        }
+      }
+    });
+    // Chat with Elfa: only wire if no inline onclick (Home has toggleElfa already)
+    var elfa = document.querySelector('button.elfa-nav-btn:not([data-se-wired])');
+    if (elfa && !elfa.getAttribute('onclick')) {
+      elfa.setAttribute('data-se-wired', '1');
+      elfa.addEventListener('click', function() {
+        if (window.SourcingElf && window.SourcingElf.NotificationHelper) {
+          window.SourcingElf.NotificationHelper.info('Chat with Elfa coming soon');
+        }
+      });
+      any = true;
+    }
+    return any;
+  }
+  var delays = [300, 800, 1500];
+  function scheduleAll() {
+    delays.forEach(function(ms) { setTimeout(tryFix, ms); });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', scheduleAll);
+  } else {
+    scheduleAll();
+  }
+})();

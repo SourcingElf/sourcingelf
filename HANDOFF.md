@@ -135,6 +135,8 @@ D0 阻塞问题全部清除，**可以进 D1**。
 | K9 | View Details modal 字段太少 | 当前只显示 buyer/items/notes/valid-until/shortId | 等用户列要补的字段（如 buyer 历史订单数、平台验证状态、定位标签、关键产品照片等）后再扩展 |
 | K10 | D1 Stripe 沙盒端到端付款验收 | 用户决策延后：上线前跟 K6 webhook 一起统一测试 | 上线前合并验收（含真实卡 4242 → 余额入账确认） |
 | K11 | Video Submit 文件上传集成 | D3-D4 MVP 用 URL 字符串（supplier 自己把图/视频传到云盘后填公开链接）。需要后端文件上传 endpoint + Supabase Storage 桶 + 前端拖拽上传 UI | 客户测试反馈或 D 阶段稳定后单独议（约 1 天工作量） |
+| K12 | Supplier Settings 页面 | 侧栏 "Settings" 当前 toast "Coming soon"。需要做：profile 编辑、密码修改、通知偏好、登出按钮等 | D 阶段后期或客户提需求后做 |
+| K13 | Chat with Elfa AI 助手 | 侧栏 + Home 页 elfa-toggle-btn 当前 toast "Coming soon"（Home 上的 toggleElfa() 是 bundle demo）。这是产品级决策：是否做 AI 客服 / 销售助手 | 产品决策待定，独立模块 |
 
 ---
 
