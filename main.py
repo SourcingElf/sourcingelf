@@ -90,10 +90,20 @@ for _page in _FRONTEND_PAGES:
 # never matched a real file. Redirect them to the actual page so existing
 # buttons keep working while the source HTML gets cleaned up.
 _DEAD_LINK_ALIASES = {
-    # `.html`-suffixed aliases — buyer-portal bundle templates and supplier
-    # inline templates link to these short names. Keep them.
-    "credits.html":  "Supplier Dashboard - Credits.html",
-    "video.html":    "Supplier Dashboard - Video.html",
+    # `.html`-suffixed aliases — bundle templates link to short names like
+    # "credits.html" instead of the spaced real filenames. Mapped from a
+    # global grep over all 22 backup HTMLs (規則 10):
+    #   - Supplier portal pages cross-link via these 5 shortnames
+    #   - Buyer portal short links (tasks.html, featured.html, lead-form.html,
+    #     applications.html, profile.html, auth.html, dashboard.html for buyer,
+    #     etc.) are intentionally NOT added here yet — they belong in the
+    #     D8-D13 Buyer sprint when those pages get wired up.
+    "credits.html":      "Supplier Dashboard - Credits.html",
+    "video.html":        "Supplier Dashboard - Video.html",
+    "video-submit.html": "Supplier Dashboard - Video Submit.html",
+    "connected.html":    "Supplier Dashboard - Connected.html",
+    "requests.html":     "Supplier Dashboard - Requests.html",
+    "index.html":        "Supplier Dashboard - Home.html",
     # Extensionless aliases — Supplier Dashboard - Home.html uses clean URLs
     # like /credits, /dashboard, /leads, but the real files have spaced names.
     # 19 of the 19 extensionless dead-link occurrences in Home.html resolve
