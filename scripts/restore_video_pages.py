@@ -24,6 +24,11 @@ VIDEO_INIT = """  <!-- D3 live integration: load real video status, override bun
 
     if (SE.RouteGuard && SE.RouteGuard.requireSupplier) SE.RouteGuard.requireSupplier();
 
+    // Hide the bundle's "design preview" state switcher — it's QA tooling,
+    // not a real user control. Real status comes from the API.
+    var sw = document.querySelector('.state-switcher');
+    if (sw) sw.style.display = 'none';
+
     function pickState(status) {
       if (!status || status === 'none') return 1;
       if (status === 'materials_submitted' || status === 'in_production' || status === 'revision_requested') return 2;
