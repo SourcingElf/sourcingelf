@@ -116,6 +116,9 @@ _DEAD_LINK_ALIASES = {
     "requests":      "Supplier Dashboard - Requests.html",
     "videos":        "Supplier Dashboard - Video.html",
     "videos/create": "Supplier Dashboard - Video Submit.html",
+    # Settings is K12 (not built). Alias to Home so /settings doesn't 404 if
+    # the client.js patch hasn't loaded (browser cache / mid-deploy).
+    "settings":      "Supplier Dashboard - Home.html",
 }
 
 
