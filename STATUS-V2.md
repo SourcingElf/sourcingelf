@@ -1,5 +1,70 @@
 # SourcingElf V2 — 当前开发状态
 
+2026-05-14 22:29 — V2 基础设施与 Auth 准备更新
+今日完成事项
+Cloudflare 与域名
+sourcingelf.ai 已成功连接 Cloudflare Pages
+SSL 已启用并生效
+正式线上部署正常运行
+Supabase Auth 配置
+Site URL 已更新为：
+https://sourcingelf.ai
+已添加 Redirect URLs：
+https://sourcingelf.ai/*
+http://localhost:3000/*
+Email Signup 已开启
+Confirm Email 为方便 MVP 测试，暂时关闭
+Supplier Auth 开发
+开始开发 supplier-landing-v2.html 的供应商注册登录
+已确认接入：
+Supplier Signup
+Supplier Login
+Forgot Password
+Dashboard Redirect
+已完成 Supabase SDK 接入准备
+Claude Code 开发问题总结
+Claude Design 输出的 bundled HTML 文件，会极大消耗 Claude Code token
+大型 bundle 文件不适合 AI 大规模重构
+后续开发规则确认：
+不允许重构 bundled HTML
+不允许读取无关文件
+只允许最小 patch 修改
+Resend 邮件系统
+Resend 账号已配置
+sourcingelf.ai 域名已添加
+已连接 Cloudflare DNS 自动配置
+正等待 DNS propagation 验证完成
+Stripe 支付系统
+Stripe Sandbox/Test Mode 已配置
+已创建产品：
+Supplier Connection
+定价：
+US$138 一次性付款
+当前 MVP 方向确认
+
+V2 采用简化架构：
+
+Static HTML
+
+Supabase
+Cloudflare Pages
+Resend
+Stripe
+
+核心商业流程保持：
+
+Buyer Accept
+→ Supplier Pay
+→ Unlock Connection & Chat
+
+Claude Code Reset 后下一步
+继续完成 supplier auth integration
+使用 minimal patch 方式开发
+避免 bundled HTML 大规模修改
+完成注册、登录、忘记密码流程
+
+
+
 更新时间：2026-05-14
 
 ---
