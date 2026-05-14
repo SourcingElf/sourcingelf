@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Supplier — SourcingElf</title>
@@ -29,7 +28,6 @@ body{font-family:'DM Sans',sans-serif;font-size:14px;color:var(--gray-800);backg
 .side-nav{position:fixed;top:0;left:0;bottom:0;width:280px;background:var(--navy-deep);z-index:201;transform:translateX(-100%);transition:transform 250ms cubic-bezier(.16,1,.3,1);display:flex;flex-direction:column}
 .side-nav.open{transform:translateX(0)}
 .side-nav-header{padding:24px 24px 20px;border-bottom:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:space-between}
-.side-logo{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:#fff}
 .side-close{background:none;border:none;color:rgba(255,255,255,.5);cursor:pointer;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:6px}
 .side-close:hover{color:#fff}
 .side-links{padding:16px 0;flex:1}
@@ -102,7 +100,6 @@ body{font-family:'DM Sans',sans-serif;font-size:14px;color:var(--gray-800);backg
 .validity-label{color:var(--gray-400)}
 .validity-date{font-weight:600;color:var(--amber)}
 
-/* STATUS CARDS within lead detail */
 .status-pending{border:1px solid rgba(217,119,6,.3);background:rgba(217,119,6,.04);border-radius:10px;padding:16px;display:flex;align-items:center;gap:12px;margin-top:4px}
 .status-accepted{border:1px solid rgba(22,163,74,.3);background:rgba(22,163,74,.04);border-radius:10px;padding:16px;margin-top:4px}
 .status-accepted-banner{background:rgba(22,163,74,.08);border-radius:8px;padding:12px 16px;margin-bottom:14px;font-size:14px;font-weight:600;color:var(--green)}
@@ -210,36 +207,39 @@ body{font-family:'DM Sans',sans-serif;font-size:14px;color:var(--gray-800);backg
 <div class="side-overlay" id="overlay" onclick="closeSide()"></div>
 <nav class="side-nav" id="sideNav">
   <div class="side-nav-header">
-    <span class="side-logo">SourcingElf</span>
+    <!-- ✅ FIXED: Real logo (white, dark bg) -->
+    <a href="/" style="display:flex;align-items:center;text-decoration:none">
+      <img src="/SourcingElf%20Logo%20-%20PNG%20-%20%E9%80%8F%E6%98%8E%E5%BA%95.png" alt="SourcingElf" style="height:28px;display:block;filter:brightness(0) invert(1)">
+    </a>
     <button class="side-close" onclick="closeSide()">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"></path></svg>
     </button>
   </div>
   <div class="side-links">
     <div class="side-link" onclick="goPage('leads-list')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect></svg>
       Dashboard
     </div>
     <div class="side-link active" onclick="goPage('leads-list')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
       Buying Leads
     </div>
     <div class="side-link" onclick="goPage('connected')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
       Connected Buyers
     </div>
     <div class="side-link" onclick="goPage('profile')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
       My Profile
     </div>
     <div class="side-link" onclick="goPage('settings')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><circle cx="12" cy="12" r="3"></circle></svg>
       Settings
     </div>
   </div>
   <div class="side-bottom">
     <button class="side-elfa-btn">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path></svg>
       Chat with Elfa
     </button>
   </div>
@@ -248,24 +248,25 @@ body{font-family:'DM Sans',sans-serif;font-size:14px;color:var(--gray-800);backg
 <!-- TOP NAV -->
 <nav class="nav">
   <button class="hamburger-btn" onclick="openSide()">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"></path></svg>
   </button>
+  <!-- ✅ FIXED: Real logo added to top nav (color, light bg) -->
+  <a href="/" style="display:flex;align-items:center;text-decoration:none">
+    <img src="/SourcingElf%20Logo%20-%20PNG%20-%20%E9%80%8F%E6%98%8E%E5%BA%95.png" alt="SourcingElf" style="height:32px;display:block">
+  </a>
   <span class="nav-title" id="navTitle">Buying Leads</span>
   <div class="nav-avatar">S</div>
 </nav>
 
 
-<!-- ══════════════════════════════════
-     PAGE: LEAD DETAIL (/leads/[id])
-══════════════════════════════════ -->
+<!-- PAGE: LEAD DETAIL -->
 <div class="page active" id="page-lead-detail">
   <div class="page-body">
     <div class="back-link" onclick="goPage('leads-list')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"></path></svg>
       Back to Buying Leads
     </div>
 
-    <!-- Buyer Info Card -->
     <div class="card">
       <div class="card-body">
         <div class="lead-header-bar">
@@ -275,27 +276,22 @@ body{font-family:'DM Sans',sans-serif;font-size:14px;color:var(--gray-800);backg
         </div>
         <h2 style="font-family:'Playfair Display',serif;font-size:22px;color:var(--navy);margin-bottom:6px">Buying Lead #2405</h2>
         <div class="hidden-note">Company name and contact details revealed after connection confirmed and payment completed.</div>
-
         <div class="info-grid">
           <div class="info-cell"><div class="info-cell-label">Country / Region</div><div class="info-cell-value">Europe</div></div>
           <div class="info-cell"><div class="info-cell-label">Buyer Type</div><div class="info-cell-value">Brand</div></div>
           <div class="info-cell"><div class="info-cell-label">Annual Sourcing</div><div class="info-cell-value">USD 2M – 5M</div></div>
           <div class="info-cell"><div class="info-cell-label">Target Positioning</div><div class="info-cell-value">Mid-range / Premium</div></div>
         </div>
-
-        <!-- Sourcing Requirements -->
         <div class="req-label">Sourcing Requirements</div>
         <div class="req-item"><span class="req-key">Product</span><span class="req-val">Women's Pullover Sweater</span></div>
         <div class="req-item"><span class="req-key">Quantity</span><span class="req-val">5,000 pcs (estimated)</span></div>
         <div class="req-item"><span class="req-key">Price Range</span><span class="req-val">FOB USD 8 – 15</span></div>
         <div class="req-item"><span class="req-key">OEM / ODM</span><span class="req-val">Both accepted</span></div>
         <div class="req-item"><span class="req-key">Certifications</span><span class="req-val">OEKO-TEX preferred</span></div>
-
         <div style="margin-top:20px">
           <div class="req-label">Additional Notes</div>
           <div style="font-size:13px;color:var(--gray-600);font-style:italic;line-height:1.7">Looking for an experienced knitwear partner for a long-term collaboration. Prefer factories with European export experience.</div>
         </div>
-
         <div class="validity">
           <span class="validity-label">Valid until:</span>
           <span class="validity-date">⚠ 30 Jun 2026 (48 days left)</span>
@@ -303,29 +299,22 @@ body{font-family:'DM Sans',sans-serif;font-size:14px;color:var(--gray-800);backg
       </div>
     </div>
 
-    <!-- Application Status Card -->
     <div class="card">
       <div class="card-body">
         <h3 style="font-size:16px;font-weight:600;color:var(--navy);margin-bottom:16px">Your Application</h3>
-
-        <!-- STATE A: Not applied -->
         <div id="state-not-applied">
           <p style="font-size:13px;color:var(--gray-600);margin-bottom:16px">Tell this buyer why your factory is the right match.</p>
           <button class="btn btn-navy" onclick="goPage('apply-form')">Submit Your Application →</button>
         </div>
-
-        <!-- STATE B: Applied, waiting (hidden by default) -->
         <div id="state-applied" style="display:none">
           <div class="status-pending">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2" style="flex-shrink:0"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2" style="flex-shrink:0"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg>
             <div>
               <div style="font-size:14px;font-weight:600;color:var(--amber)">⏳ Waiting for buyer confirmation</div>
               <div style="font-size:12px;color:var(--gray-600);margin-top:2px">Applied on 10 May 2026 · We'll notify you when the buyer responds.</div>
             </div>
           </div>
         </div>
-
-        <!-- STATE C: Buyer accepted, pay to connect (hidden by default) -->
         <div id="state-accepted" style="display:none">
           <div class="status-accepted">
             <div class="status-accepted-banner">🎉 Good news! This buyer wants to connect with you.</div>
@@ -342,11 +331,9 @@ body{font-family:'DM Sans',sans-serif;font-size:14px;color:var(--gray-800);backg
             <div style="font-size:11px;color:var(--gray-400);text-align:center;margin-top:8px">🔒 Secure payment by Stripe</div>
           </div>
         </div>
-
-        <!-- STATE D: Connected (hidden by default) -->
         <div id="state-connected" style="display:none">
           <div style="display:flex;align-items:center;gap:12px;padding:16px;background:rgba(22,163,74,.05);border:1px solid rgba(22,163,74,.2);border-radius:10px">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2" style="flex-shrink:0"><path d="M9 12l2 2 4-4M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2" style="flex-shrink:0"><path d="M9 12l2 2 4-4M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
             <div style="flex:1">
               <div style="font-size:14px;font-weight:600;color:var(--green)">Connected ✓</div>
               <div style="font-size:12px;color:var(--gray-600);margin-top:2px">Connected on 12 May 2026</div>
@@ -357,7 +344,6 @@ body{font-family:'DM Sans',sans-serif;font-size:14px;color:var(--gray-800);backg
       </div>
     </div>
 
-    <!-- Demo state switcher -->
     <div style="background:rgba(26,39,68,.04);border-radius:10px;padding:16px;margin-top:8px">
       <div style="font-size:11px;font-weight:600;color:var(--gray-400);margin-bottom:10px;letter-spacing:.06em">DEMO — Switch Application State:</div>
       <div style="display:flex;gap:8px;flex-wrap:wrap">
@@ -371,13 +357,11 @@ body{font-family:'DM Sans',sans-serif;font-size:14px;color:var(--gray-800);backg
 </div>
 
 
-<!-- ══════════════════════════════════
-     PAGE: APPLY FORM (/leads/[id]/apply)
-══════════════════════════════════ -->
+<!-- PAGE: APPLY FORM -->
 <div class="page" id="page-apply-form">
   <div class="page-body" style="max-width:680px">
     <div class="back-link" onclick="goPage('lead-detail')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"></path></svg>
       Back to Lead Detail
     </div>
     <div class="card">
@@ -386,14 +370,10 @@ body{font-family:'DM Sans',sans-serif;font-size:14px;color:var(--gray-800);backg
         <p style="font-size:13px;color:var(--gray-600);margin-top:6px">Your application will be reviewed by the buyer. Be specific and highlight your strengths.</p>
       </div>
       <div class="apply-form">
-
-        <!-- Why Match -->
         <div class="form-group">
           <label class="form-label">Why is your factory suitable for this order? <span style="color:var(--red)">*</span></label>
-          <textarea class="form-textarea" rows="5" placeholder="e.g. We specialize in fine gauge knitwear with 15 years of export experience. We have supplied similar products to brands in Europe and the US. Our MOQ is 300 pcs/style..."></textarea>
+          <textarea class="form-textarea" rows="5" placeholder="e.g. We specialize in fine gauge knitwear with 15 years of export experience..."></textarea>
         </div>
-
-        <!-- Capability -->
         <div class="form-group">
           <label class="form-label">Can you meet the requirements? <span style="color:var(--red)">*</span></label>
           <div class="capability-row">
@@ -413,27 +393,19 @@ body{font-family:'DM Sans',sans-serif;font-size:14px;color:var(--gray-800);backg
             </div>
             <div class="cap-field">
               <div style="font-size:12px;font-weight:600;color:var(--gray-600);margin-bottom:8px">Lead Time</div>
-              <div style="display:flex;align-items:center;gap:8px;font-size:13px">
-                Samples: <input type="text" style="width:50px;border:1px solid rgba(26,39,68,.2);border-radius:4px;padding:4px 8px;font-size:13px"> days
-              </div>
-              <div style="display:flex;align-items:center;gap:8px;font-size:13px;margin-top:8px">
-                Bulk: <input type="text" style="width:50px;border:1px solid rgba(26,39,68,.2);border-radius:4px;padding:4px 8px;font-size:13px"> days
-              </div>
+              <div style="display:flex;align-items:center;gap:8px;font-size:13px">Samples: <input type="text" style="width:50px;border:1px solid rgba(26,39,68,.2);border-radius:4px;padding:4px 8px;font-size:13px"> days</div>
+              <div style="display:flex;align-items:center;gap:8px;font-size:13px;margin-top:8px">Bulk: <input type="text" style="width:50px;border:1px solid rgba(26,39,68,.2);border-radius:4px;padding:4px 8px;font-size:13px"> days</div>
             </div>
           </div>
         </div>
-
-        <!-- Reference Photos -->
         <div class="form-group">
           <label class="form-label">Reference Products (Optional)</label>
           <div class="upload-zone">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
             <div style="font-size:13px;color:var(--gray-600)">Upload photos of similar products you've made</div>
             <div style="font-size:11px;color:var(--gray-400);margin-top:4px">JPG / PNG · Max 5 photos · 10MB each</div>
           </div>
         </div>
-
-        <!-- Contact Confirm -->
         <div class="form-group" style="margin-bottom:0">
           <label class="form-label">Confirm Your Contact</label>
           <div style="background:var(--gray-50);border-radius:8px;padding:14px 16px;font-size:13px;color:var(--gray-600)">
@@ -451,13 +423,10 @@ body{font-family:'DM Sans',sans-serif;font-size:14px;color:var(--gray-800);backg
 </div>
 
 
-<!-- ══════════════════════════════════
-     PAGE: CONNECTED BUYERS (/connected)
-══════════════════════════════════ -->
+<!-- PAGE: CONNECTED BUYERS -->
 <div class="page" id="page-connected">
   <div class="page-body">
     <h2 style="font-family:'Playfair Display',serif;font-size:24px;color:var(--navy);margin-bottom:20px">Connected Buyers</h2>
-
     <div class="connected-card">
       <div class="connected-avatar">J</div>
       <div class="connected-info">
@@ -468,7 +437,6 @@ body{font-family:'DM Sans',sans-serif;font-size:14px;color:var(--gray-800);backg
       </div>
       <button class="btn btn-navy btn-sm">Open Chat →</button>
     </div>
-
     <div class="connected-card">
       <div class="connected-avatar" style="background:var(--amber)">M</div>
       <div class="connected-info">
@@ -479,21 +447,11 @@ body{font-family:'DM Sans',sans-serif;font-size:14px;color:var(--gray-800);backg
       </div>
       <button class="btn btn-navy btn-sm">Open Chat →</button>
     </div>
-
-    <!-- Empty state example (hidden) -->
-    <div class="empty-state" style="display:none">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
-      <div class="empty-title">No connections yet</div>
-      <div class="empty-sub">Apply to buying leads to get started.</div>
-      <button class="btn btn-navy" onclick="goPage('leads-list')">Browse Buying Leads →</button>
-    </div>
   </div>
 </div>
 
 
-<!-- ══════════════════════════════════
-     PAGE: MY PROFILE (/profile)
-══════════════════════════════════ -->
+<!-- PAGE: MY PROFILE -->
 <div class="page" id="page-profile">
   <div class="page-body" style="max-width:680px">
     <h2 style="font-family:'Playfair Display',serif;font-size:24px;color:var(--navy);margin-bottom:20px">My Profile</h2>
@@ -506,7 +464,6 @@ body{font-family:'DM Sans',sans-serif;font-size:14px;color:var(--gray-800);backg
         <div class="profile-tab" onclick="switchProfileTab(4)">Certifications</div>
       </div>
 
-      <!-- Contact -->
       <div class="profile-section" id="ptab-0">
         <div class="grid-2">
           <div class="form-group"><label class="form-label">Full Name</label><input class="form-input" value="Sarah Tan"></div>
@@ -515,27 +472,20 @@ body{font-family:'DM Sans',sans-serif;font-size:14px;color:var(--gray-800);backg
         <div class="grid-2">
           <div class="form-group">
             <label class="form-label">Phone</label>
-            <div style="display:flex;gap:8px">
-              <select class="form-select" style="width:90px;flex-shrink:0"><option>+86</option><option>+65</option></select>
-              <input class="form-input" value="138 0000 1234">
-            </div>
+            <div style="display:flex;gap:8px"><select class="form-select" style="width:90px;flex-shrink:0"><option>+86</option><option>+65</option></select><input class="form-input" value="138 0000 1234"></div>
           </div>
           <div class="form-group">
             <label class="form-label">WhatsApp <span style="font-size:11px;color:var(--gray-400)">(Elfa contacts via this)</span></label>
-            <div style="display:flex;gap:8px">
-              <select class="form-select" style="width:90px;flex-shrink:0"><option>+86</option><option>+65</option></select>
-              <input class="form-input" value="138 0000 1234">
-            </div>
+            <div style="display:flex;gap:8px"><select class="form-select" style="width:90px;flex-shrink:0"><option>+86</option><option>+65</option></select><input class="form-input" value="138 0000 1234"></div>
           </div>
         </div>
       </div>
 
-      <!-- Company -->
       <div class="profile-section" id="ptab-1">
         <div class="form-group"><label class="form-label">Company Name</label><input class="form-input" value="Sunrise Fashion Ltd"></div>
         <div class="form-group"><label class="form-label">Business License</label>
           <div style="background:var(--gray-50);border-radius:7px;padding:12px;font-size:13px;color:var(--gray-600);display:flex;align-items:center;gap:10px">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2"><path d="M9 12l2 2 4-4M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2"><path d="M9 12l2 2 4-4M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
             business_license.pdf — <span style="color:var(--green);font-weight:600">Uploaded</span>
           </div>
         </div>
@@ -547,7 +497,6 @@ body{font-family:'DM Sans',sans-serif;font-size:14px;color:var(--gray-800);backg
         <div class="form-group"><label class="form-label">Office Address</label><input class="form-input" value="88 Haizhu Ave, Guangzhou 510000"></div>
       </div>
 
-      <!-- Products -->
       <div class="profile-section active" id="ptab-2">
         <div class="form-group">
           <label class="form-label">Main Products</label>
@@ -563,32 +512,17 @@ body{font-family:'DM Sans',sans-serif;font-size:14px;color:var(--gray-800);backg
           </div>
         </div>
         <div class="section-subtitle">Target Markets</div>
-        <div class="repeatable-row">
-          <select class="form-select">
-            <option>Europe</option><option>USA</option><option>Japan</option><option>Middle East</option><option>Australia</option>
-          </select>
-          <button class="remove-btn">×</button>
-        </div>
-        <div class="repeatable-row">
-          <select class="form-select"><option>USA</option><option>Europe</option><option>Japan</option></select>
-          <button class="remove-btn">×</button>
-        </div>
-        <button class="add-row-btn">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
-          Add Market
-        </button>
+        <div class="repeatable-row"><select class="form-select"><option>Europe</option><option>USA</option><option>Japan</option><option>Middle East</option><option>Australia</option></select><button class="remove-btn">×</button></div>
+        <div class="repeatable-row"><select class="form-select"><option>USA</option><option>Europe</option><option>Japan</option></select><button class="remove-btn">×</button></div>
+        <button class="add-row-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v8M8 12h8"></path></svg>Add Market</button>
         <div class="section-subtitle" style="margin-top:24px">Client Types</div>
         <div class="checkbox-row"><input type="checkbox" checked><label style="font-size:13px">Brands</label></div>
         <div class="checkbox-row"><input type="checkbox" checked><label style="font-size:13px">Chain Stores / Retailers</label></div>
         <div class="checkbox-row"><input type="checkbox"><label style="font-size:13px">Wholesalers</label></div>
         <div class="checkbox-row"><input type="checkbox" checked><label style="font-size:13px">Online Stores / E-commerce</label></div>
-        <div class="form-group" style="margin-top:20px">
-          <label class="form-label">Main Clients (Optional)</label>
-          <input class="form-input" placeholder="e.g. Brand A, Retailer B (if you can share)">
-        </div>
+        <div class="form-group" style="margin-top:20px"><label class="form-label">Main Clients (Optional)</label><input class="form-input" placeholder="e.g. Brand A, Retailer B (if you can share)"></div>
       </div>
 
-      <!-- Production -->
       <div class="profile-section" id="ptab-3">
         <div class="section-subtitle">Factory Information</div>
         <div class="repeatable-row" style="flex-wrap:wrap">
@@ -598,10 +532,7 @@ body{font-family:'DM Sans',sans-serif;font-size:14px;color:var(--gray-800);backg
           <input class="form-input" placeholder="Monthly pcs" type="number" style="flex:1;min-width:100px">
           <button class="remove-btn">×</button>
         </div>
-        <button class="add-row-btn">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
-          Add Factory
-        </button>
+        <button class="add-row-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v8M8 12h8"></path></svg>Add Factory</button>
         <div class="section-subtitle" style="margin-top:24px">MOQ</div>
         <div class="repeatable-row">
           <input class="form-input" placeholder="Category (e.g. Knitwear)">
@@ -609,42 +540,18 @@ body{font-family:'DM Sans',sans-serif;font-size:14px;color:var(--gray-800);backg
           <select class="form-select" style="max-width:100px"><option>pcs</option><option>pcs/style</option><option>kg</option></select>
           <button class="remove-btn">×</button>
         </div>
-        <button class="add-row-btn">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
-          Add MOQ
-        </button>
+        <button class="add-row-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v8M8 12h8"></path></svg>Add MOQ</button>
       </div>
 
-      <!-- Certifications -->
       <div class="profile-section" id="ptab-4">
         <div class="section-subtitle">Certifications</div>
-        <div class="repeatable-row">
-          <input class="form-input" placeholder="Certification name (e.g. OEKO-TEX)" value="OEKO-TEX">
-          <button class="btn btn-outline btn-sm" style="flex-shrink:0">Upload</button>
-          <button class="remove-btn">×</button>
-        </div>
-        <div class="repeatable-row">
-          <input class="form-input" placeholder="Certification name" value="ISO 9001">
-          <button class="btn btn-outline btn-sm" style="flex-shrink:0">Upload</button>
-          <button class="remove-btn">×</button>
-        </div>
-        <button class="add-row-btn">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
-          Add Certification
-        </button>
+        <div class="repeatable-row"><input class="form-input" placeholder="Certification name (e.g. OEKO-TEX)" value="OEKO-TEX"><button class="btn btn-outline btn-sm" style="flex-shrink:0">Upload</button><button class="remove-btn">×</button></div>
+        <div class="repeatable-row"><input class="form-input" placeholder="Certification name" value="ISO 9001"><button class="btn btn-outline btn-sm" style="flex-shrink:0">Upload</button><button class="remove-btn">×</button></div>
+        <button class="add-row-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v8M8 12h8"></path></svg>Add Certification</button>
         <div class="section-subtitle" style="margin-top:24px">Core Strengths</div>
-        <div class="repeatable-row">
-          <input class="form-input" value="15 years of export experience to European brands">
-          <button class="remove-btn">×</button>
-        </div>
-        <div class="repeatable-row">
-          <input class="form-input" value="Fine gauge knitwear specialist with in-house design team">
-          <button class="remove-btn">×</button>
-        </div>
-        <button class="add-row-btn">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
-          Add Strength
-        </button>
+        <div class="repeatable-row"><input class="form-input" value="15 years of export experience to European brands"><button class="remove-btn">×</button></div>
+        <div class="repeatable-row"><input class="form-input" value="Fine gauge knitwear specialist with in-house design team"><button class="remove-btn">×</button></div>
+        <button class="add-row-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v8M8 12h8"></path></svg>Add Strength</button>
       </div>
 
       <div style="padding:20px 28px;border-top:1px solid var(--gray-100);display:flex;gap:12px;justify-content:flex-end">
@@ -656,14 +563,11 @@ body{font-family:'DM Sans',sans-serif;font-size:14px;color:var(--gray-800);backg
 </div>
 
 
-<!-- ══════════════════════════════════
-     PAGE: SETTINGS (/settings)
-══════════════════════════════════ -->
+<!-- PAGE: SETTINGS -->
 <div class="page" id="page-settings">
   <div class="page-body" style="max-width:680px">
     <h2 style="font-family:'Playfair Display',serif;font-size:24px;color:var(--navy);margin-bottom:20px">Settings</h2>
 
-    <!-- Account -->
     <div class="settings-group">
       <div class="settings-group-title">Account Settings</div>
       <div class="settings-inner">
@@ -692,58 +596,29 @@ body{font-family:'DM Sans',sans-serif;font-size:14px;color:var(--gray-800);backg
       </div>
     </div>
 
-    <!-- Payment History -->
     <div class="settings-group">
       <div class="settings-group-title">Payment History</div>
       <div class="settings-inner" style="padding:0;overflow-x:auto">
         <table class="pay-table">
-          <thead>
-            <tr><th>Date</th><th>Type</th><th>Buyer</th><th>Amount</th><th>Status</th></tr>
-          </thead>
+          <thead><tr><th>Date</th><th>Type</th><th>Buyer</th><th>Amount</th><th>Status</th></tr></thead>
           <tbody>
-            <tr>
-              <td>7 May 2026</td>
-              <td><span class="badge badge-green">Connection</span></td>
-              <td>J. Lee, USA</td>
-              <td style="font-weight:600;color:var(--green)">US$138</td>
-              <td><span class="badge badge-green">Paid ✓</span></td>
-            </tr>
-            <tr>
-              <td>20 Apr 2026</td>
-              <td><span class="badge badge-green">Connection</span></td>
-              <td>M. Wang, HK</td>
-              <td style="font-weight:600;color:var(--green)">US$99 <span style="font-size:11px;color:var(--gray-400)">(promo)</span></td>
-              <td><span class="badge badge-green">Paid ✓</span></td>
-            </tr>
+            <tr><td>7 May 2026</td><td><span class="badge badge-green">Connection</span></td><td>J. Lee, USA</td><td style="font-weight:600;color:var(--green)">US$138</td><td><span class="badge badge-green">Paid ✓</span></td></tr>
+            <tr><td>20 Apr 2026</td><td><span class="badge badge-green">Connection</span></td><td>M. Wang, HK</td><td style="font-weight:600;color:var(--green)">US$99 <span style="font-size:11px;color:var(--gray-400)">(promo)</span></td><td><span class="badge badge-green">Paid ✓</span></td></tr>
           </tbody>
         </table>
       </div>
     </div>
 
-    <!-- Notifications -->
     <div class="settings-group">
       <div class="settings-group-title">Notification Settings</div>
       <div class="settings-inner">
-        <div class="notification-row">
-          <input type="checkbox" checked>
-          <label style="font-size:14px;color:var(--gray-800);flex:1">Email me when a new Buying Lead matches my profile</label>
-        </div>
-        <div class="notification-row">
-          <input type="checkbox" checked>
-          <label style="font-size:14px;color:var(--gray-800);flex:1">Email me when a buyer accepts my application</label>
-        </div>
-        <div class="notification-row">
-          <input type="checkbox" checked>
-          <label style="font-size:14px;color:var(--gray-800);flex:1">Email me when a buyer declines my application</label>
-        </div>
-        <div class="notification-row">
-          <input type="checkbox">
-          <label style="font-size:14px;color:var(--gray-800);flex:1">Weekly digest of new Buying Leads</label>
-        </div>
+        <div class="notification-row"><input type="checkbox" checked><label style="font-size:14px;color:var(--gray-800);flex:1">Email me when a new Buying Lead matches my profile</label></div>
+        <div class="notification-row"><input type="checkbox" checked><label style="font-size:14px;color:var(--gray-800);flex:1">Email me when a buyer accepts my application</label></div>
+        <div class="notification-row"><input type="checkbox" checked><label style="font-size:14px;color:var(--gray-800);flex:1">Email me when a buyer declines my application</label></div>
+        <div class="notification-row"><input type="checkbox"><label style="font-size:14px;color:var(--gray-800);flex:1">Weekly digest of new Buying Leads</label></div>
       </div>
     </div>
 
-    <!-- Danger Zone -->
     <div class="danger-zone">
       <div>
         <div class="danger-title">Delete Account</div>
@@ -755,9 +630,7 @@ body{font-family:'DM Sans',sans-serif;font-size:14px;color:var(--gray-800);backg
 </div>
 
 
-<!-- ══════════════════════════════════
-     HIDDEN: leads-list (back nav target)
-══════════════════════════════════ -->
+<!-- BACK NAV TARGET -->
 <div class="page" id="page-leads-list">
   <div class="page-body">
     <p style="color:var(--gray-400);font-size:13px;padding:40px 0 0;text-align:center">← This page links back to the main Supplier Dashboard (supplier-dashboard.html)</p>
@@ -782,7 +655,7 @@ body{font-family:'DM Sans',sans-serif;font-size:14px;color:var(--gray-800);backg
       </div>
       <div style="font-size:12px;color:#4ade80;margin-top:2px">🎉 Save US$39 · Early offer for first 100 suppliers</div>
     </div>
-    <p style="font-size:13px;color:var(--gray-600);margin-bottom:16px">This one-time payment unlocks direct messaging with this buyer. You can discuss products, share samples, and negotiate directly.</p>
+    <p style="font-size:13px;color:var(--gray-600);margin-bottom:16px">This one-time payment unlocks direct messaging with this buyer.</p>
     <div style="border:1px solid rgba(26,39,68,.12);border-radius:8px;padding:14px;margin-bottom:16px;display:flex;flex-direction:column;gap:10px">
       <input class="form-input" placeholder="Card number" type="text" style="margin-bottom:0">
       <div class="grid-2">
@@ -801,10 +674,7 @@ body{font-family:'DM Sans',sans-serif;font-size:14px;color:var(--gray-800);backg
   <div class="modal-box">
     <div class="modal-title" style="color:var(--red)">Delete Account</div>
     <p style="font-size:13px;color:var(--gray-600);margin-bottom:20px">This action is permanent and cannot be undone. Type your email address to confirm.</p>
-    <div class="form-group">
-      <label class="form-label">Confirm Email</label>
-      <input class="form-input" placeholder="sarah@sunrisefashion.cn">
-    </div>
+    <div class="form-group"><label class="form-label">Confirm Email</label><input class="form-input" placeholder="sarah@sunrisefashion.cn"></div>
     <div style="display:flex;gap:10px;margin-top:8px">
       <button class="btn btn-outline btn-full" onclick="closeDeleteModal()">Cancel</button>
       <button class="btn btn-outline-red btn-full">Delete My Account</button>
@@ -824,79 +694,54 @@ body{font-family:'DM Sans',sans-serif;font-size:14px;color:var(--gray-800);backg
 
 
 <script>
-// ─── NAVIGATION ───
 const pageMap = {
-  'lead-detail':'Buying Lead Details',
-  'apply-form':'Submit Application',
-  'connected':'Connected Buyers',
-  'profile':'My Profile',
-  'settings':'Settings',
-  'leads-list':'Buying Leads',
+  'lead-detail':'Buying Lead Details','apply-form':'Submit Application',
+  'connected':'Connected Buyers','profile':'My Profile',
+  'settings':'Settings','leads-list':'Buying Leads',
 };
 const sideMap = {
-  'lead-detail':'Buying Leads',
-  'apply-form':'Buying Leads',
-  'connected':'Connected Buyers',
-  'profile':'My Profile',
-  'settings':'Settings',
-  'leads-list':'Dashboard',
+  'lead-detail':'Buying Leads','apply-form':'Buying Leads',
+  'connected':'Connected Buyers','profile':'My Profile',
+  'settings':'Settings','leads-list':'Dashboard',
 };
 
 function goPage(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  const el = document.getElementById('page-'+id);
-  if(el) el.classList.add('active');
-  document.getElementById('navTitle').textContent = (pageMap[id]||'').toUpperCase();
-  // Update side nav active
+  const el=document.getElementById('page-'+id);
+  if(el)el.classList.add('active');
+  document.getElementById('navTitle').textContent=(pageMap[id]||'').toUpperCase();
   document.querySelectorAll('.side-link').forEach(l=>l.classList.remove('active'));
-  const key = sideMap[id]||'';
-  document.querySelectorAll('.side-link').forEach(l=>{
-    if(l.textContent.trim().startsWith(key)) l.classList.add('active');
-  });
-  closeSide();
-  window.scrollTo(0,0);
+  const key=sideMap[id]||'';
+  document.querySelectorAll('.side-link').forEach(l=>{if(l.textContent.trim().startsWith(key))l.classList.add('active')});
+  closeSide();window.scrollTo(0,0);
 }
 
-// ─── SIDE NAV ───
 function openSide(){document.getElementById('sideNav').classList.add('open');document.getElementById('overlay').classList.add('open')}
 function closeSide(){document.getElementById('sideNav').classList.remove('open');document.getElementById('overlay').classList.remove('open')}
 
-// ─── PROFILE TABS ───
 function switchProfileTab(idx){
   document.querySelectorAll('.profile-tab').forEach((t,i)=>t.classList.toggle('active',i===idx));
   document.querySelectorAll('.profile-section').forEach((s,i)=>s.classList.toggle('active',i===idx));
 }
 
-// ─── LEAD STATES ───
 function switchState(state){
   ['not-applied','applied','accepted','connected'].forEach(s=>{
-    document.getElementById('state-'+s).style.display = s===state?'block':'none';
+    document.getElementById('state-'+s).style.display=s===state?'block':'none';
   });
 }
 
-// ─── SETTINGS EXPAND ───
-function toggleExpand(id){
-  document.getElementById(id).classList.toggle('open');
-}
+function toggleExpand(id){document.getElementById(id).classList.toggle('open')}
 
-// ─── MODALS ───
 function openPayModal(){document.getElementById('payModal').classList.add('open')}
 function closePayModal(){document.getElementById('payModal').classList.remove('open')}
 function openDeleteModal(){document.getElementById('deleteModal').classList.add('open')}
 function closeDeleteModal(){document.getElementById('deleteModal').classList.remove('open')}
-function submitApplication(){
-  document.getElementById('successModal').classList.add('open');
-}
-function closeSuccessModal(){
-  document.getElementById('successModal').classList.remove('open');
-  goPage('lead-detail');
-}
-// Close modals on backdrop click
+function submitApplication(){document.getElementById('successModal').classList.add('open')}
+function closeSuccessModal(){document.getElementById('successModal').classList.remove('open');goPage('lead-detail')}
+
 ['payModal','deleteModal','successModal'].forEach(id=>{
-  document.getElementById(id).addEventListener('click',function(e){
-    if(e.target===this) this.classList.remove('open');
-  });
+  document.getElementById(id).addEventListener('click',function(e){if(e.target===this)this.classList.remove('open')});
 });
 </script>
-</body>
-</html>
+
+</body></html>
