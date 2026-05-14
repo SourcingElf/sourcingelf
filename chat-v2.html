@@ -376,7 +376,7 @@ function sendMsg(){
   const area = document.getElementById('messagesArea');
   const row = document.createElement('div');
   row.className='msg-row mine';
-  row.innerHTML=`<div style="max-width:70%"><div class="msg-bubble mine-supplier">${text}</div><div class="msg-status">✓ Sent</div></div>`;
+  row.innerHTML=`<div><div class="msg-bubble mine-supplier">${text}</div><div class="msg-status">✓ Sent</div></div>`;
   area.appendChild(row);
   input.value='';
   input.style.height='auto';
