@@ -111,19 +111,110 @@ body{font-family:'DM Sans',sans-serif;font-size:14px;line-height:1.7;color:var(-
 
 .hero{background:var(--navy-deep);min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:120px 20px 80px;position:relative;overflow:hidden}
 .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 40%,rgba(185,28,28,.06) 0%,transparent 70%);pointer-events:none}
-.hero-content{max-width:720px;position:relative;z-index:1}
+.hero-content{max-width:980px;width:100%;position:relative;z-index:1}
 .hero-title{font-family:'Playfair Display',serif;font-size:clamp(42px,6vw,60px);font-weight:700;color:#fff;line-height:1.1;margin:16px 0 20px}
 .hero-title em{font-style:italic;color:rgba(255,255,255,.65)}
 .hero-sub{font-size:18px;color:rgba(255,255,255,.55);margin-bottom:52px;font-weight:300;line-height:1.6}
-.hero-steps{display:flex;align-items:flex-start;gap:0;margin-bottom:52px;justify-content:center}
-.hero-step{display:flex;flex-direction:column;align-items:center;gap:12px;flex:1;max-width:200px}
-.step-num{width:36px;height:36px;border-radius:50%;background:rgba(185,28,28,.2);border:1px solid rgba(185,28,28,.4);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--red);flex-shrink:0}
-.step-text{font-size:13px;color:rgba(255,255,255,.6);line-height:1.4}
-.step-connector{height:1px;background:rgba(255,255,255,.12);flex:1;margin-top:18px;max-width:40px}
+.hero-steps{
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+  gap:0;
+  max-width:860px;
+  margin:42px auto 42px;
+}
+
+.hero-step{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:14px;
+  flex:1;
+  max-width:220px;
+}
+
+.step-num{
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  background:rgba(185,28,28,.22);
+  border:1px solid rgba(248,113,113,.45);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:'Playfair Display',serif;
+  font-size:16px;
+  font-weight:700;
+  color:#f87171;
+  flex-shrink:0;
+}
+
+.step-text{
+  font-size:14px;
+  color:rgba(255,255,255,.68);
+  line-height:1.45;
+  white-space:nowrap;
+}
+
+.step-connector{
+  height:1px;
+  background:rgba(255,255,255,.16);
+  flex:1;
+  margin-top:19px;
+  max-width:56px;
+}
 .hero-cta{display:flex;flex-direction:column;align-items:center;gap:16px}
 .hero-login{color:rgba(255,255,255,.45);font-size:14px}
 .hero-login a{color:rgba(255,255,255,.7)}
+.elfa-card{
+  display:flex;
+  gap:20px;
+  align-items:flex-start;
+  padding:28px 32px;
+  margin:32px auto 40px;
+  background:rgba(255,255,255,0.08);
+  border:1px solid rgba(255,255,255,0.14);
+  border-radius:22px;
+  max-width:980px;
+  text-align:left;
+  backdrop-filter:blur(10px);
+}
 
+.elfa-avatar{
+  width:36px;
+  height:36px;
+  min-width:36px;
+  border-radius:50%;
+  background:#cf3b2e;
+  color:#ffffff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:14px;
+  font-weight:700;
+  margin-top:6px;
+  flex-shrink:0;
+}
+
+.elfa-content{
+  flex:1;
+  padding-top:0;
+}
+
+.elfa-title{
+  color:#ffffff;
+  font-size:16px;
+  font-weight:600;
+  line-height:1.4;
+  margin-bottom:10px;
+  letter-spacing:-0.01em;
+}
+
+.elfa-text{
+  font-size:16px;
+  line-height:1.65;
+  color:rgba(255,255,255,0.88);
+}
 .features-section{padding:96px 0;background:var(--gray-50)}
 .features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;margin-top:48px}
 .feature-card{background:#fff;border-radius:12px;padding:32px;border:1px solid rgba(26,39,68,.08)}
@@ -144,7 +235,7 @@ body{font-family:'DM Sans',sans-serif;font-size:14px;line-height:1.7;color:var(-
 .social-btn-dark{background:#000;color:#fff;border-color:#000}
 .or-divider{display:flex;align-items:center;gap:12px;margin:20px 0;color:var(--gray-400);font-size:12px;font-weight:500}
 .or-divider::before,.or-divider::after{content:'';flex:1;height:1px;background:var(--gray-100)}
-.checkbox-row{display:flex;align-items:flex-start;gap:10px;margin:16px 0}
+.checkbox-row{display:flex;align-items:center;gap:10px;margin:16px 0}
 .checkbox-row input{margin-top:3px;accent-color:var(--navy)}
 .forgot-link{float:right;font-size:13px;color:var(--red);text-decoration:none}
 
@@ -178,7 +269,7 @@ body{font-family:'DM Sans',sans-serif;font-size:14px;line-height:1.7;color:var(-
 .app-row-match{font-size:13px;color:var(--gray-600);margin-top:4px}
 
 .page-header{background:#fff;border-bottom:1px solid var(--gray-100);padding:20px 4%;display:flex;align-items:center;justify-content:space-between}
-.page-header-title{font-size:18px;font-weight:600;color:var(--navy)}
+.page-header-title{font-size:16px;font-weight:600;color:var(--navy)}
 .tasks-body{padding:24px 4%;max-width:1280px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
 .task-card{background:#fff;border:1px solid rgba(26,39,68,.10);border-radius:12px;padding:20px 24px;border-left:3px solid var(--navy)}
 .task-card.completed{border-left-color:var(--gray-400)}
@@ -240,7 +331,10 @@ body{font-family:'DM Sans',sans-serif;font-size:14px;line-height:1.7;color:var(-
 .elfa-header{padding:16px 20px;border-bottom:1px solid var(--gray-100);display:flex;align-items:center;gap:10px}
 .elfa-avatar{width:32px;height:32px;background:var(--red);border-radius:50%;display:flex;align-items:center;justify-content:center}
 .elfa-avatar svg{width:16px;height:16px;color:#fff}
-.elfa-title{font-size:14px;font-weight:600;color:var(--navy)}
+.elfa-title{font-size:16px;font-weight:700;color:#ffffff;
+  line-height:1.4;
+  margin-bottom:8px;
+}
 .elfa-chat{padding:16px 20px;min-height:280px;max-height:280px;overflow-y:auto;display:flex;flex-direction:column;gap:12px}
 .elfa-msg{background:var(--gray-50);border-radius:10px;padding:12px 14px;font-size:14px;color:var(--gray-800);max-width:90%;line-height:1.6}
 .elfa-input-row{padding:12px 20px;border-top:1px solid var(--gray-100);display:flex;gap:10px}
@@ -269,6 +363,223 @@ body{font-family:'DM Sans',sans-serif;font-size:14px;line-height:1.7;color:var(-
 .fade-up-1{animation:fadeUp 400ms 100ms ease both}
 .fade-up-2{animation:fadeUp 400ms 200ms ease both}
 .fade-up-3{animation:fadeUp 400ms 300ms ease both}
+.fade-up-3{animation:fadeUp 400ms 300ms ease both}
+.site-footer{
+  background:#14213a;
+  border-top:1px solid rgba(255,255,255,0.06);
+  padding:28px 40px;
+}
+
+.footer-inner{
+  max-width:1400px;
+  margin:0 auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:40px;
+  flex-wrap:wrap;
+}
+
+.footer-left{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.footer-brand{
+  color:#ffffff;
+  font-size:15px;
+  font-weight:600;
+}
+
+.footer-links{
+  display:flex;
+  align-items:center;
+  gap:36px;
+}
+
+.footer-links a{
+  color:rgba(255,255,255,0.58);
+  text-decoration:none;
+  font-size:14px;
+}
+
+.footer-links a:hover{
+  color:#ffffff;
+}
+
+.footer-copy{
+  color:rgba(255,255,255,0.42);
+  font-size:14px;
+}
+.elfa-autofill{
+  display:flex;
+  gap:16px;
+  align-items:flex-start;
+  padding:18px;
+  margin-bottom:28px;
+  background:#f8fafc;
+  border:1px solid #e5e7eb;
+  border-radius:14px;
+}
+
+.elfa-mini-avatar{
+  width:34px;
+  height:34px;
+  min-width:34px;
+  border-radius:50%;
+  background:#bf2f27;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:14px;
+  font-weight:700;
+}
+
+.elfa-autofill-content{
+  flex:1;
+}
+
+.elfa-autofill-title{
+  font-size:14px;
+  font-weight:700;
+  color:var(--navy);
+  margin-bottom:6px;
+}
+
+.elfa-autofill-text{
+  font-size:13px;
+  line-height:1.6;
+  color:var(--gray-600);
+  margin-bottom:14px;
+}
+
+.elfa-input-block,
+.elfa-upload-block{
+  width:100%;
+}
+
+.elfa-autofill-actions{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:14px;
+}
+
+.elfa-input-label{
+  display:block;
+  font-size:13px;
+  font-weight:600;
+  color:var(--navy);
+  margin-bottom:8px;
+}
+
+.elfa-url-input{
+  height:42px;
+  padding:0 14px;
+  border:1px solid #d1d5db;
+  border-radius:10px;
+  min-width:260px;
+  max-width:420px;
+  width:100%;
+  font-size:14px;
+  background:#fff;
+}
+
+.elfa-or{
+  font-size:12px;
+  font-weight:700;
+  color:var(--gray-400);
+  letter-spacing:0.08em;
+}
+
+.elfa-upload-block{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+}
+
+.elfa-upload-btn{
+  height:42px;
+  padding:0 16px;
+  border-radius:10px;
+  background:#fff;
+  border:1px solid var(--navy);
+  color:var(--navy);
+  font-size:14px;
+  font-weight:600;
+  display:flex;
+  align-items:center;
+  cursor:pointer;
+}
+
+.elfa-upload-note{
+  font-size:12px;
+  color:var(--gray-500);
+  line-height:1.5;
+}
+
+.elfa-file-name{
+  font-size:13px;
+  color:var(--gray-600);
+}
+
+.elfa-upload-box{
+  display:flex;
+  gap:18px;
+  align-items:flex-start;
+  padding:22px;
+  margin:0 0 24px;
+  background:rgba(185,28,28,.04);
+  border:1px solid rgba(185,28,28,.12);
+  border-radius:18px;
+}
+
+.elfa-upload-icon{
+  width:36px;
+  height:36px;
+  min-width:36px;
+  border-radius:50%;
+  background:#cf3b2e;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:14px;
+  font-weight:700;
+}
+
+.elfa-upload-content{
+  flex:1;
+}
+
+.elfa-upload-title{
+  font-size:15px;
+  font-weight:600;
+  color:var(--navy);
+  margin-bottom:6px;
+}
+
+.elfa-upload-text{
+  font-size:14px;
+  line-height:1.6;
+  color:var(--gray-600);
+  margin-bottom:14px;
+}
+
+.elfa-upload-btn{
+  height:40px;
+  padding:0 18px;
+  border:none;
+  border-radius:10px;
+  background:#b91c1c;
+  color:#fff;
+  font-size:14px;
+  font-weight:600;
+  cursor:pointer;
+}
 </style>
 </head>
 <body>
@@ -291,14 +602,28 @@ body{font-family:'DM Sans',sans-serif;font-size:14px;line-height:1.7;color:var(-
   <section class="hero">
     <div class="hero-content">
       <div class="eyebrow fade-up" style="color:#f87171">For Global Fashion Buyers</div>
-      <h1 class="hero-title fade-up-1">Source Smarter.<br><em>Connect Faster.</em></h1>
-      <p class="hero-sub fade-up-2">Post your sourcing needs. Elfa finds the right suppliers.<br>You choose who to meet.</p>
-      <div class="hero-steps fade-up-2">
+      <h1 class="hero-title fade-up-1">Source Smarter<br>With Elfa</h1>
+      <p class="hero-sub fade-up-2">Describe your sourcing needs or upload your brief.
+Elfa helps suppliers respond faster.</p>
+      <div class="elfa-card fade-up-2">
+  <div class="elfa-avatar">✦</div>
+
+  <div class="elfa-content">
+    <div class="elfa-title">Hi, I’m Elfa.</div>
+
+    <div class="elfa-text">
+      Tell me what you're sourcing — or upload your brief, tech pack, or spreadsheet.
+      I’ll help turn it into a clear sourcing request.
+    </div>
+  </div>
+</div>
+
+<div class="hero-steps fade-up-2">
         <div class="hero-step"><div class="step-num">①</div><div class="step-text">Post your sourcing task</div></div>
         <div class="step-connector"></div>
-        <div class="hero-step"><div class="step-num">②</div><div class="step-text">Elfa invites matched suppliers</div></div>
+        <div class="hero-step"><div class="step-num">②</div><div class="step-text">Matched suppliers respond</div></div>
         <div class="step-connector"></div>
-        <div class="hero-step"><div class="step-num">③</div><div class="step-text">Review &amp; connect with the best</div></div>
+        <div class="hero-step"><div class="step-num">③</div><div class="step-text">Review &amp; connect</div></div>
       </div>
       <div class="hero-cta fade-up-3">
         <button class="btn btn-ghost-white btn-lg" style="min-width:240px" onclick="showAuth('register')">Register as Buyer →</button>
@@ -413,7 +738,7 @@ body{font-family:'DM Sans',sans-serif;font-size:14px;line-height:1.7;color:var(-
     <img src="/SourcingElf%20Logo%20-%20PNG%20-%20%E9%80%8F%E6%98%8E%E5%BA%95.png" alt="SourcingElf" style="height:32px;display:block;filter:brightness(0) invert(1)">
   </nav>
   <div style="padding:100px 20px 80px;min-height:100vh;background:var(--gray-50)">
-    <div class="profile-banner">Complete your profile to start posting sourcing tasks.</div>
+    <div class="profile-banner">Complete your profile and let Elfa help you source faster.</div>
     <div class="profile-card">
       <div class="progress-steps">
         <div class="progress-step active">Contact</div>
@@ -422,6 +747,44 @@ body{font-family:'DM Sans',sans-serif;font-size:14px;line-height:1.7;color:var(-
       </div>
       <div class="profile-form-body">
         <h3 style="font-size:16px;font-weight:600;color:var(--navy);margin-bottom:20px">Contact Information</h3>
+<div class="elfa-autofill">
+  <div class="elfa-mini-avatar">✦</div>
+
+  <div class="elfa-autofill-content">
+    <div class="elfa-autofill-title">
+      Let Elfa pre-fill your buyer profile
+    </div>
+
+    <div class="elfa-autofill-text">
+      Share your company website or upload a company profile, sourcing brief, or business card. I'll help pre-fill Contact, Company, and Sourcing Profile.
+    </div>
+
+    <div class="elfa-autofill-actions">
+
+  <div class="elfa-input-block">
+    <label class="elfa-input-label">Official Website</label>
+    <input type="text" class="elfa-url-input" placeholder="https://yourcompany.com">
+  </div>
+
+  <div class="elfa-or">OR</div>
+
+  <div class="elfa-upload-block">
+    <label class="elfa-upload-btn">
+      Choose File
+      <input type="file" id="elfaFile" hidden onchange="showElfaFileName(this)">
+    </label>
+
+    <div class="elfa-upload-note">
+      Company profile, business card, or sourcing brief<br>
+      PDF, DOCX, JPG, PNG · Max 10MB
+    </div>
+
+    <span id="elfaFileName" class="elfa-file-name"></span>
+  </div>
+
+</div>
+  </div>
+</div>
         <div style="display:flex;flex-direction:column;gap:16px">
           <div class="grid-2">
             <div class="form-group"><label class="form-label">Salutation</label><select class="form-select"><option>Mr.</option><option>Ms.</option><option>Mrs.</option><option>Dr.</option></select></div>
@@ -430,9 +793,25 @@ body{font-family:'DM Sans',sans-serif;font-size:14px;line-height:1.7;color:var(-
           <div class="form-group"><label class="form-label">Last Name</label><input type="text" class="form-input" placeholder="Lee"></div>
           <div class="form-group"><label class="form-label">Email (pre-filled)</label><input type="email" class="form-input" value="sarah@brandco.com" readonly style="background:var(--gray-50);color:var(--gray-600)"></div>
           <div class="form-group">
-            <label class="form-label">Phone Number</label>
-            <div style="display:flex;gap:8px"><select class="form-select" style="width:100px;flex-shrink:0"><option>+65</option><option>+1</option><option>+44</option></select><input type="tel" class="form-input" placeholder="9000 1234"></div>
-          </div>
+  <label class="form-label">Phone Number (pre-filled)</label>
+
+  <div style="display:flex;gap:8px">
+
+    <select
+      class="form-select"
+      style="width:100px;flex-shrink:0;background:var(--gray-50);color:var(--gray-600)"
+      disabled>
+      <option selected>+65</option>
+    </select>
+
+    <input
+      type="tel"
+      class="form-input"
+      value="9000 1234"
+      readonly
+      style="background:var(--gray-50);color:var(--gray-600)">
+  </div>
+</div>
           <div class="form-group">
             <label class="form-label">WhatsApp</label>
             <div style="display:flex;gap:8px"><select class="form-select" style="width:100px;flex-shrink:0"><option>+65</option><option>+1</option><option>+44</option></select><input type="tel" class="form-input" placeholder="9000 1234"></div>
@@ -647,6 +1026,24 @@ body{font-family:'DM Sans',sans-serif;font-size:14px;line-height:1.7;color:var(-
             <label class="form-label">Task Name</label>
             <input type="text" class="form-input" placeholder="e.g. Women's Knitwear — Q3 2026">
           </div>
+          <div class="elfa-upload-box">
+  <div class="elfa-upload-icon">✦</div>
+
+  <div class="elfa-upload-content">
+    <div class="elfa-upload-title">
+      Let Elfa help fill your sourcing task
+    </div>
+
+    <div class="elfa-upload-text">
+      Upload your tech pack, spreadsheet, PDF, or product references.
+      Elfa will extract sourcing details automatically.
+    </div>
+
+    <button class="elfa-upload-btn">
+      Upload Files
+    </button>
+  </div>
+</div>
           <div style="font-size:14px;font-weight:600;color:var(--navy);margin-bottom:12px">Sourcing Items</div>
           <div class="sourcing-item-card">
             <button class="remove-item-btn" title="Remove">×</button>
@@ -934,6 +1331,35 @@ function sendElfa(){
 }
 
 goTo('dashboard');
+</script>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+
+    <div class="footer-left">
+      <div class="footer-brand">SourcingElf.ai</div>
+    </div>
+
+    <div class="footer-links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+      <a href="#">About Us</a>
+    </div>
+
+    <div class="footer-copy">
+      AI-assisted sourcing connections for global apparel trade. 
+        <br>
+  © 2026 SourcingElf.ai All rights reserved.
+    </div>
+
+  </div>
+</footer>
+
+<script>
+function showElfaFileName(input){
+  const fileName = input.files[0]?.name || '';
+  document.getElementById('elfaFileName').textContent = fileName;
+}
 </script>
 
 </body></html>
