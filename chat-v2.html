@@ -261,11 +261,12 @@ body{font-family:'DM Sans',sans-serif;font-size:14px;color:var(--gray-800);backg
       </div>
 
       <div class="input-bar">
-        <button class="attach-btn" title="Attach image">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"></path>
-          </svg>
-        </button>
+        <label class="attach-btn" title="Attach file">
+  <input type="file" style="display:none" accept="image/*,.pdf,.doc,.docx,.xls,.xlsx">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+    <path d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"></path>
+  </svg>
+</label>
         <textarea class="msg-input" placeholder="Type a message…" rows="1" id="msgInput" onkeypress="handleMsgKey(event)" oninput="autoResize(this)"></textarea>
         <button class="send-btn send-btn-supplier" onclick="sendMsg()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
