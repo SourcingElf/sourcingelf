@@ -20,6 +20,16 @@
 
 ---
 
+# Product Philosophy
+
+SourcingElf is not a complex marketplace.
+It is a simple connection flow powered by an increasingly intelligent AI sourcing assistant.
+
+The UI and workflow should remain simple and lightweight.
+Future upgrades should focus mainly on Elfa’s intelligence, matching quality, automation, and business opportunity generation — not on adding complex page structures.
+
+---
+
 ## 技术栈
 
 - 前端：HTML/CSS/JS 静态页面（无框架）
