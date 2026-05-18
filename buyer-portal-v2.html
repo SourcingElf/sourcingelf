@@ -28,15 +28,15 @@ body{font-family:'DM Sans',sans-serif;font-size:14px;line-height:1.7;color:var(-
 .view.active{display:block}
 
 .nav-landing{
-  height:72px;background:rgba(15,26,46,.97);
-  border-bottom:1px solid rgba(255,255,255,.08);
+  height:72px;background:#fff;
+  border-bottom:1px solid rgba(26,39,68,.08);
   position:fixed;top:0;left:0;right:0;z-index:100;
   backdrop-filter:blur(8px);
   display:flex;align-items:center;padding:0 8%;gap:24px;
 }
 .nav-logo-text{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:#fff;text-decoration:none;display:flex;align-items:center;gap:8px}
 .nav-logo-dot{width:8px;height:8px;background:var(--red);border-radius:50%}
-.nav-link-ghost{color:rgba(255,255,255,.65);font-size:14px;font-weight:500;text-decoration:none}
+.nav-link-ghost{color:var(--navy);font-size:14px;font-weight:500;text-decoration:none}
 .nav-link-ghost:hover{color:#fff}
 .nav-ml{margin-left:auto;display:flex;align-items:center;gap:12px}
 
@@ -591,7 +591,7 @@ body{font-family:'DM Sans',sans-serif;font-size:14px;line-height:1.7;color:var(-
   <nav class="nav-landing">
     <!-- ✅ FIXED: Real logo (white, dark bg) -->
     <a href="#" onclick="showView('view-landing')" style="display:flex;align-items:center;text-decoration:none">
-      <img src="/SourcingElf-Logo.png" alt="SourcingElf" style="height:32px;display:block;filter:brightness(0) invert(1)">
+      <img src="/SourcingElf-Logo.png" alt="SourcingElf" style="height:32px;display:block;<img src="/SourcingElf-Logo.png" alt="SourcingElf" style="height:32px;display:block">
     </a>
     <div class="nav-ml">
       <a href="#" class="nav-link-ghost" onclick="showAuth('login')">Log In</a>
