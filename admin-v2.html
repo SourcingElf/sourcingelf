@@ -56,6 +56,11 @@ body{font-family:'DM Sans',sans-serif;font-size:14px;color:var(--gray-800);backg
 .metric-card{background:#fff;border:1px solid rgba(26,39,68,.08);border-radius:12px;padding:24px}
 .metric-number{font-family:'Playfair Display',serif;font-size:36px;font-weight:700;line-height:1}
 .metric-label{font-size:12px;color:var(--gray-600);margin-top:6px}
+.metric-sub{
+  font-size:11px;
+  color:var(--gray-400);
+  margin-top:4px;
+}
 .metric-navy{color:var(--navy)}
 .metric-red{color:var(--red)}
 .metric-green{color:var(--green)}
@@ -246,11 +251,30 @@ tbody tr:hover td{background:rgba(26,39,68,.015)}
     <div class="page active" id="page-overview">
       <div class="page-title">Overview</div>
       <div class="metrics-grid">
-        <div class="metric-card"><div class="metric-number metric-navy">248</div><div class="metric-label">Total Suppliers</div></div>
-        <div class="metric-card"><div class="metric-number metric-navy">61</div><div class="metric-label">Verified Buyers</div></div>
-        <div class="metric-card"><div class="metric-number metric-red">14</div><div class="metric-label">Connections This Month</div></div>
-        <div class="metric-card"><div class="metric-number metric-green">$1,932</div><div class="metric-label">Revenue This Month (USD)</div></div>
-      </div>
+  <div class="metric-card">
+    <div class="metric-number metric-navy">12</div>
+    <div class="metric-label">New Suppliers This Month</div>
+    <div class="metric-sub">248 total suppliers</div>
+  </div>
+
+  <div class="metric-card">
+    <div class="metric-number metric-navy">5</div>
+    <div class="metric-label">New Buyers This Month</div>
+    <div class="metric-sub">61 verified buyers</div>
+  </div>
+
+  <div class="metric-card">
+    <div class="metric-number metric-red">14</div>
+    <div class="metric-label">Connections This Month</div>
+    <div class="metric-sub">186 total connections</div>
+  </div>
+
+  <div class="metric-card">
+    <div class="metric-number metric-green">$1,932</div>
+    <div class="metric-label">Revenue This Month</div>
+    <div class="metric-sub">$24,680 total revenue</div>
+  </div>
+</div>
       <div class="two-col">
         <!-- Pending Actions -->
         <div class="card">
