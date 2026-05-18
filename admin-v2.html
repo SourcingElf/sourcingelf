@@ -127,7 +127,11 @@ tbody tr:hover td{background:rgba(26,39,68,.015)}
 .btn-outline-red{background:transparent;border:1.5px solid var(--red);color:var(--red)}.btn-outline-red:hover{background:rgba(185,28,28,.04)}
 .btn-sm{padding:6px 12px;font-size:12px}
 .btn-full{width:100%;justify-content:center}
-
+.table-action .btn-sm{
+  min-width:110px;
+  justify-content:center;
+}
+  
 /* Supplier/buyer detail */
 .detail-grid{display:grid;grid-template-columns:65% 35%;gap:24px;align-items:start}
 .detail-tabs{display:flex;border-bottom:1px solid var(--gray-100);padding:0 24px;gap:4px}
@@ -290,7 +294,7 @@ tbody tr:hover td{background:rgba(26,39,68,.015)}
                 <div>Sarah L. — Brand — USA</div>
                 <div class="action-meta">Registered 2h ago · Pending verification</div>
               </div>
-              <button class="btn btn-green btn-sm">Verify →</button>
+              <button class="btn btn-green btn-sm">Verify</button>
             </div>
             <div class="action-row">
               <span class="action-type type-buyer">New Buyer</span>
@@ -298,7 +302,7 @@ tbody tr:hover td{background:rgba(26,39,68,.015)}
                 <div>Marcus T. — Chain Store — Germany</div>
                 <div class="action-meta">Registered 5h ago · Pending verification</div>
               </div>
-              <button class="btn btn-green btn-sm">Verify →</button>
+              <button class="btn btn-green btn-sm">Verify</button>
             </div>
             <div class="action-row">
               <span class="action-type type-buyer">New Buyer</span>
@@ -483,19 +487,19 @@ tbody tr:hover td{background:rgba(26,39,68,.015)}
                 <td><div class="td-company">BrandCo International</div><div class="td-sub">Sarah L.</div></td>
                 <td>Brand</td><td>Singapore</td><td>13 May 2026</td>
                 <td><span class="badge badge-amber">Pending</span></td>
-                <td><button class="btn btn-green btn-sm" onclick="goPage('buyer-detail')">Verify →</button></td>
+                <td class="table-action"><button class="btn btn-green btn-sm" onclick="goPage('buyer-detail')">Verify</button></td>
               </tr>
               <tr>
                 <td><div class="td-company">Trend & Co GmbH</div><div class="td-sub">Marcus T.</div></td>
                 <td>Chain Store</td><td>Germany</td><td>13 May 2026</td>
                 <td><span class="badge badge-amber">Pending</span></td>
-                <td><button class="btn btn-green btn-sm" onclick="goPage('buyer-detail')">Verify →</button></td>
+                <td class="table-action"><button class="btn btn-green btn-sm" onclick="goPage('buyer-detail')">Verify</button></td>
               </tr>
               <tr>
                 <td><div class="td-company">Luxe Mode Retail Group</div><div class="td-sub">Li Wei</div></td>
                 <td>Wholesaler</td><td>Hong Kong</td><td>12 May 2026</td>
                 <td><span class="badge badge-green">Verified</span></td>
-                <td><button class="btn btn-outline btn-sm" onclick="goPage('buyer-detail')">View</button></td>
+                <td class="table-action"><button class="btn btn-outline btn-sm" onclick="goPage('buyer-detail')">View</button></td>
               </tr>
             </tbody>
           </table>
