@@ -18,7 +18,7 @@ body{font-family:'DM Sans',sans-serif;font-size:14px;color:var(--gray-800);backg
 /* ─── LOGIN PAGE ─── */
 .login-page{min-height:100vh;background:var(--navy-deep);display:flex;align-items:center;justify-content:center;padding:20px}
 .login-box{background:#fff;border-radius:14px;padding:48px 40px;width:100%;max-width:400px;text-align:center}
-.login-logo{display:flex;justify-content:center;margin-bottom:18px} .login-logo img{height:34px;width:auto} .login-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--navy);margin-bottom:8px}
+.login-logo{display:flex;justify-content:center;margin-bottom:18px} .login-logo img{height:32px;width:auto} .login-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--navy);margin-bottom:8px}
 .login-sub{font-size:13px;color:var(--gray-400);margin-bottom:32px}
 .form-group{display:flex;flex-direction:column;gap:6px;margin-bottom:16px;text-align:left}
 .form-label{font-size:12px;font-weight:600;color:var(--gray-600)}
@@ -31,7 +31,6 @@ body{font-family:'DM Sans',sans-serif;font-size:14px;color:var(--gray-800);backg
 /* Sidebar */
 .sidebar{width:240px;flex-shrink:0;background:var(--navy-deep);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:100}
 .sidebar-logo{padding:24px 24px 20px;border-bottom:1px solid rgba(255,255,255,.08);font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:#fff}
-/* Logo: /assets/SourcingElf_Logo_-_PNG_-_透明底.png | Dark bg: filter brightness(0) invert(1) | height:32px */
 .sidebar-nav{flex:1;padding:12px 0}
 .nav-item{display:flex;align-items:center;gap:12px;padding:12px 24px;color:rgba(255,255,255,.65);cursor:pointer;border-left:3px solid transparent;transition:all 150ms;font-size:14px;font-weight:500;position:relative}
 .nav-item:hover{color:#fff;background:rgba(255,255,255,.05)}
@@ -218,7 +217,7 @@ tbody tr:hover td{background:rgba(26,39,68,.015)}
 
   <!-- Sidebar -->
   <aside class="sidebar">
-    <div class="sidebar-logo">SourcingElf</div>
+    <div class="sidebar-logo"><img src="assets/logo/SourcingElf-Logo-Image-White.png" alt="SourcingElf" style="height:28px"></div>
     <nav class="sidebar-nav">
       <div class="nav-item active" onclick="goPage('overview')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
@@ -288,9 +287,9 @@ tbody tr:hover td{background:rgba(26,39,68,.015)}
   </div>
 
   <div class="metric-card">
-    <div class="metric-number metric-green">$1,932</div>
+    <div class="metric-number metric-green">US$1,932</div>
     <div class="metric-label">Revenue This Month</div>
-    <div class="metric-sub">$24,680 total revenue</div>
+    <div class="metric-sub">US$24,680 total revenue</div>
   </div>
 </div>
       <div class="two-col">
@@ -641,9 +640,9 @@ tbody tr:hover td{background:rgba(26,39,68,.015)}
       <div class="page-title">Payments</div>
       <div class="stats-cards">
         <div class="metric-card"><div class="metric-number metric-navy">16</div><div class="metric-label">Total Transactions</div></div>
-        <div class="metric-card"><div class="metric-number metric-green">$2,169</div><div class="metric-label">Total Revenue (USD)</div></div>
+        <div class="metric-card"><div class="metric-number metric-green">US$2,169</div><div class="metric-label">Total Revenue (USD)</div></div>
         <div class="metric-card"><div class="metric-number metric-red">14</div><div class="metric-label">This Month</div></div>
-        <div class="metric-card"><div class="metric-number metric-navy">$135</div><div class="metric-label">Avg Per Connection</div></div>
+        <div class="metric-card"><div class="metric-number metric-navy">US$135</div><div class="metric-label">Avg Per Connection</div></div>
       </div>
       <div class="filter-bar">
         <input type="text" class="search-input" placeholder="Search by supplier or buyer…">
