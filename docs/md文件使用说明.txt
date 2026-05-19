@@ -1,0 +1,7 @@
+其中 DATABASE-SCHEMA.md 是根据你上传的 19 张表 SQL 文件整理的。
+
+以后最常用的是：
+
+新开 Claude.ai：用 CLAUDE.md + STATUS.md + DESIGN-SYSTEM-V2.md + DEVELOPMENT-RULES.md
+开 Claude Code：先用 CLAUDE.md + STATUS.md + PROJECT-STRUCTURE.md + DEVELOPMENT-RULES.md
+接 Supabase：加 DATABASE-SCHEMA.md + FRONTEND-FLOW.md + ENVIRONMENT.md
