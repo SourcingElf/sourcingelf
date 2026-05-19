@@ -123,6 +123,57 @@ Chat unlocked
 
 ---
 
+# 2026-05-19 Frontend Stabilization Log
+
+## Completed
+
+**Deployment**
+- Cloudflare Pages build output directory fixed to `frontend`
+- Production deploy confirmed working on sourcingelf.ai
+
+**Homepage**
+- Buyer card copy aligned
+
+**Buyer Portal**
+- Login link hover color fixed (was turning invisible on hover)
+
+**Supplier Landing**
+- Root logo compatibility asset added
+
+**Supplier Features**
+- Verified mostly stable
+
+**Supplier Dashboard** — full recovery from static baseline + original content merge:
+- Dashboard header restored (Supplier Portal eyebrow, Dashboard h1, welcome subtitle)
+- Content width restored to 1100px (was 900px)
+- 15 buying leads restored from original data
+- Category / market / tier filters restored
+- Pagination restored (8 per page)
+- 4 lead states restored: default, applied, accepted, connected
+- Payment CTA restored on accepted-state leads
+- Payment modal restored (buyer info, fee box, promo toggle, Stripe form mockup)
+- Confirm payment marks accepted lead as connected and re-renders
+- View Details links to `supplier-features-v2.html`
+- Open Chat links to `chat-v2.html`
+
+**Chat**
+- Modal visibility and header consistency fixed
+
+**Admin**
+- Logo and pricing consistency fixed
+
+## Known Issues / Later
+
+- Dashboard and Buying Leads sidebar items currently point to the same page; future split needed:
+  - Dashboard = overview/stats
+  - Buying Leads = lead list
+- Homepage and supplier landing are bundle-based; may show brief loading flash on first visit
+- `supplier-dashboard-original.html.html` was used as recovery source; should not be deployed long-term
+- Mobile QA not yet done
+- Production routing QA needed after next commit/push
+
+---
+
 # 最近完成的重要UI统一
 
 ## Chat 页面

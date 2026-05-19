@@ -11,7 +11,7 @@
   --navy-deep:#0f1a2e;--navy:#1a2744;--red:#b91c1c;--red-bright:#dc2626;
   --white:#fff;--gray-50:#f8f7f5;--gray-100:#eeecea;
   --gray-400:#9ca3af;--gray-600:#4b5563;--gray-800:#1f2937;
-  --green:#16a34a;--amber:#d97706;
+  --green:#16a34a;--green-dark:#15803d;--green-bg:#f0fdf4;--amber:#d97706;
 }
 body{font-family:'DM Sans',sans-serif;font-size:14px;color:var(--gray-800);background:var(--gray-50);min-height:100vh}
 
@@ -42,7 +42,7 @@ body{font-family:'DM Sans',sans-serif;font-size:14px;color:var(--gray-800);backg
 /* PAGES */
 .page{display:none;padding-top:64px;min-height:100vh}
 .page.active{display:block}
-.page-body{padding:24px 4%;max-width:900px;margin:0 auto}
+.page-body{padding:32px 4%;max-width:1100px;margin:0 auto}
 
 /* BUTTONS */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 24px;border-radius:7px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;border:none;text-decoration:none;transition:all 200ms;white-space:nowrap}
@@ -104,6 +104,9 @@ body{font-family:'DM Sans',sans-serif;font-size:14px;color:var(--gray-800);backg
 
 /* PAGE TITLE */
 .page-title{font-family:'Playfair Display',serif;font-size:24px;font-weight:600;color:var(--navy);margin-bottom:20px}
+.page-header{margin-bottom:28px}
+.page-eyebrow{font-size:11px;font-weight:600;color:var(--red);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:6px}
+.page-subtitle{font-size:14px;color:var(--gray-400);margin-top:4px}
 
 /* PROFILE CARD */
 .profile-info-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--gray-50)}
@@ -126,6 +129,91 @@ body{font-family:'DM Sans',sans-serif;font-size:14px;color:var(--gray-800);backg
   .page-body{padding:16px}
   .connected-card{flex-wrap:wrap}
 }
+
+/* ── BUYING LEADS SECTION ── */
+.leads-section{margin-top:8px}
+.section-header{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:12px}
+.section-title{font-family:'DM Sans',sans-serif;font-size:18px;font-weight:600;color:var(--navy)}
+.section-filters{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.filter-select{appearance:none;-webkit-appearance:none;background-color:var(--white);background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6' fill='none'><path d='M1 1L5 5L9 1' stroke='%239ca3af' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/></svg>");background-repeat:no-repeat;background-position:right 10px center;padding:7px 28px 7px 12px;border:1px solid rgba(26,39,68,0.12);border-radius:7px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;color:var(--navy);cursor:pointer;min-width:130px;transition:border-color 150ms,box-shadow 150ms}
+.filter-select:hover{border-color:rgba(26,39,68,0.30)}
+.filter-select:focus{outline:none;border-color:var(--navy);box-shadow:0 0 0 3px rgba(26,39,68,0.07)}
+.section-blurb{font-size:12px;color:var(--gray-400);margin-bottom:14px;max-width:70ch}
+.lead-card{background:var(--white);border:1px solid rgba(26,39,68,0.10);border-left:3px solid transparent;border-radius:10px;margin-bottom:14px;overflow:hidden;transition:box-shadow 200ms,transform 200ms}
+.lead-card:hover{box-shadow:0 8px 32px rgba(26,39,68,0.08)}
+.lead-card.state-applied{border-left-color:var(--amber)}
+.lead-card.state-accepted{border-left-color:var(--green)}
+.lead-card.state-connected{border-left-color:var(--green)}
+.good-news-banner{background:var(--green-bg);color:var(--green-dark);padding:10px 24px;font-size:13px;font-weight:600;display:flex;align-items:center;gap:8px;border-bottom:1px solid rgba(22,163,74,0.15)}
+.lead-card-body{padding:20px 24px 16px;display:flex;gap:18px;align-items:flex-start}
+.lead-info{flex:1;min-width:0}
+.lead-pills{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.pill{font-size:11px;font-weight:600;padding:3px 10px;border-radius:4px;letter-spacing:0.04em}
+.pill-blue{background:rgba(37,99,235,0.1);color:#1d4ed8}
+.pill-navy{background:rgba(26,39,68,0.08);color:var(--navy)}
+.pill-red{background:rgba(185,28,28,0.1);color:var(--red);letter-spacing:0.05em}
+.pill-green{background:rgba(22,163,74,0.10);color:var(--green-dark);display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:999px}
+.lead-company{font-size:15px;font-weight:600;color:var(--navy);margin-bottom:4px}
+.lead-products{font-size:13px;color:var(--gray-600);margin-bottom:8px}
+.lead-details{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.detail-item{font-size:12px;font-weight:500;color:var(--gray-400);display:flex;align-items:center;gap:4px}
+.detail-item strong{color:var(--gray-600);font-weight:600}
+.lead-expiry{font-size:12px;font-weight:500;margin-top:10px;display:flex;align-items:center;gap:4px}
+.lead-expiry.normal{color:var(--gray-400)}
+.lead-expiry.urgent{color:var(--amber)}
+.lead-image{width:72px;height:72px;border-radius:8px;background:repeating-linear-gradient(45deg,var(--gray-50) 0 6px,var(--gray-100) 6px 12px);flex-shrink:0;display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid var(--gray-100)}
+.lead-image-placeholder{font-size:10px;font-weight:500;color:var(--gray-400);text-align:center;font-family:ui-monospace,monospace;line-height:1.3;padding:4px;white-space:pre-line}
+.lead-card-footer{padding:14px 24px;border-top:1px solid rgba(26,39,68,0.07);display:grid;grid-template-columns:1fr 1fr 1fr;align-items:center;gap:12px}
+.lead-card-footer>:first-child{justify-self:start}
+.lead-card-footer>:nth-child(2){justify-self:center}
+.lead-card-footer>:last-child{justify-self:end}
+.apply-link,.details-link{font-size:13px;font-weight:600;color:var(--red);text-decoration:none;cursor:pointer;display:inline-flex;align-items:center;gap:4px;transition:color 150ms;background:none;border:none;font-family:inherit;padding:0}
+.apply-link:hover,.details-link:hover{color:var(--red-bright)}
+.applied-status{font-size:13px;font-weight:500;color:var(--amber);display:inline-flex;align-items:center;gap:6px}
+.applied-meta{font-size:12px;color:var(--gray-400)}
+.pay-footer{padding:16px 24px 18px}
+.pay-promo{font-size:12px;font-weight:600;color:var(--red);text-align:center}
+.pay-btn{width:100%;padding:14px 18px;background:var(--green);border:none;color:#fff;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:background 150ms,transform 150ms;letter-spacing:0.01em}
+.pay-btn:hover{background:var(--green-dark)}
+.pay-btn:active{transform:translateY(1px)}
+.pay-subtext{font-size:12px;color:var(--gray-400);text-align:center}
+.open-chat-link{font-size:13px;font-weight:600;color:var(--navy);text-decoration:none;cursor:pointer;display:inline-flex;align-items:center;gap:4px;transition:color 150ms}
+.open-chat-link:hover{color:var(--navy-deep)}
+.pagination{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:24px}
+.page-btn{padding:8px 16px;background:var(--white);border:1px solid var(--gray-100);border-radius:7px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;color:var(--navy);cursor:pointer;transition:all 150ms}
+.page-btn:hover:not(:disabled){background:var(--gray-50);border-color:var(--navy)}
+.page-btn:disabled{color:var(--gray-400);cursor:not-allowed;opacity:0.6}
+.page-indicator{font-size:13px;font-weight:500;color:var(--gray-600);padding:0 8px}
+
+/* ── PAYMENT MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(15,26,46,0.55);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);z-index:600;display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity 200ms ease}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal{background:var(--white);width:480px;max-width:100%;max-height:calc(100vh - 48px);overflow-y:auto;border-radius:14px;padding:40px;box-shadow:0 30px 80px rgba(0,0,0,0.25);transform:translateY(12px) scale(0.98);transition:transform 250ms cubic-bezier(0.16,1,0.3,1)}
+.modal-overlay.open .modal{transform:translateY(0) scale(1)}
+.modal-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:600;color:var(--navy);margin-bottom:18px;line-height:1.25}
+.modal-buyer-box{background:var(--gray-50);border-radius:8px;padding:16px;margin-bottom:16px}
+.buyer-line{font-size:13px;color:var(--gray-600);margin-bottom:4px}
+.buyer-line strong{color:var(--navy);font-weight:600}
+.buyer-reveal{font-size:12px;font-style:italic;color:var(--gray-400);margin-top:6px}
+.modal-fee-box{background:rgba(15,26,46,0.04);border:1px solid rgba(15,26,46,0.08);border-radius:8px;padding:16px;margin-bottom:12px}
+.fee-row{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.fee-label{font-size:13px;color:var(--gray-600);font-weight:500}
+.fee-value{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--navy)}
+.fee-promo{margin-top:8px;font-size:12px;color:var(--green-dark);font-weight:600;display:flex;align-items:center;gap:6px}
+.modal-explain{font-size:13px;color:var(--gray-600);line-height:1.55;margin-bottom:18px}
+.stripe-form{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px}
+.stripe-field{grid-column:span 2;position:relative}
+.stripe-field.half{grid-column:span 1}
+.stripe-label{display:block;font-size:11px;font-weight:600;color:var(--gray-600);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:5px}
+.stripe-input{width:100%;height:42px;border:1px solid rgba(26,39,68,0.15);border-radius:8px;padding:0 12px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--navy);outline:none;transition:border-color 150ms,box-shadow 150ms}
+.stripe-input:focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(26,39,68,0.07)}
+.stripe-input::placeholder{color:var(--gray-400);font-size:13px}
+.card-brand-mark{position:absolute;right:10px;top:30px;font-size:10px;color:var(--gray-400);font-weight:600;letter-spacing:0.08em}
+.modal-pay-btn{width:100%;padding:14px 18px;background:var(--red);color:#fff;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:background 150ms;letter-spacing:0.01em;margin-bottom:10px}
+.modal-pay-btn:hover{background:var(--red-bright)}
+.modal-cancel-btn{width:100%;padding:12px 18px;background:transparent;color:var(--gray-600);border:1.5px solid var(--gray-100);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:all 150ms}
+.modal-cancel-btn:hover{background:var(--gray-50);border-color:var(--gray-200)}
+.modal-secure{margin-top:14px;text-align:center;font-size:11px;color:var(--gray-400);display:flex;align-items:center;justify-content:center;gap:6px}
 </style>
 </head>
 <body>
@@ -190,74 +278,68 @@ body{font-family:'DM Sans',sans-serif;font-size:14px;color:var(--gray-800);backg
 <div class="page active" id="page-dashboard">
   <div class="page-body">
 
-    <div class="dash-header">
-      <div class="dash-title">Buying Leads</div>
-      <div class="dash-sub">Browse open sourcing requests from verified buyers. Apply to leads that match your capabilities.</div>
+    <div class="page-header">
+      <div class="page-eyebrow">Supplier Portal</div>
+      <h1 class="page-title">Dashboard</h1>
+      <p class="page-subtitle">Monday, 28 April 2026 · Welcome back, Chen H.</p>
     </div>
 
-    <!-- Lead: Open -->
-    <div class="lead-row accent-green">
-      <div class="lead-row-info">
-        <div class="lead-row-badges">
-          <span class="badge badge-blue">Europe</span>
-          <span class="badge badge-navy">Brand</span>
-          <span class="badge badge-green">Open</span>
+    <section class="leads-section" id="leads">
+      <div class="section-header">
+        <h2 class="section-title">Buying Leads</h2>
+        <div class="section-filters">
+          <select class="filter-select" id="filterCategory" onchange="renderLeads()">
+            <option value="">All categories</option>
+            <option value="Womenswear">Womenswear</option>
+            <option value="Menswear">Menswear</option>
+            <option value="Kidswear">Kidswear</option>
+            <option value="Activewear">Activewear</option>
+            <option value="Denim">Denim</option>
+            <option value="Loungewear">Loungewear</option>
+            <option value="Knitwear">Knitwear</option>
+            <option value="Lingerie">Lingerie</option>
+            <option value="Swimwear">Swimwear</option>
+            <option value="Modest">Modest fashion</option>
+          </select>
+          <select class="filter-select" id="filterMarket" onchange="renderLeads()">
+            <option value="">All markets</option>
+            <option value="Europe">Europe</option>
+            <option value="USA">USA</option>
+            <option value="UK">UK</option>
+            <option value="Middle East">Middle East</option>
+            <option value="Australia">Australia</option>
+            <option value="Germany">Germany</option>
+            <option value="Japan">Japan</option>
+            <option value="Canada">Canada</option>
+            <option value="France">France</option>
+            <option value="Scandinavia">Scandinavia</option>
+            <option value="Italy">Italy</option>
+            <option value="UAE">UAE</option>
+            <option value="Brazil">Brazil</option>
+            <option value="South Korea">South Korea</option>
+            <option value="Netherlands">Netherlands</option>
+          </select>
+          <select class="filter-select" id="filterTier" onchange="renderLeads()">
+            <option value="">All positioning</option>
+            <option value="Mass market">Mass market</option>
+            <option value="Mid-range">Mid-range</option>
+            <option value="Mid-range / Premium">Mid-range / Premium</option>
+            <option value="Premium">Premium</option>
+            <option value="Luxury">Luxury</option>
+          </select>
         </div>
-        <div class="lead-row-title">Buying Lead #2405 — Women's Knitwear Q3</div>
-        <div class="lead-row-meta">Annual Sourcing: USD 2M–5M &nbsp;·&nbsp; MOQ: 500 pcs/style &nbsp;·&nbsp; FOB USD 8–15 &nbsp;·&nbsp; Valid until: 30 Jun 2026</div>
       </div>
-      <div class="lead-row-actions">
-        <a href="supplier-features-v2.html" class="btn btn-navy btn-sm">View Details →</a>
+      <p class="section-blurb">Browse active buying leads from verified global buyers. Apply to the ones that match your factory.</p>
+      <div id="leadsContainer"></div>
+      <div id="leadsEmpty" style="display:none;background:#fff;border:1px dashed rgba(26,39,68,0.15);border-radius:10px;padding:48px 24px;text-align:center;color:var(--gray-400);font-size:14px;">
+        No leads match these filters. Try clearing one of them.
       </div>
-    </div>
-
-    <!-- Lead: Applied -->
-    <div class="lead-row accent-amber">
-      <div class="lead-row-info">
-        <div class="lead-row-badges">
-          <span class="badge badge-blue">USA</span>
-          <span class="badge badge-navy">Retailer</span>
-          <span class="badge badge-amber">Applied</span>
-        </div>
-        <div class="lead-row-title">Buying Lead #2318 — Men's Casualwear SS27</div>
-        <div class="lead-row-meta">Annual Sourcing: USD 500k–1M &nbsp;·&nbsp; MOQ: 300 pcs/style &nbsp;·&nbsp; FOB USD 6–12 &nbsp;·&nbsp; Valid until: 15 Jul 2026</div>
+      <div class="pagination" id="paginationRow">
+        <button class="page-btn" id="prevBtn" onclick="changePage(-1)" disabled>← Previous</button>
+        <span class="page-indicator" id="pageIndicator">Page 1 of 1</span>
+        <button class="page-btn" id="nextBtn" onclick="changePage(1)">Next →</button>
       </div>
-      <div class="lead-row-actions">
-        <a href="supplier-features-v2.html" class="btn btn-outline btn-sm">View Details →</a>
-      </div>
-    </div>
-
-    <!-- Lead: Buyer Accepted — pay to connect -->
-    <div class="lead-row accent-blue">
-      <div class="lead-row-info">
-        <div class="lead-row-badges">
-          <span class="badge badge-blue">Asia Pacific</span>
-          <span class="badge badge-navy">Wholesale</span>
-          <span class="badge badge-green" style="background:rgba(37,99,235,.1);color:#1d4ed8">Buyer Accepted</span>
-        </div>
-        <div class="lead-row-title">Buying Lead #2201 — Denim Collection FW26</div>
-        <div class="lead-row-meta">Annual Sourcing: USD 1M–2M &nbsp;·&nbsp; MOQ: 1000 pcs/style &nbsp;·&nbsp; FOB USD 12–22 &nbsp;·&nbsp; Valid until: 31 Aug 2026</div>
-      </div>
-      <div class="lead-row-actions">
-        <a href="supplier-features-v2.html" class="btn btn-green btn-sm">View Details →</a>
-      </div>
-    </div>
-
-    <!-- Lead: Connected -->
-    <div class="lead-row" style="border-left-color:var(--green)">
-      <div class="lead-row-info">
-        <div class="lead-row-badges">
-          <span class="badge badge-blue">Japan</span>
-          <span class="badge badge-navy">Brand</span>
-          <span class="badge badge-green">Connected ✓</span>
-        </div>
-        <div class="lead-row-title">Buying Lead #2109 — Women's Knitwear FW25</div>
-        <div class="lead-row-meta">Connected on 7 May 2026 &nbsp;·&nbsp; Payment confirmed</div>
-      </div>
-      <div class="lead-row-actions">
-        <a href="chat-v2.html" class="btn btn-navy btn-sm">Open Chat →</a>
-      </div>
-    </div>
+    </section>
 
   </div>
 </div>
@@ -401,6 +483,58 @@ body{font-family:'DM Sans',sans-serif;font-size:14px;color:var(--gray-800);backg
 </div>
 
 
+<!-- PAYMENT MODAL -->
+<div class="modal-overlay" id="payModal" onclick="if(event.target===this) closePayModal()">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="payModalTitle">
+    <h3 class="modal-title" id="payModalTitle">Confirm Connection Payment</h3>
+
+    <div class="modal-buyer-box">
+      <div class="buyer-line"><strong id="modalBuyerType">Brand</strong> · <span id="modalBuyerMarket">Europe</span></div>
+      <div class="buyer-line"><span id="modalBuyerProducts">Women's knitwear</span></div>
+      <div class="buyer-reveal">Full contact details revealed after payment</div>
+    </div>
+
+    <div class="modal-fee-box">
+      <div class="fee-row">
+        <span class="fee-label">Connection fee</span>
+        <span class="fee-value" id="modalFeeValue">US$138</span>
+      </div>
+      <div class="fee-promo" id="modalFeePromo" style="display:none;">
+        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        Early offer applied: US$99 (until Dec 31, 2026)
+      </div>
+    </div>
+
+    <p class="modal-explain">
+      This one-time payment unlocks direct messaging with this buyer. You can discuss your products, share samples, and negotiate directly.
+    </p>
+
+    <div class="stripe-form">
+      <div class="stripe-field">
+        <label class="stripe-label">Card number</label>
+        <input class="stripe-input" type="text" placeholder="1234 1234 1234 1234" autocomplete="cc-number">
+        <span class="card-brand-mark">VISA / MC</span>
+      </div>
+      <div class="stripe-field half">
+        <label class="stripe-label">Expiry</label>
+        <input class="stripe-input" type="text" placeholder="MM / YY" autocomplete="cc-exp">
+      </div>
+      <div class="stripe-field half">
+        <label class="stripe-label">CVV</label>
+        <input class="stripe-input" type="text" placeholder="123" autocomplete="cc-csc">
+      </div>
+    </div>
+
+    <button class="modal-pay-btn" id="modalPayBtn" onclick="confirmPayment()">Pay US$138 &amp; Connect →</button>
+    <button class="modal-cancel-btn" onclick="closePayModal()">Cancel</button>
+
+    <div class="modal-secure">
+      <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+      Secure payment by Stripe. Your card details are never stored.
+    </div>
+  </div>
+</div>
+
 <!-- FOOTER -->
 <footer class="site-footer">
   <div class="footer-inner">
@@ -464,6 +598,155 @@ function closeSide() {
     goPage(hash);
   }
 })();
+
+// ── LEADS DATA ──
+const leads = [
+  { id:'BL-2024-0412', market:'Europe', buyerType:'Brand', category:'Knitwear', tier:'Mid-range / Premium', isNew:true, company:'A** Fashion Ltd', products:"Women's knitwear — Sweaters, cardigans", moq:'500 pcs/style', priceRange:'FOB USD 8–15', expiry:'15 May 2026', urgentExpiry:true, state:'accepted', promo:true, hasImage:true, imageLabel:'knitwear\nref' },
+  { id:'BL-2024-0398', market:'USA', buyerType:'Retailer', category:'Menswear', tier:'Premium', isNew:true, company:'N** & C** Inc.', products:"Men's outerwear — Jackets, coats", moq:'1,000 pcs/style', priceRange:'FOB USD 22–38', expiry:'15 May 2026', urgentExpiry:true, state:'default', hasImage:true, imageLabel:'outerwear\nref' },
+  { id:'BL-2024-0375', market:'Middle East', buyerType:'Distributor', category:'Kidswear', tier:'Mass market', isNew:false, company:'G** Trading Co.', products:"Children's casualwear — T-shirts, shorts", moq:'2,000 pcs/style', priceRange:'FOB USD 3–6', expiry:'30 Jun 2026', urgentExpiry:false, state:'applied', appliedOn:'24 Apr', hasImage:false, imageLabel:'' },
+  { id:'BL-2024-0360', market:'UK', buyerType:'Brand', category:'Womenswear', tier:'Mid-range', isNew:false, company:'S** Apparel Group', products:"Womenswear — Dresses, blouses", moq:'300 pcs/style', priceRange:'FOB USD 10–18', expiry:'22 Jun 2026', urgentExpiry:false, state:'connected', connectedOn:'24 Apr 2026', hasImage:true, imageLabel:'dresses\nref' },
+  { id:'BL-2024-0341', market:'Australia', buyerType:'Retailer', category:'Activewear', tier:'Mid-range / Premium', isNew:false, company:'P** Retail Ltd', products:"Activewear — Leggings, sports bras", moq:'800 pcs/style', priceRange:'FOB USD 9–16', expiry:'30 Jun 2026', urgentExpiry:false, state:'default', hasImage:true, imageLabel:'activewear\nref' },
+  { id:'BL-2024-0330', market:'Germany', buyerType:'Brand', category:'Menswear', tier:'Premium', isNew:false, company:'H** Mode GmbH', products:"Menswear — Trousers, shirts", moq:'600 pcs/style', priceRange:'FOB USD 14–24', expiry:'15 Jul 2026', urgentExpiry:false, state:'default', hasImage:true, imageLabel:'menswear\nref' },
+  { id:'BL-2024-0318', market:'Japan', buyerType:'Distributor', category:'Denim', tier:'Mid-range', isNew:false, company:'T** International', products:"Denim — Jeans, jackets", moq:'1,200 pcs/style', priceRange:'FOB USD 12–22', expiry:'30 Jul 2026', urgentExpiry:false, state:'default', hasImage:false, imageLabel:'' },
+  { id:'BL-2024-0305', market:'Canada', buyerType:'Brand', category:'Loungewear', tier:'Mass market', isNew:false, company:'R** Co.', products:"Loungewear — Sets, hoodies", moq:'400 pcs/style', priceRange:'FOB USD 6–11', expiry:'30 Jun 2026', urgentExpiry:false, state:'default', hasImage:true, imageLabel:'loungewear\nref' },
+  { id:'BL-2024-0289', market:'France', buyerType:'Retailer', category:'Lingerie', tier:'Premium', isNew:false, company:'M** Mode SARL', products:"Lingerie — Bras, underwear sets", moq:'2,000 pcs/style', priceRange:'FOB USD 5–9', expiry:'30 Jun 2026', urgentExpiry:false, state:'applied', appliedOn:'18 Apr', hasImage:true, imageLabel:'lingerie\nref' },
+  { id:'BL-2024-0274', market:'Scandinavia', buyerType:'Brand', category:'Womenswear', tier:'Mid-range', isNew:false, company:'B** Nordic AS', products:"Sustainable basics — Tees, sweatshirts", moq:'500 pcs/style', priceRange:'FOB USD 7–12', expiry:'30 Jun 2026', urgentExpiry:false, state:'default', hasImage:false, imageLabel:'' },
+  { id:'BL-2024-0261', market:'Italy', buyerType:'Brand', category:'Knitwear', tier:'Luxury', isNew:false, company:'C** Moda Srl', products:"Luxury knitwear — Cashmere, wool", moq:'200 pcs/style', priceRange:'FOB USD 45–80', expiry:'30 Jul 2026', urgentExpiry:false, state:'default', hasImage:true, imageLabel:'luxury\nknit ref' },
+  { id:'BL-2024-0248', market:'UAE', buyerType:'Retailer', category:'Modest', tier:'Mid-range', isNew:false, company:'F** Retail LLC', products:"Modest fashion — Abayas, maxi dresses", moq:'1,500 pcs/style', priceRange:'FOB USD 9–17', expiry:'30 Jun 2026', urgentExpiry:false, state:'default', hasImage:true, imageLabel:'modest\nfashion ref' },
+  { id:'BL-2024-0233', market:'Brazil', buyerType:'Distributor', category:'Swimwear', tier:'Mass market', isNew:false, company:'V** Moda Ltda', products:"Swimwear — Bikinis, one-pieces", moq:'3,000 pcs/style', priceRange:'FOB USD 4–8', expiry:'30 Jun 2026', urgentExpiry:false, state:'default', hasImage:false, imageLabel:'' },
+  { id:'BL-2024-0219', market:'South Korea', buyerType:'Brand', category:'Womenswear', tier:'Mid-range / Premium', isNew:false, company:'K** Style Co.', products:"K-fashion — Street, casual separates", moq:'800 pcs/style', priceRange:'FOB USD 11–19', expiry:'15 Aug 2026', urgentExpiry:false, state:'default', hasImage:true, imageLabel:'k-fashion\nref' },
+  { id:'BL-2024-0205', market:'Netherlands', buyerType:'Retailer', category:'Kidswear', tier:'Mass market', isNew:false, company:'D** Stores BV', products:"Kids fashion — Seasonal collections", moq:'1,000 pcs/style', priceRange:'FOB USD 4–9', expiry:'30 Jun 2026', urgentExpiry:false, state:'default', hasImage:false, imageLabel:'' }
+];
+
+const PER_PAGE = 8;
+let currentPage = 1;
+
+function filteredLeads() {
+  var cat = document.getElementById('filterCategory').value;
+  var mkt = document.getElementById('filterMarket').value;
+  var tier = document.getElementById('filterTier').value;
+  return leads.filter(function(l) {
+    return (!cat || l.category === cat) && (!mkt || l.market === mkt) && (!tier || l.tier === tier);
+  });
+}
+
+function cardForLead(lead) {
+  var pills = '<div class="lead-pills"><span class="pill pill-blue">' + lead.market + '</span><span class="pill pill-navy">' + lead.buyerType + '</span>' +
+    (lead.isNew ? '<span class="pill pill-red">NEW</span>' : '') +
+    (lead.state === 'connected' ? '<span class="pill pill-green"><svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.6" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Connected</span>' : '') +
+    '</div>';
+  var body = '<div class="lead-card-body"><div class="lead-info">' + pills +
+    '<div class="lead-company">' + lead.company + '</div>' +
+    '<div class="lead-products">' + lead.products + '</div>' +
+    '<div class="lead-details"><div class="detail-item"><strong>MOQ:</strong> ' + lead.moq + '</div><div class="detail-item"><strong>Price Range:</strong> ' + lead.priceRange + '</div></div>' +
+    '<div class="lead-expiry ' + (lead.urgentExpiry ? 'urgent' : 'normal') + '"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Valid until ' + lead.expiry + (lead.urgentExpiry ? ' · Expiring soon' : '') + '</div>' +
+    '</div>' +
+    (lead.hasImage ? '<div class="lead-image"><div class="lead-image-placeholder">' + lead.imageLabel + '</div></div>' : '') +
+    '</div>';
+  var detailsLink = '<a href="supplier-features-v2.html" class="details-link">View Details →</a>';
+  var banner = '';
+  var footer = '';
+  if (lead.state === 'default') {
+    footer = '<div class="lead-card-footer">' + detailsLink + '<button class="apply-link" onclick="applyToLead(\'' + lead.id + '\')">Apply to this lead →</button><span style="font-size:11px;color:var(--gray-400)">' + lead.id + '</span></div>';
+  } else if (lead.state === 'applied') {
+    footer = '<div class="lead-card-footer">' + detailsLink + '<span class="applied-status">⏳ Pending buyer confirmation</span><span class="applied-meta">Applied on ' + lead.appliedOn + '</span></div>';
+  } else if (lead.state === 'accepted') {
+    banner = '<div class="good-news-banner">🎉 Good news! This buyer wants to connect with you.</div>';
+    var promo = lead.promo ? '<div class="pay-promo">🎉 Early offer: US$99 until Dec 31, 2026</div>' : '';
+    footer = '<div class="lead-card-footer pay-footer">' + detailsLink + '<button class="pay-btn" onclick="openPayModal(\'' + lead.id + '\')">Pay US$138 &amp; Start Chatting →</button><div style="display:flex;flex-direction:column;align-items:center">' + promo + '<div class="pay-subtext">Payment unlocks direct messaging with this buyer</div></div></div>';
+  } else if (lead.state === 'connected') {
+    footer = '<div class="lead-card-footer">' + detailsLink + '<a class="open-chat-link" href="chat-v2.html">Open Chat →</a><span class="applied-meta">Connected on ' + lead.connectedOn + '</span></div>';
+  }
+  return '<article class="lead-card state-' + lead.state + '" data-lead-id="' + lead.id + '">' + banner + body + footer + '</article>';
+}
+
+function renderLeads() {
+  var all = filteredLeads();
+  var totalPages = Math.max(1, Math.ceil(all.length / PER_PAGE));
+  if (currentPage > totalPages) currentPage = totalPages;
+  var start = (currentPage - 1) * PER_PAGE;
+  var slice = all.slice(start, start + PER_PAGE);
+  var container = document.getElementById('leadsContainer');
+  var empty = document.getElementById('leadsEmpty');
+  var pag = document.getElementById('paginationRow');
+  if (all.length === 0) {
+    container.innerHTML = '';
+    empty.style.display = 'block';
+    pag.style.display = 'none';
+    return;
+  }
+  empty.style.display = 'none';
+  pag.style.display = 'flex';
+  container.innerHTML = slice.map(cardForLead).join('');
+  document.getElementById('pageIndicator').textContent = 'Page ' + currentPage + ' of ' + totalPages;
+  document.getElementById('prevBtn').disabled = currentPage === 1;
+  document.getElementById('nextBtn').disabled = currentPage === totalPages;
+}
+
+function changePage(dir) {
+  var all = filteredLeads();
+  var totalPages = Math.max(1, Math.ceil(all.length / PER_PAGE));
+  currentPage = Math.max(1, Math.min(totalPages, currentPage + dir));
+  renderLeads();
+  var hdr = document.querySelector('.section-header');
+  if (hdr) window.scrollTo({ top: hdr.getBoundingClientRect().top + window.scrollY - 80, behavior: 'smooth' });
+}
+
+function applyToLead(leadId) {
+  var l = leads.find(function(x) { return x.id === leadId; });
+  if (!l) return;
+  l.state = 'applied';
+  l.appliedOn = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+  renderLeads();
+}
+
+let pendingLeadId = null;
+
+function openPayModal(leadId) {
+  const l = leads.find(x => x.id === leadId);
+  if (!l) return;
+  pendingLeadId = leadId;
+  document.getElementById('modalBuyerType').textContent = l.buyerType;
+  document.getElementById('modalBuyerMarket').textContent = l.market;
+  document.getElementById('modalBuyerProducts').textContent = l.products;
+  const promoEl = document.getElementById('modalFeePromo');
+  const feeEl   = document.getElementById('modalFeeValue');
+  const payBtn  = document.getElementById('modalPayBtn');
+  if (l.promo) {
+    promoEl.style.display = 'flex';
+    feeEl.innerHTML = '<span style="text-decoration:line-through;color:var(--gray-400);font-size:14px;margin-right:8px;">US$138</span>US$99';
+    payBtn.innerHTML = 'Pay US$99 &amp; Connect →';
+  } else {
+    promoEl.style.display = 'none';
+    feeEl.textContent = 'US$138';
+    payBtn.innerHTML = 'Pay US$138 &amp; Connect →';
+  }
+  document.getElementById('payModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closePayModal() {
+  document.getElementById('payModal').classList.remove('open');
+  document.body.style.overflow = '';
+  pendingLeadId = null;
+}
+
+function confirmPayment() {
+  if (!pendingLeadId) return closePayModal();
+  const l = leads.find(x => x.id === pendingLeadId);
+  if (l) {
+    l.state = 'connected';
+    l.connectedOn = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+  }
+  closePayModal();
+  renderLeads();
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closePayModal();
+});
+
+renderLeads();
 </script>
 
 </body>
